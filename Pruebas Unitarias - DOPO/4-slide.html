@@ -4,263 +4,309 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Módulo A: Parámetros de Conexión</title>
-<!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<title>Nomenclatura de Métodos</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <style>
-        /* Custom Variables */
-        :root {
-            --bg-dark: #0a0e27;
-            --oracle-orange: #FF6B35;
-            --oracle-red: #F80000;
-            --neon-cyan: #00D4FF;
-            --neon-green: #00FF88;
-            --glass-bg: rgba(13, 27, 62, 0.85);
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-dark);
-            color: #F0F4F8;
-            overflow: hidden;
-            width: 1280px;
-            height: 720px;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
             display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
         }
 
-        .slide-bg {
-            background-image: url("https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp");
-            background-size: cover;
-            background-position: center;
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 6px solid #f89820; /* Java Orange */
         }
-        
-        /* Typography overrides */
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Neon Glow Effects */
-        .glow-border-cyan {
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-            border-color: var(--neon-cyan);
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
-        
-        /* Tech Panel Styling */
-        .tech-panel {
-            background: rgba(13, 27, 62, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+        }
+
+        .header-subtitle {
+            font-family: 'Fira Code', monospace;
+            color: #bbdefb;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 4px;
+        }
+
+        /* Main Layout */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Top Section: The Pattern */
+        .pattern-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 8px solid #1565c0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .pattern-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #003366;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pattern-part {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .p-should { background-color: #003366; color: white; }
+        .p-var { background-color: #fff; color: #d84315; border: 2px dashed #d84315; }
+        .p-when { background-color: #003366; color: white; }
+        .p-context { background-color: #fff; color: #2e7d32; border: 2px dashed #2e7d32; }
+
+        /* Code Examples Area */
+        .examples-grid {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .code-card {
+            flex: 1;
+            background-color: #1e1e1e; /* VS Code Dark */
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             position: relative;
         }
 
-        .tech-panel::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: -1px;
-            width: 20px; height: 20px;
-            border-top: 2px solid var(--neon-cyan);
-            border-left: 2px solid var(--neon-cyan);
-        }
-        .tech-panel::after {
-            content: '';
-            position: absolute;
-            bottom: -1px; right: -1px;
-            width: 20px; height: 20px;
-            border-bottom: 2px solid var(--neon-cyan);
-            border-right: 2px solid var(--neon-cyan);
+        .code-header {
+            background-color: #2d2d2d;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
         }
 
-        .param-label {
-            color: #888;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .file-tab {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .java-icon-small { color: #f89820; }
+
+        .code-body {
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+            overflow-y: hidden;
+        }
+
+        /* Syntax Highlighting */
+        .kwd { color: #569cd6; } /* Keywords: public, void */
+        .anno { color: #dcdcaa; } /* Annotations: @Test */
+        .cls { color: #4ec9b0; } /* Classes */
+        .func { color: #dcdcaa; } /* Methods */
+        .str { color: #ce9178; } /* Strings */
+        .num { color: #b5cea8; } /* Numbers */
+        .com { color: #6a9955; font-style: italic; } /* Comments */
+        .op { color: #d4d4d4; } /* Operators */
+
+        /* Labels for code blocks */
+        .case-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px 15px;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom-left-radius: 12px;
+            color: white;
+            z-index: 5;
         }
 
-        .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background-color: var(--neon-green);
-            box-shadow: 0 0 8px var(--neon-green);
+        .label-nominal { background-color: #2e7d32; }
+        .label-error { background-color: #c62828; }
+
+        /* Bottom Note */
+        .note-box {
+            background-color: #fff3e0;
+            border-left: 6px solid #f89820;
+            padding: 15px 25px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
+
+        .note-icon {
+            font-size: 2rem;
+            color: #ef6c00;
+        }
+
+        .note-content h4 {
+            margin: 0 0 5px 0;
+            color: #ef6c00;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .note-content p {
+            margin: 0;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
     </style>
 </head>
-<body class="relative">
-<!-- Background Layer -->
-<div class="absolute inset-0 slide-bg"></div>
-<div class="absolute inset-0 bg-slate-900/95"></div>
-<!-- Main Container -->
-<div class="relative z-10 w-full h-full flex flex-col p-12 box-border flex-1">
-<!-- Header Section -->
-<header class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
-<div>
-<p class="font-mono text-[#FF6B35] text-sm mb-2 flex items-center gap-2">
-<i class="fa-solid fa-network-wired"></i> MÓDULO A: CONEXIÓN
-                </p>
-<h1 class="font-orbitron text-4xl font-bold text-white tracking-widest leading-none">
-                    SERVIDOR <span class="text-[#00D4FF]">GRANATE</span>
-</h1>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div class="header-title-container">
+<i class="fas fa-tag header-icon"></i>
+<h2>Nomenclatura Estricta</h2>
 </div>
-<div class="text-right">
-<div class="inline-block px-3 py-1 border border-[#00FF88]/30 rounded bg-[#00FF88]/5 text-[#00FF88] text-xs font-mono">
-<p><i class="fa-solid fa-circle-check mr-1"></i> STATUS: ONLINE</p>
+<div class="header-subtitle">
+            Convention: shouldXWhenY
+        </div>
 </div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Pattern Explanation -->
+<div class="pattern-container">
+<p class="pattern-text">
+<span class="pattern-part p-should">should</span>
+<span class="pattern-part p-var">ComportamientoEsperado</span>
+<span class="pattern-part p-when">When</span>
+<span class="pattern-part p-context">CondiciónOEstado</span>
+</p>
 </div>
-</header>
-<!-- Content Split -->
-<div class="flex gap-12 flex-1 items-start pt-2">
-<!-- Left Column: Context & Steps -->
-<div class="w-1/3 flex flex-col space-y-5 h-full">
-<div class="space-y-4">
-<div class="bg-white/5 p-4 rounded-lg border-l-4 border-[#FF6B35] backdrop-blur-sm">
-<div class="flex items-center gap-3 mb-2">
-<span class="bg-[#FF6B35]/20 text-[#FF6B35] w-6 h-6 flex items-center justify-center rounded text-xs font-bold font-mono">1</span>
-<h3 class="font-orbitron text-lg text-white">Nueva Conexión</h3>
+<!-- Code Examples -->
+<div class="examples-grid">
+<!-- Example 1: Nominal Case -->
+<div class="code-card">
+<div class="case-label label-nominal">Caso Nominal</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> CalculatorTest.java</div>
 </div>
-<p class="text-gray-400 text-sm leading-relaxed">
-                            En el panel "Connections", haz clic en el icono verde <strong class="text-[#00FF88]">+</strong> para iniciar el asistente de configuración.
-                        </p>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldCalculateTotalWhenItemsAreValid</span>() {<br/>
+                      <span class="com">// Given (Dado)</span><br/>
+                      <span class="cls">Cart</span> cart <span class="op">=</span> <span class="kwd">new</span> <span class="cls">Cart</span>();<br/>
+                      cart.add(<span class="kwd">new</span> <span class="cls">Item</span>(<span class="num">100</span>));<br/><br/>
+                      <span class="com">// When (Cuando)</span><br/>
+                      <span class="kwd">int</span> total <span class="op">=</span> cart.calculateTotal();<br/><br/>
+                      <span class="com">// Then (Entonces)</span><br/>
+                      <span class="func">assertEquals</span>(<span class="num">100</span>, total);<br/>
+                    }
+                </div>
 </div>
-<div class="bg-white/5 p-4 rounded-lg border-l-4 border-[#00D4FF] backdrop-blur-sm">
-<div class="flex items-center gap-3 mb-2">
-<span class="bg-[#00D4FF]/20 text-[#00D4FF] w-6 h-6 flex items-center justify-center rounded text-xs font-bold font-mono">2</span>
-<h3 class="font-orbitron text-lg text-white">Credenciales</h3>
+<!-- Example 2: Error Case -->
+<div class="code-card">
+<div class="case-label label-error">Caso de Error</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> UserServiceTest.java</div>
 </div>
-<p class="text-gray-400 text-sm leading-relaxed">
-                            ⚠️ <strong>Importante:</strong> Tu usuario es 'bd' seguido de tu número de identificación institucional. La contraseña es igual al usuario.
-                        </p>
-</div>
-</div>
-<div class="mt-auto flex flex-col gap-4 w-full">
-<!-- Updated Network Note -->
-<div class="bg-[#00FF88]/10 border border-[#00FF88]/30 rounded-lg p-3">
-<p class="text-[#00FF88] font-mono text-xs mb-1 uppercase font-bold">
-<i class="fa-solid fa-globe mr-1"></i> Acceso Directo
-                        </p>
-<p class="text-xs text-gray-300 leading-relaxed">
-                            El servidor <code>granate</code> es un vínculo externo. <strong class="text-white">NO requiere conexión VPN</strong> para acceder.
-                        </p>
-</div>
-<!-- New Demo Section -->
-<div class="bg-black/60 border border-[#00D4FF]/40 rounded-lg p-3 relative">
-<p class="text-[#00D4FF] font-mono text-xs mb-2 uppercase flex items-center gap-2 border-b border-[#00D4FF]/20 pb-1">
-<i class="fa-solid fa-video"></i> Demo Práctico
-                        </p>
-<div class="w-full h-[70px] bg-[#0a0e27] rounded border border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-[#00D4FF]/60 transition-colors group">
-<i class="fa-brands fa-youtube text-2xl text-white/30 mb-1 group-hover:text-[#FF0000] transition-colors"></i>
-<p class="text-[11px] text-gray-400 font-mono text-center px-2 group-hover:text-white transition-colors">📹 Video Demo: Proceso de conexión a granate</p>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldThrowExceptionWhenUserIsNull</span>() {<br/>
+                      <span class="com">// Given</span><br/>
+                      <span class="cls">User</span> user <span class="op">=</span> <span class="kwd">null</span>;<br/><br/>
+                      <span class="com">// When / Then</span><br/>
+                      <span class="func">assertThrows</span>(<span class="cls">IllegalArgumentException</span>.<span class="kwd">class</span>, () <span class="op">-&gt;</span> {<br/>
+                        service.register(user);<br/>
+                      });<br/>
+                    }
+                </div>
 </div>
 </div>
+<!-- Pedagogical Note -->
+<div class="note-box">
+<div class="note-icon">
+<i class="fas fa-lightbulb"></i>
 </div>
-</div>
-<!-- Right Column: The Tech Panel (Main Focus) -->
-<div class="w-2/3 relative h-full max-h-[500px]">
-<!-- Decorative Label -->
-<div class="absolute -top-3 left-8 bg-[#0a0e27] px-3 z-20 text-[#00D4FF] text-xs font-mono border border-[#00D4FF] rounded shadow-[0_0_10px_rgba(0,212,255,0.3)]">
-<p>CONFIGURACIÓN_CRÍTICA.ORA</p>
-</div>
-<div class="tech-panel h-full rounded-lg p-8 flex flex-col shadow-2xl">
-<!-- Top Form Section -->
-<div class="space-y-5 flex-1">
-<!-- Header of Panel -->
-<div class="flex justify-between items-center mb-6">
-<p class="text-white/80 font-mono text-sm">New / Select Database Connection</p>
-<div class="flex gap-1">
-<div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-<div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-<div class="w-3 h-3 rounded-full bg-green-500/50"></div>
-</div>
-</div>
-<!-- Basic Info Row -->
-<div class="grid grid-cols-2 gap-6">
-<div class="flex flex-col">
-<span class="param-label mb-2">Connection Name</span>
-<div class="bg-black/40 p-3 rounded border border-white/10 text-white font-mono text-sm">
-<p>EscuelaDB</p>
-</div>
-</div>
-<div class="flex flex-col">
-<span class="param-label mb-2">Username</span>
-<div class="bg-black/40 p-3 rounded border border-white/10 text-[#FF6B35] font-mono text-sm flex justify-between items-center">
-<p>bd[idinstitucional]</p>
-<i class="fa-solid fa-user text-xs opacity-50"></i>
-</div>
-<p class="text-[10px] text-gray-500 mt-1 font-mono">Ej: bd1000123456</p>
-</div>
-</div>
-<!-- Password Row -->
-<div class="grid grid-cols-2 gap-6">
-<div class="flex flex-col col-span-2">
-<span class="param-label mb-2">Password</span>
-<div class="bg-black/40 p-3 rounded border border-white/10 text-[#FF6B35] font-mono text-sm flex justify-between items-center">
-<p>*************</p>
-<i class="fa-solid fa-key text-xs opacity-50"></i>
-</div>
-<p class="text-[10px] text-[#00FF88] mt-1 font-mono"><i class="fa-solid fa-circle-info mr-1"></i> Contraseña = Igual al usuario (minúscula)</p>
-</div>
-</div>
-<!-- Critical Params (Highlighted Box) -->
-<div class="mt-4 bg-[#00D4FF]/5 border border-[#00D4FF]/40 rounded-lg p-6 relative overflow-hidden group hover:bg-[#00D4FF]/10 transition-colors duration-500">
-<!-- Internal Glow Focus effect instead of gradient to avoid export issues -->
-<div class="absolute inset-0 bg-[#00D4FF]/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-<div class="absolute top-2 right-2 text-[#00D4FF]/30 text-xs font-mono border border-[#00D4FF]/20 px-2 py-0.5 rounded">
-<p>TARGET: SERVER</p>
-</div>
-<div class="space-y-5 relative z-10">
-<!-- Hostname -->
-<div class="flex flex-col">
-<span class="param-label text-[#00D4FF] mb-1">Hostname (Servidor)</span>
-<div class="flex items-center gap-3">
-<p class="font-mono text-2xl text-white tracking-wide border-b border-dashed border-gray-600 pb-1 w-full">
-                                            granate.is.escuelaing.edu.co
-                                        </p>
-<i class="fa-solid fa-server text-[#00D4FF]"></i>
-</div>
-</div>
-<!-- Port & SID Row -->
-<div class="grid grid-cols-2 gap-8">
-<div class="flex flex-col">
-<span class="param-label text-[#00D4FF] mb-1">Port</span>
-<div class="flex items-center justify-between border-b border-dashed border-gray-600 pb-1">
-<p class="font-mono text-2xl text-[#FF6B35] font-bold">1521</p>
-<i class="fa-solid fa-ethernet text-[#FF6B35]/70 text-sm"></i>
-</div>
-</div>
-<div class="flex flex-col">
-<span class="param-label text-[#00D4FF] mb-1">SID (Identificador)</span>
-<div class="flex items-center justify-between border-b border-dashed border-gray-600 pb-1">
-<p class="font-mono text-2xl text-[#00FF88] font-bold">ORCL</p>
-<i class="fa-solid fa-database text-[#00FF88]/70 text-sm"></i>
+<div class="note-content">
+<h4>Regla de Oro de DOPO:</h4>
+<p>El nombre de la prueba es su mejor documentación. Si una prueba falla en el servidor, debes poder entender <strong>qué se rompió</strong> y <strong>bajo qué circunstancias</strong> solo leyendo el nombre del método, sin mirar el código.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<!-- Action Buttons -->
-<div class="flex justify-between items-center mt-6 pt-4 border-t border-white/10">
-<div class="flex items-center gap-2 text-[10px] text-gray-500 font-mono">
-<div class="status-dot"></div>
-<p>LISTENER: ACTIVE</p>
-</div>
-<div class="flex gap-4">
-<button class="px-6 py-2 rounded border border-[#FF6B35] text-[#FF6B35] font-mono text-sm hover:bg-[#FF6B35]/10 transition-colors uppercase tracking-wider cursor-pointer">
-                                Test
-                            </button>
-<button class="px-8 py-2 rounded bg-[#00D4FF] text-[#0a0e27] font-bold font-mono text-sm hover:bg-[#00D4FF]/90 transition-colors shadow-[0_0_15px_rgba(0,212,255,0.4)] uppercase tracking-wider cursor-pointer">
-                                Connect
-                            </button>
-</div>
-</div>
-</div>
-</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Pruebas Unitarias: Claridad y Mantenibilidad</p>
 </div>
 </div>
 </body>

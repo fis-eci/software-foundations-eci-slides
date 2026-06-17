@@ -4,414 +4,244 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>El Entorno: JUnit + BlueJ</title>
+<title>Módulo C: Parámetros de Conexión Local</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f7fa;
+        /* Custom Variables matching previous slides */
+        :root {
+            --bg-dark: #0a0e27;
+            --oracle-orange: #FF6B35;
+            --oracle-red: #F80000;
+            --neon-cyan: #00D4FF;
+            --neon-green: #00FF88;
+            --glass-bg: rgba(13, 27, 62, 0.85);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .slide-container {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark);
+            color: #F0F4F8;
+            overflow: hidden;
             width: 1280px;
             height: 720px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            background-color: #ffffff;
-            color: #333;
-            overflow: hidden;
-        }
-
-        /* Header */
-        .header {
-            height: 100px;
-            background-color: #003366; /* Deep Blue */
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 60px;
-            position: relative;
-            z-index: 10;
-            border-bottom: 6px solid #f89820; /* Java Orange */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .header h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: white;
-            font-size: 2.6rem;
-            font-weight: 800;
             margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .header-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            color: #bbdefb;
-            font-size: 1.2rem;
-            font-weight: 600;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 20px;
-        }
-
-        /* Main Content Grid */
-        .main-content {
-            flex: 1;
-            display: flex;
-            height: calc(720px - 140px); /* Adjusting for header/footer */
-        }
-
-        /* Left Section: JUnit */
-        .section-junit {
-            width: 60%;
-            padding: 50px 60px;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .junit-logo-area {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 20px;
-        }
-
-        .junit-icon {
-            font-size: 3.5rem;
-            color: #c62828; /* JUnit Red-ish */
-        }
-
-        .junit-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #333;
-            margin: 0;
-        }
-        
-        .junit-badge {
-            background-color: #e3f2fd;
-            color: #1565c0;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-left: 10px;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .feature-list {
-            list-style: none;
             padding: 0;
-            margin: 0 0 30px 0;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            color: #444;
-        }
-
-        .feature-icon {
-            color: #2e7d32;
-            margin-right: 15px;
-            margin-top: 5px;
-            font-size: 1.2rem;
-        }
-
-        /* Code Snippet */
-        .code-snippet {
-            background-color: #282c34;
-            border-radius: 8px;
-            padding: 20px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.95rem;
-            color: #abb2bf;
-            border-left: 5px solid #c62828;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .kwd { color: #c678dd; }
-        .func { color: #61afef; }
-        .str { color: #98c379; }
-        .anno { color: #e5c07b; }
-        .cls { color: #e06c75; }
-
-        /* Right Section: BlueJ */
-        .section-bluej {
-            width: 40%;
-            background-color: #f0f4f8; /* Light UI bg */
-            border-left: 1px solid #ddd;
-            padding: 40px;
-            display: flex;
+            display: flex; /* Flex layout as requested */
             flex-direction: column;
-            align-items: center;
-            position: relative;
+        }
+
+        .slide-bg {
+            background-image: url("https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp");
+            background-size: cover;
+            background-position: center;
         }
         
-        /* Diagonal pattern for right section background - using SVG pattern instead of gradient */
-        .section-bluej {
-            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0z' fill='%23f0f4f8'/%3E%3Cpath d='M0 0l20 20' stroke='rgba(0,0,0,0.02)' stroke-width='2'/%3E%3C/svg%3E");
-        }
+        /* Typography overrides */
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        .bluej-header {
-            z-index: 1;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .bluej-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #003366;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* Mockup of BlueJ Interface */
-        .bluej-mockup {
-            z-index: 1;
-            background-color: white; /* The "bench" */
-            width: 100%;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            border: 1px solid #ccc;
-        }
-
-        .class-diagram-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .class-box {
-            width: 100px;
-            height: 70px;
-            background-color: #ffe0b2; /* Standard class color in BlueJ */
-            border: 1px solid #fb8c00;
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #333;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        /* Tech Panel Styling */
+        .tech-panel {
+            background: rgba(13, 27, 62, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             position: relative;
         }
-        
-        .class-box::after {
+
+        .tech-panel::before {
             content: '';
             position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            border: 1px dashed rgba(0,0,0,0.2);
-            border-radius: 2px;
+            top: -1px; left: -1px;
+            width: 20px; height: 20px;
+            border-top: 2px solid var(--neon-cyan);
+            border-left: 2px solid var(--neon-cyan);
         }
-
-        .test-arrow {
-            color: #999;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .test-class-box {
-            width: 100px;
-            height: 70px;
-            background-color: #c8e6c9; /* Green test class color */
-            border: 1px solid #43a047;
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: #1b5e20;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            position: relative;
-            text-align: center;
-        }
-        
-        .test-class-box::after {
+        .tech-panel::after {
             content: '';
             position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            border: 1px dashed rgba(0,0,0,0.2);
-            border-radius: 2px;
+            bottom: -1px; right: -1px;
+            width: 20px; height: 20px;
+            border-bottom: 2px solid var(--neon-cyan);
+            border-right: 2px solid var(--neon-cyan);
         }
 
-        /* Result Bar Mockup */
-        .result-bar-container {
-            width: 100%;
-            background-color: #eee;
-            border-radius: 4px;
-            padding: 8px;
-            border: 1px solid #ddd;
-        }
-
-        .result-bar {
-            height: 12px;
-            width: 100%;
-            background-color: #4caf50; /* Green bar */
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Removed gradient, using solid color for export consistency */
-        
-        .result-text {
-            display: flex;
-            justify-content: space-between;
+        .param-label {
+            color: #888;
             font-size: 0.75rem;
-            color: #555;
-            margin-top: 5px;
-            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
         }
 
-        .info-box {
-            background-color: #fff8e1;
-            border-left: 4px solid #f89820;
-            padding: 15px;
-            font-size: 0.9rem;
-            color: #5d4037;
-            border-radius: 0 4px 4px 0;
-            margin-top: 20px;
-            z-index: 1;
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background-color: var(--neon-green);
+            box-shadow: 0 0 8px var(--neon-green);
         }
-
-        /* Footer */
-        .footer {
-            height: 40px;
-            background-color: #002244;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            color: #bbdefb;
-            font-size: 0.9rem;
-            font-family: 'Roboto', sans-serif;
-            z-index: 10;
+        
+        /* Grid Pattern Overlay */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
     </style>
 </head>
-<body>
-<div class="slide-container">
-<!-- Header -->
-<div class="header">
-<div class="flex items-center gap-4">
-<i class="fas fa-tools text-3xl text-orange-400"></i>
-<h2>El Entorno: JUnit + BlueJ</h2>
-</div>
-<div class="header-subtitle">Standard Framework &amp; Visual Tool</div>
-</div>
-<!-- Main Content -->
-<div class="main-content">
-<!-- Left Section: JUnit -->
-<div class="section-junit">
-<div class="junit-logo-area">
-<i class="fas fa-flask junit-icon"></i>
+<body class="relative">
+<!-- Background Layer -->
+<div class="absolute inset-0 slide-bg"></div>
+<div class="absolute inset-0 bg-slate-900/95"></div>
+<div class="absolute inset-0 grid-pattern"></div>
+<!-- Main Container -->
+<div class="relative z-10 w-full flex-1 flex flex-col p-12 box-border">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
 <div>
-<h3 class="junit-title">JUnit 5 Framework</h3>
-<p class="text-gray-500 font-medium">El estándar de facto para pruebas en Java</p>
+<p class="font-mono text-[#00D4FF] text-sm mb-2 flex items-center gap-2">
+<i class="fa-solid fa-laptop-code"></i> MÓDULO C: CONEXIÓN
+                </p>
+<h1 class="font-orbitron text-4xl font-bold text-white tracking-widest leading-none">
+                    LABORATORIO <span class="text-[#00FF88]">LOCAL (XE)</span>
+</h1>
 </div>
-<span class="junit-badge">v5.x</span>
-</div>
-<ul class="feature-list">
-<li class="feature-item">
-<i class="fas fa-check-circle feature-icon"></i>
-<p><strong>Anotaciones Simples:</strong> Uso de <code>@Test</code> para identificar métodos de prueba.</p>
-</li>
-<li class="feature-item">
-<i class="fas fa-check-circle feature-icon"></i>
-<p><strong>Aserciones Precisas:</strong> Métodos estáticos para validar resultados (<code>assertEquals</code>, <code>assertTrue</code>).</p>
-</li>
-<li class="feature-item">
-<i class="fas fa-check-circle feature-icon"></i>
-<p><strong>Ciclo de Vida:</strong> Control total con <code>@BeforeEach</code> y <code>@AfterEach</code>.</p>
-</li>
-</ul>
-<div class="code-snippet">
-<p><span class="anno">@Test</span></p>
-<p><span class="kwd">public void</span> <span class="func">shouldCalculateTotal</span>() {</p>
-<p>  <span class="cls">Calculator</span> calc = <span class="kwd">new</span> <span class="cls">Calculator</span>();</p>
-<p>  <span class="kwd">int</span> result = calc.add(<span class="str">2</span>, <span class="str">3</span>);</p>
-<p>  <span class="cls">Assertions</span>.<span class="func">assertEquals</span>(<span class="str">5</span>, result);</p>
-<p>}</p>
-</div>
-</div>
-<!-- Right Section: BlueJ -->
-<div class="section-bluej">
-<div class="bluej-header">
-<h3 class="bluej-title">
-<i class="fas fa-cube"></i> Integración BlueJ
-            </h3>
-<p class="text-sm text-gray-500 mt-1">Feedback visual inmediato</p>
-</div>
-<div class="bluej-mockup">
-<!-- Diagram Mockup -->
-<div class="class-diagram-container">
-<div class="class-box">
-                    Calculator
-                </div>
-<div class="test-arrow">
-<i class="fas fa-long-arrow-alt-right"></i>
-</div>
-<div class="test-class-box">
-                    Calculator<br/>Test
+<div class="text-right">
+<div class="inline-block px-3 py-1 border border-[#00FF88]/30 rounded bg-[#00FF88]/5 text-[#00FF88] text-xs font-mono">
+<i class="fa-solid fa-house-laptop mr-1"></i> ENV: LOCALHOST
                 </div>
 </div>
-<!-- Status Bar Mockup -->
-<div class="w-full">
-<p class="text-xs font-bold text-gray-500 uppercase mb-1">Test Results</p>
-<div class="result-bar-container">
-<div class="result-bar"></div>
-<div class="result-text">
-<span>Runs: 5/5</span>
-<span>Errors: 0</span>
+</header>
+<!-- Content Split -->
+<div class="flex gap-12 flex-1 items-start pt-2">
+<!-- Left Column: Context & Steps -->
+<div class="w-1/3 flex flex-col space-y-6">
+<div class="space-y-4">
+<div class="bg-white/5 p-5 rounded-lg border-l-4 border-[#00D4FF] backdrop-blur-sm">
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-[#00D4FF]/20 text-[#00D4FF] w-6 h-6 flex items-center justify-center rounded text-xs font-bold font-mono">1</span>
+<h3 class="font-orbitron text-lg text-white">Servicios Activos</h3>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                            Antes de conectar, verifica que los servicios <strong>OracleServiceXE</strong> y <strong>OracleXETNSListener</strong> estén "Running" en Windows Services.
+                        </p>
+</div>
+<div class="bg-white/5 p-5 rounded-lg border-l-4 border-[#00FF88] backdrop-blur-sm">
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-[#00FF88]/20 text-[#00FF88] w-6 h-6 flex items-center justify-center rounded text-xs font-bold font-mono">2</span>
+<h3 class="font-orbitron text-lg text-white">Credenciales</h3>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                            Usa el usuario <strong>SYSTEM</strong> o <strong>SYS</strong> con la contraseña que definiste durante la instalación.
+                        </p>
+</div>
+</div>
+<div class="mt-auto bg-black/40 border border-white/10 rounded-lg p-4">
+<h4 class="text-[#00D4FF] font-mono text-xs mb-2 uppercase border-b border-white/10 pb-1">
+<i class="fa-solid fa-terminal mr-1"></i> Comandos de Verificación
+                    </h4>
+<p class="text-xs text-gray-400 font-mono mb-2">
+                        &gt; lsnrctl status
+                    </p>
+<p class="text-xs text-gray-500 italic">
+                        Si el listener no responde, reinicia el servicio o tu máquina.
+                    </p>
+</div>
+</div>
+<!-- Right Column: The Tech Panel (Main Focus) -->
+<div class="w-2/3 relative h-full max-h-[500px]">
+<!-- Decorative Label -->
+<div class="absolute -top-3 left-8 bg-[#0a0e27] px-3 z-20 text-[#00FF88] text-xs font-mono border border-[#00FF88] rounded shadow-[0_0_10px_rgba(0,255,136,0.3)]">
+                    CONFIGURACIÓN_LOCAL.ORA
+                </div>
+<div class="tech-panel h-full rounded-lg p-8 flex flex-col shadow-2xl">
+<!-- Top Form Section -->
+<div class="space-y-5 flex-1">
+<!-- Header of Panel -->
+<div class="flex justify-between items-center mb-6">
+<div class="text-white/80 font-mono text-sm">New / Select Database Connection</div>
+<div class="flex gap-1">
+<div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+<div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+</div>
+</div>
+<!-- Basic Info Row -->
+<div class="grid grid-cols-2 gap-6">
+<div class="flex flex-col">
+<span class="param-label mb-2">Connection Name</span>
+<div class="bg-black/40 p-3 rounded border border-white/10 text-white font-mono text-sm">
+                                    Mi_Laboratorio_XE
+                                </div>
+</div>
+<div class="flex flex-col">
+<span class="param-label mb-2">Username</span>
+<div class="bg-black/40 p-3 rounded border border-white/10 text-[#00D4FF] font-mono text-sm flex justify-between items-center">
+<span>SYSTEM</span>
+<i class="fa-solid fa-user-shield text-xs opacity-50"></i>
+</div>
+</div>
+</div>
+<!-- Critical Params (Highlighted Box) -->
+<div class="mt-4 bg-[#00D4FF]/5 border border-[#00D4FF]/60 rounded-lg p-6 relative overflow-hidden group hover:bg-[#00D4FF]/10 transition-colors duration-500">
+<!-- Internal Glow -->
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-[#00D4FF] rounded-full blur-[80px] opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity"></div>
+<div class="absolute top-2 right-2 text-[#00D4FF]/50 text-xs font-mono border border-[#00D4FF]/30 px-2 py-0.5 rounded">
+                                TARGET: LOCAL
+                            </div>
+<div class="space-y-5 relative z-10">
+<!-- Hostname -->
+<div class="flex flex-col">
+<span class="param-label text-[#00D4FF] mb-1">Hostname (Local)</span>
+<div class="flex items-center gap-3">
+<span class="font-mono text-2xl text-white tracking-wide border-b border-dashed border-gray-600 pb-1 w-full">
+                                            localhost
+                                        </span>
+<i class="fa-solid fa-house-signal text-[#00D4FF]"></i>
+</div>
+</div>
+<!-- Port & SID Row -->
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col">
+<span class="param-label text-[#00D4FF] mb-1">Port</span>
+<div class="flex items-center justify-between border-b border-dashed border-gray-600 pb-1">
+<span class="font-mono text-2xl text-[#FF6B35] font-bold">1521</span>
+<i class="fa-solid fa-ethernet text-[#FF6B35]/70 text-sm"></i>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="param-label text-[#00D4FF] mb-1">SID (Identificador)</span>
+<div class="flex items-center justify-between border-b border-dashed border-gray-600 pb-1">
+<span class="font-mono text-2xl text-[#00FF88] font-bold">xe</span>
+<i class="fa-solid fa-database text-[#00FF88]/70 text-sm"></i>
 </div>
 </div>
 </div>
 </div>
-<!-- Info Box -->
-<div class="info-box">
-<p><strong><i class="fas fa-lightbulb text-orange-600 mr-2"></i>Flujo Visual:</strong></p>
-<p class="mt-2 text-sm">En BlueJ, las clases de prueba se distinguen por su color <span class="text-green-700 font-bold">verde</span>. Usa el menú contextual para crear nuevas pruebas y ejecutarlas con un clic.</p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex justify-between items-center mt-6 pt-4 border-t border-white/10">
+<div class="flex items-center gap-2 text-[10px] text-gray-500 font-mono">
+<div class="status-dot animate-pulse"></div>
+<span>SERVICE: RUNNING</span>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded border border-[#00D4FF] text-[#00D4FF] font-mono text-sm hover:bg-[#00D4FF]/10 transition-colors uppercase tracking-wider">
+                                Test
+                            </button>
+<button class="px-8 py-2 rounded bg-[#00FF88] text-[#0a0e27] font-bold font-mono text-sm hover:bg-[#00FF88]/90 transition-colors shadow-[0_0_15px_rgba(0,255,136,0.4)] uppercase tracking-wider">
+                                Connect
+                            </button>
 </div>
 </div>
 </div>
-<!-- Footer -->
-<div class="footer">
-<p>DOPO - Desarrollo Orientado por Objetos</p>
-<p>Herramientas: Potencia (JUnit) + Simplicidad (BlueJ)</p>
+</div>
 </div>
 </div>
 </body>

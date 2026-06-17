@@ -4,408 +4,230 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Contexto: Servidor vs Local</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<title>¿Qué y Por Qué?</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&amp;family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
 <style>
-        :root {
-            --bg-dark: #0a0e27;
-            --oracle-orange: #FF6B35;
-            --oracle-red: #F80000;
-            --neon-cyan: #00D4FF;
-            --neon-green: #00FF88;
-            --text-light: #F0F4F8;
-            --glass-bg: rgba(13, 27, 62, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: 'Roboto', sans-serif; 
+            background-color: #f0f0f0;
         }
         
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            overflow: hidden;
-            width: 1280px;
-            height: 720px;
-        }
-
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            display: flex;
-            flex-direction: column;
+        .slide-container { 
+            width: 1280px; 
+            height: 720px; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: white; 
             position: relative;
-            background-color: var(--bg-dark);
-            background-image: url("https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp");
-            background-size: cover;
-            background-position: center;
         }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 14, 39, 0.95);
-            z-index: 1;
-        }
-
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 60px;
-            box-sizing: border-box;
-        }
-
-        /* Header */
-        header {
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            margin: 0;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        h1 span {
-            color: var(--neon-cyan);
-        }
-
-        .subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--oracle-orange);
-            font-size: 14px;
-            margin: 0 0 5px 0;
-        }
-
-        /* Main Content Layout */
-        .comparison-container {
-            display: flex;
-            gap: 40px;
-            flex: 1;
-            margin-bottom: 20px;
-        }
-
-        /* Card Styles */
-        .compare-card {
-            flex: 1;
-            background: var(--glass-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .compare-card.server {
-            border-top: 4px solid var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
-        }
-
-        .compare-card.local {
-            border-top: 4px solid var(--oracle-orange);
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.1);
-        }
-
-        .card-header {
+        
+        /* Header Section */
+        .header {
+            height: 90px; /* Reduced from 110px */
+            background-color: #003366; /* Deep Blue */
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 15px;
+            padding: 0 50px;
+            border-bottom: 6px solid #f89820; /* Java Orange Accent */
+            z-index: 10;
+        }
+        
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.4rem; /* Reduced from 2.8rem */
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 1px;
         }
 
-        .icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
+        /* Main Content Grid */
+        .content-grid {
+            flex: 1;
+            display: flex;
+            height: calc(720px - 90px - 35px); /* Height minus header and footer */
+        }
+        
+        /* Left Column: What is it? */
+        .col-left {
+            flex: 1;
+            background-color: #1565c0; /* Medium Blue */
+            color: white;
+            padding: 30px 45px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Right Column: Why do it? */
+        .col-right {
+            flex: 1;
+            background-color: #fff3e0; /* Very Light Orange for readability */
+            color: #003366;
+            padding: 30px 45px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Icon Circles */
+        .icon-circle {
+            width: 80px; /* Reduced from 110px */
+            height: 80px; /* Reduced from 110px */
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            margin-bottom: 20px; /* Reduced margin */
+            font-size: 2.5rem; /* Reduced font size */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
-        .server .icon-box {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--neon-cyan);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+        .icon-left {
+            background-color: white;
+            color: #1565c0;
+            border: 3px solid #90caf9;
         }
 
-        .local .icon-box {
-            background: rgba(255, 107, 53, 0.1);
-            color: var(--oracle-orange);
-            border: 1px solid rgba(255, 107, 53, 0.3);
+        .icon-right {
+            background-color: #f89820;
+            color: white;
+            border: 3px solid #ffe0b2;
         }
 
-        .card-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
+        /* Titles */
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem; /* Reduced from 2.4rem */
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 25px; /* Reduced from 40px */
+            letter-spacing: 1.5px;
+            position: relative;
         }
 
-        .card-subtitle {
-            font-size: 12px;
-            color: #aaa;
-            font-family: 'JetBrains Mono', monospace;
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
         }
 
-        .feature-list {
+        .left-title::after { background-color: #90caf9; }
+        .right-title::after { background-color: #f89820; }
+
+        /* Bullet Points */
+        .bullet-list {
             list-style: none;
             padding: 0;
-            margin: 0;
-            flex: 1;
+            width: 100%;
         }
 
-        .feature-list li {
-            margin-bottom: 15px;
+        .bullet-list li {
+            margin-bottom: 20px; /* Reduced from 30px */
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            font-size: 16px;
-            line-height: 1.4;
+            font-size: 1.3rem; /* Reduced from 1.5rem */
+            line-height: 1.3;
         }
 
-        .feature-list i {
-            margin-top: 4px;
-            font-size: 14px;
+        .bullet-list li i {
+            margin-top: 5px;
+            margin-right: 15px;
+            font-size: 1.1rem;
+            min-width: 25px;
+            text-align: center;
         }
-
-        .feature-list p {
+        
+        .bullet-list li p {
             margin: 0;
         }
 
-        .server .feature-list i { color: var(--neon-cyan); }
-        .local .feature-list i { color: var(--oracle-orange); }
+        .left-list li i { color: #f89820; } /* Orange bullets on blue */
+        .right-list li i { color: #d84315; } /* Dark orange/red bullets on light orange */
 
-        .host-badge {
+        .highlight {
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            height: 35px; /* Reduced from 40px */
+            background-color: #002244; /* Darker than header */
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            margin-top: auto;
-            align-self: flex-start;
-            border: 1px dashed;
-        }
-
-        .host-badge p {
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .server .host-badge {
-            background: rgba(0, 212, 255, 0.05);
-            border-color: var(--neon-cyan);
-            color: var(--neon-cyan);
-        }
-
-        .local .host-badge {
-            background: rgba(255, 107, 53, 0.05);
-            border-color: var(--oracle-orange);
-            color: var(--oracle-orange);
-        }
-
-        /* Comparison Table */
-        .table-container {
-            margin-top: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.85rem;
             font-family: 'Roboto', sans-serif;
-        }
-
-        th {
-            text-align: left;
-            padding: 12px;
-            color: #888;
-            font-size: 12px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--border-color);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        th p {
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        td {
-            padding: 15px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-size: 15px;
-        }
-
-        td p {
-            margin: 0;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .col-aspect { width: 20%; color: var(--neon-green); font-weight: 500; font-family: 'JetBrains Mono', monospace;}
-        .col-server { width: 40%; color: #fff; }
-        .col-local { width: 40%; color: #fff; }
-
-        /* Decorative Background Elements */
-        .bg-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 1;
-        }
-
-        .glow-left {
-            background-color: var(--neon-cyan);
-            top: 20%;
-            left: 10%;
-        }
-
-        .glow-right {
-            background-color: var(--oracle-orange);
-            bottom: 20%;
-            right: 10%;
         }
 
     </style>
 </head>
 <body>
 <div class="slide-container">
-<div class="overlay"></div>
-<!-- Ambient Glow -->
-<div class="bg-glow glow-left"></div>
-<div class="bg-glow glow-right"></div>
-<div class="content-wrapper">
-<header>
-<div>
-<p class="subtitle">GUÍA // ORACLE SQL</p>
-<h1><span>Contexto</span></h1>
+<!-- Header -->
+<div class="header">
+<h2>Fundamentos: Pruebas Unitarias</h2>
 </div>
-<div style="text-align: right;">
-<p style="margin:0; font-family: 'Orbitron'; color: #888; font-size: 14px;">MÓDULO 01</p>
+<!-- Two Column Content -->
+<div class="content-grid">
+<!-- Left Side: Definition -->
+<div class="col-left">
+<div class="icon-circle icon-left">
+<i class="fas fa-search"></i>
 </div>
-</header>
-<div class="comparison-container">
-<!-- Server Column -->
-<div class="compare-card server">
-<div class="card-header">
-<div class="icon-box">
-<i class="fa-solid fa-server"></i>
-</div>
-<div>
-<div class="card-title"><p style="margin: 0;">Servidor Escuela</p></div>
-<div class="card-subtitle"><p style="margin: 0;">Entorno Remoto (Producción)</p></div>
-</div>
-</div>
-<ul class="feature-list">
+<div class="section-title left-title">¿QUÉ ES?</div>
+<ul class="bullet-list left-list">
 <li>
-<i class="fa-solid fa-users"></i>
-<p><strong>Colaborativo:</strong> Uso oficial para clases y entregas finales.</p>
+<i class="fas fa-cube"></i>
+<p><strong>Unidad Mínima:</strong> Evalúa el fragmento más pequeño de código (generalmente un método) de forma aislada.</p>
 </li>
 <li>
-<i class="fa-solid fa-share-nodes"></i>
-<p><strong>Compartido:</strong> Múltiples estudiantes en la misma instancia.</p>
+<i class="fas fa-cut"></i>
+<p><strong>Aislamiento Total:</strong> Sin dependencias externas reales (BD, Red, Sistema de archivos).</p>
 </li>
 <li>
-<i class="fa-solid fa-network-wired"></i>
-<p><strong>Administrado:</strong> Acceso Directo: NO requiere VPN (granate es vínculo externo).</p>
+<i class="fas fa-bullseye"></i>
+<p><strong>Foco Específico:</strong> Valida una única lógica o comportamiento concreto.</p>
 </li>
 </ul>
-<div class="host-badge">
-<p><i class="fa-solid fa-terminal" style="margin-right: 8px;"></i>granate.is.escuelaing.edu.co</p>
 </div>
+<!-- Right Side: Benefits -->
+<div class="col-right">
+<div class="icon-circle icon-right">
+<i class="fas fa-shield-alt"></i>
 </div>
-<!-- Local Column -->
-<div class="compare-card local">
-<div class="card-header">
-<div class="icon-box">
-<i class="fa-solid fa-laptop-code"></i>
-</div>
-<div>
-<div class="card-title"><p style="margin: 0;">Oracle XE Local</p></div>
-<div class="card-subtitle"><p style="margin: 0;">Entorno Privado (Laboratorio)</p></div>
-</div>
-</div>
-<ul class="feature-list">
+<div class="section-title right-title">¿POR QUÉ?</div>
+<ul class="bullet-list right-list">
 <li>
-<i class="fa-solid fa-flask"></i>
-<p><strong>Experimental:</strong> Tu propio laboratorio para pruebas libres.</p>
+<i class="fas fa-history"></i>
+<p><strong>Previene Regresiones:</strong> Detecta si cambios recientes rompieron código que ya funcionaba.</p>
 </li>
 <li>
-<i class="fa-solid fa-shield-halved"></i>
-<p><strong>Aislado:</strong> Errores graves no afectan a otros usuarios.</p>
+<i class="fas fa-book-open"></i>
+<p><strong>Documentación Viva:</strong> Los tests explican el comportamiento esperado mejor que un manual.</p>
 </li>
 <li>
-<i class="fa-solid fa-bolt"></i>
-<p><strong>Autónomo:</strong> Control total, tú eres el administrador (DBA).</p>
+<i class="fas fa-hard-hat"></i>
+<p><strong>Confianza (Refactor):</strong> Permite mejorar la estructura interna sin miedo a romper la funcionalidad.</p>
 </li>
 </ul>
-<div class="host-badge">
-<p><i class="fa-solid fa-house-laptop" style="margin-right: 8px;"></i>localhost / 127.0.0.1</p>
 </div>
 </div>
-</div>
-<!-- Comparison Table Summary -->
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th class="col-aspect"><p>ASPECTO CLAVE</p></th>
-<th class="col-server"><p><i class="fa-solid fa-server" style="color:var(--neon-cyan); margin-right:8px;"></i> SERVIDOR ESCUELA</p></th>
-<th class="col-local"><p><i class="fa-solid fa-laptop" style="color:var(--oracle-orange); margin-right:8px;"></i> ORACLE XE LOCAL</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="col-aspect"><p>ACCESO</p></td>
-<td><p>Remoto (Institucional)</p></td>
-<td><p>Local (Tu Máquina)</p></td>
-</tr>
-<tr>
-<td class="col-aspect"><p>PROPÓSITO</p></td>
-<td><p>Entregas Oficiales &amp; Exámenes</p></td>
-<td><p>Práctica, Errores &amp; Aprendizaje</p></td>
-</tr>
-<tr>
-<td class="col-aspect"><p>PERSISTENCIA</p></td>
-<td><p>Limpieza periódica (Cuotas)</p></td>
-<td><p>Permanente (Hasta que tú decidas)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<!-- Footer -->
+<div class="footer">
+<p>Monitor MYSD &amp; DOPO</p>
+<p>Java + JUnit + BlueJ</p>
 </div>
 </div>
 </body>

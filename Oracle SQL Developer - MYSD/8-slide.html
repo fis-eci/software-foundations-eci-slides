@@ -4,414 +4,181 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Práctica Completa en BlueJ - Ejemplo CuentaBancaria</title>
+<title>Advertencia Pedagógica VS Code</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f7fa;
+            background-color: #0a0e27;
         }
-
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            background-color: #ffffff;
-            color: #333;
-            overflow: hidden;
-        }
-
-        /* Header */
-        .header {
-            height: 85px;
-            background-color: #003366; /* Deep Blue */
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            position: relative;
-            z-index: 10;
-            border-bottom: 4px solid #f89820; /* Java Orange */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .header h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: white;
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            color: #bbdefb;
-            font-size: 0.9rem;
-            font-weight: 600;
-            background-color: rgba(255,255,255,0.1);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 20px 40px;
-            display: flex;
-            gap: 25px;
-            height: calc(100% - 125px);
-            overflow: hidden;
-        }
-
-        /* Left Panel: 4 Practice Steps */
-        .steps-panel {
-            width: 42%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .step-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px 12px;
-            border-left: 4px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-        
-        .step-card:hover {
-            transform: translateX(3px);
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        }
-
-        .step-card.step-tdd { border-left-color: #1565c0; }
-        .step-card.step-nominal { border-left-color: #2e7d32; }
-        .step-card.step-edge { border-left-color: #f89820; }
-        .step-card.step-bug { border-left-color: #c62828; }
-
-        .step-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .step-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .step-number {
-            background-color: #eee;
-            color: #555;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.75rem;
-            font-weight: 800;
-        }
-
-        .step-desc {
-            font-size: 0.8rem;
-            color: #555;
-            margin-bottom: 6px;
-            line-height: 1.2;
-        }
-
-        /* Code Snippet Compact */
-        .code-mini {
-            background-color: #282c34;
-            color: #abb2bf;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.65rem;
-            padding: 6px 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            border-left: 2px solid #5c6370;
-        }
-
-        .kwd { color: #c678dd; }
-        .func { color: #61afef; }
-        .str { color: #98c379; }
-        .num { color: #d19a66; }
-
-        /* Badges */
-        .badge {
-            font-size: 0.6rem;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .badge-red { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-        .badge-green { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .badge-blue { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-
-        /* Right Panel: Video Area */
-        .video-panel {
-            width: 58%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .video-container {
-            flex: 1;
-            background-color: #0f172a; /* Dark background for video placeholder */
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            border: 1px solid #333;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .yt-icon {
-            font-size: 5rem;
-            color: #FF0000;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-            transition: transform 0.3s;
-        }
-
-        .video-title {
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            margin: 0 0 10px 0;
-            font-weight: 700;
-        }
-
-        .video-desc {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin: 0 0 25px 0;
-            max-width: 80%;
-        }
-
-        .yt-button {
-            background-color: #FF0000;
-            color: white;
-            text-decoration: none;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
-            font-size: 1rem;
-        }
-
-        .yt-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(255, 0, 0, 0.4);
-            background-color: #cc0000;
-        }
-
-        .video-meta {
-            color: #64748b;
-            font-size: 0.8rem;
-            margin-top: 15px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        /* Status Info Box below video */
-        .status-info {
-            background-color: #e3f2fd;
-            border: 1px solid #bbdefb;
-            border-radius: 6px;
-            padding: 10px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #0d47a1;
-        }
-
-        /* Footer */
-        .footer {
-            height: 40px;
-            background-color: #002244;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            color: #bbdefb;
-            font-size: 0.85rem;
-            font-family: 'Roboto', sans-serif;
-            z-index: 10;
-        }
-
     </style>
 </head>
 <body>
-<div class="slide-container">
-<!-- Header -->
-<div class="header">
-<h2>
-<i class="fas fa-laptop-code text-orange-400"></i>
-            Práctica Completa en BlueJ - Ejemplo CuentaBancaria
-        </h2>
-<div class="header-subtitle">TDD + Edge Cases + Debugging</div>
+<div class="slide-container" style="position: relative; width: 1280px; height: 720px; overflow: hidden;">
+<!-- Background Image -->
+<div data-object="true" data-object-type="image" style="position: absolute; left: 0px; top: 0px; width: 1280px; height: 720px; z-index: 1;">
+<img alt="Background" src="https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp" style="width: 100%; height: 100%; object-fit: cover;"/>
 </div>
-<!-- Main Content -->
-<div class="main-content">
-<!-- Steps Panel -->
-<div class="steps-panel">
-<!-- Step 1: TDD -->
-<div class="step-card step-tdd">
-<div class="step-header">
-<div class="step-title">
-<div class="step-number">1</div>
-<span>TDD First Test</span>
+<!-- Background Overlay -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 0px; top: 0px; width: 1280px; height: 720px; z-index: 1; background-color: rgba(10, 14, 39, 0.95);"></div>
+<!-- Header: Subtitle Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 40px; top: 40px; width: 16px; height: 20px; z-index: 10; display: flex; align-items: center;">
+<i class="fa-solid fa-code-branch" style="color: #FF6B35; font-size: 14px;"></i>
 </div>
-<div class="flex gap-1">
-<span class="badge badge-red">RED</span>
-<i class="fas fa-arrow-right text-gray-400 text-xs self-center"></i>
-<span class="badge badge-green">GREEN</span>
+<!-- Header: Subtitle Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 64px; top: 40px; width: 576px; height: 20px; z-index: 10;">
+<p style="font-family: 'JetBrains Mono', monospace; color: #FF6B35; font-size: 14px; margin: 0; line-height: 20px;">HERRAMIENTAS ALTERNATIVAS</p>
 </div>
+<!-- Header: Title -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 40px; top: 65px; width: 600px; height: 45px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 36px; font-weight: 700; letter-spacing: 0.1em; margin: 0; line-height: 40px;">VISUAL STUDIO <span style="color: #00D4FF;">CODE</span></p>
 </div>
-<p class="step-desc">Testear comportamiento antes de implementar. <code>shouldAumentarSaldo...</code></p>
-<div class="code-mini">
-<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldAumentarSaldoWhenConsignarValido</span>() {</p>
-<p>  cuenta.consignar(<span class="num">100.0</span>); <span class="kwd">assert</span>(<span class="num">100.0</span>, cuenta.getSaldo());</p>
-<p>}</p>
+<!-- Header: Badge Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 740px; top: 50px; width: 500px; height: 40px; z-index: 5; background-color: rgba(248, 0, 0, 0.1); border: 2px solid #F80000; border-radius: 4px; box-sizing: border-box; box-shadow: 0 0 15px rgba(248, 0, 0, 0.3);"></div>
+<!-- Header: Badge Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 750px; top: 50px; width: 16px; height: 40px; z-index: 10; display: flex; align-items: center;">
+<i class="fa-solid fa-ban" style="color: #F80000; font-size: 14px;"></i>
 </div>
+<!-- Header: Badge Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 774px; top: 50px; width: 456px; height: 40px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: #F80000; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; margin: 0; line-height: 36px;">OPCIONAL - NO RECOMENDADO EN FUNDAMENTOS</p>
 </div>
-<!-- Step 2: Nominal -->
-<div class="step-card step-nominal">
-<div class="step-header">
-<div class="step-title">
-<div class="step-number">2</div>
-<span>Casos Nominales</span>
+<!-- Header: Separator Line -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 110px; width: 1200px; height: 1px; z-index: 1; background-color: rgba(255, 255, 255, 0.1);"></div>
+<!-- Advantages: Label -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 40px; top: 130px; width: 400px; height: 20px; z-index: 10;">
+<p style="font-family: 'JetBrains Mono', monospace; color: #9CA3AF; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Ventajas Técnicas de VS Code</p>
 </div>
-<span class="badge badge-green">HAPPY PATH</span>
+<!-- Advantage 1: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 160px; width: 380px; height: 80px; z-index: 1; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 3px solid #00D4FF; border-radius: 4px; box-sizing: border-box;"></div>
+<!-- Advantage 1: Icon Bg -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 50px; top: 175px; width: 40px; height: 40px; z-index: 5; background-color: rgba(0, 212, 255, 0.1); border-radius: 20px;"></div>
+<!-- Advantage 1: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 50px; top: 175px; width: 40px; height: 40px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-feather" style="color: #00D4FF; font-size: 20px;"></i>
 </div>
-<p class="step-desc">El escenario ideal: consignar un monto válido aumenta el saldo correctamente.</p>
-<div class="code-mini">
-<p><span class="kwd">public void</span> <span class="func">consignar</span>(<span class="kwd">double</span> m) {</p>
-<p>  <span class="kwd">this</span>.saldo += m; <span class="str">// Implementación inicial</span></p>
-<p>}</p>
+<!-- Advantage 1: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 105px; top: 175px; width: 300px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0;">Entorno Ligero</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 12px; margin: 0; line-height: 1.2;">Consume mucho menos recursos que los IDEs tradicionales orientados a bases de datos.</p>
 </div>
+<!-- Advantage 2: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 440px; top: 160px; width: 380px; height: 80px; z-index: 1; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 3px solid #00D4FF; border-radius: 4px; box-sizing: border-box;"></div>
+<!-- Advantage 2: Icon Bg -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 450px; top: 175px; width: 40px; height: 40px; z-index: 5; background-color: rgba(0, 212, 255, 0.1); border-radius: 20px;"></div>
+<!-- Advantage 2: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 450px; top: 175px; width: 40px; height: 40px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-puzzle-piece" style="color: #00D4FF; font-size: 20px;"></i>
 </div>
-<!-- Step 3: Edge Case -->
-<div class="step-card step-edge">
-<div class="step-header">
-<div class="step-title">
-<div class="step-number">3</div>
-<span>Caso de Borde</span>
+<!-- Advantage 2: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 505px; top: 175px; width: 300px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0;">Alta Extensibilidad</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 12px; margin: 0; line-height: 1.2;">Soporta múltiples lenguajes de programación mediante un vasto ecosistema de extensiones.</p>
 </div>
-<span class="badge badge-blue">EDGE CASE</span>
+<!-- Advantage 3: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 840px; top: 160px; width: 380px; height: 80px; z-index: 1; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 3px solid #00D4FF; border-radius: 4px; box-sizing: border-box;"></div>
+<!-- Advantage 3: Icon Bg -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 850px; top: 175px; width: 40px; height: 40px; z-index: 5; background-color: rgba(0, 212, 255, 0.1); border-radius: 20px;"></div>
+<!-- Advantage 3: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 850px; top: 175px; width: 40px; height: 40px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-laptop-code" style="color: #00D4FF; font-size: 20px;"></i>
 </div>
-<p class="step-desc">¿Qué pasa si consigno 0? El saldo no debería cambiar. <code>shouldNotAlterar...</code></p>
-<div class="code-mini">
-<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldNotAlterarSaldoWhenConsignarCero</span>() {</p>
-<p>  cuenta.consignar(<span class="num">0.0</span>); <span class="kwd">assert</span>(<span class="num">50.0</span>, cuenta.getSaldo());</p>
-<p>}</p>
+<!-- Advantage 3: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 905px; top: 175px; width: 300px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0;">Multiplataforma</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 12px; margin: 0; line-height: 1.2;">Brinda una experiencia de desarrollo idéntica y unificada en Windows, macOS y Linux.</p>
 </div>
+<!-- Central Warning Section: Main Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 260px; width: 1200px; height: 260px; z-index: 1; background-color: rgba(248, 0, 0, 0.05); border: 2px dashed #F80000; box-shadow: inset 0 0 20px rgba(248, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box;"></div>
+<!-- Central Warning: Title Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 65px; top: 285px; width: 30px; height: 30px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-triangle-exclamation" style="color: #F80000; font-size: 28px;"></i>
 </div>
-<!-- Step 4: Bug Fixing -->
-<div class="step-card step-bug">
-<div class="step-header">
-<div class="step-title">
-<div class="step-number">4</div>
-<span>Bug Fixing</span>
+<!-- Central Warning: Title Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 105px; top: 285px; width: 1110px; height: 30px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: #F80000; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; margin: 0; line-height: 30px;">ADVERTENCIA PEDAGÓGICA</p>
 </div>
-<span class="badge badge-red">BUG FOUND</span>
+<!-- Central Warning: Title Separator -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 65px; top: 325px; width: 1150px; height: 1px; z-index: 5; background-color: rgba(248, 0, 0, 0.3);"></div>
+<!-- Central Warning: Description -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 65px; top: 340px; width: 1150px; height: 50px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; color: white; font-size: 16px; line-height: 1.5; margin: 0;">En <strong style="font-weight: 700;">Fundamentos de Ingeniería de Software</strong> NO se recomienda el uso de VS Code porque incluye potentes herramientas de autocompletado avanzado y asistencia de IA que <strong style="color: #FF6B35; font-weight: 700;">interfieren negativamente con el aprendizaje fundamental de SQL</strong> y la comprensión real de la sintaxis básica.</p>
 </div>
-<p class="step-desc">Bug: Consignar negativo resta saldo. Solución: <code>if (m &gt; 0)</code></p>
-<div class="code-mini">
-<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldNotPermitirMontoNegativo</span>() {</p>
-<p>  cuenta.consignar(<span class="num">-20.0</span>); <span class="kwd">assert</span>(<span class="num">100.0</span>, cuenta.getSaldo());</p>
-<p>}</p>
+<!-- Inner Card 1: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 65px; top: 400px; width: 360px; height: 100px; z-index: 5; background-color: rgba(0, 0, 0, 0.4); border: 1px solid rgba(248, 0, 0, 0.3); border-radius: 8px; box-sizing: border-box;"></div>
+<!-- Inner Card 1: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 230px; top: 410px; width: 30px; height: 30px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-robot" style="color: #FF6B35; font-size: 24px;"></i>
 </div>
+<!-- Inner Card 1: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 75px; top: 445px; width: 340px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0; text-align: center;">GitHub Copilot</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 11px; line-height: 1.3; margin: 0; text-align: center;">Genera código SQL completo automáticamente, evitando que el estudiante construya la lógica por sí mismo.</p>
 </div>
+<!-- Inner Card 2: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 460px; top: 400px; width: 360px; height: 100px; z-index: 5; background-color: rgba(0, 0, 0, 0.4); border: 1px solid rgba(248, 0, 0, 0.3); border-radius: 8px; box-sizing: border-box;"></div>
+<!-- Inner Card 2: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 625px; top: 410px; width: 30px; height: 30px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-wand-magic-sparkles" style="color: #FF6B35; font-size: 24px;"></i>
 </div>
-<!-- Video Panel -->
-<div class="video-panel">
-<div class="video-container">
-<!-- YouTube External Link Placeholder -->
-<i class="fab fa-youtube yt-icon"></i>
-<h3 class="video-title">
-                    Demo: TDD en BlueJ - CuentaBancaria
-                </h3>
-<p class="video-desc">
-                    La visualización embebida está restringida. Haz clic abajo para ver la práctica completa en YouTube.
-                </p>
-<a class="yt-button" href="https://youtu.be/UAhh8al2eo8" target="_blank">
-<i class="fas fa-external-link-alt"></i>
-                    VER VIDEO EN YOUTUBE
-                </a>
-<p class="video-meta">
-                    Duración: 05:30 min • 1080p HD
-                </p>
+<!-- Inner Card 2: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 470px; top: 445px; width: 340px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0; text-align: center;">IntelliSense Avanzado</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 11px; line-height: 1.3; margin: 0; text-align: center;">Sugiere la estructura exacta y palabras clave antes de que el estudiante sepa el comando que realmente necesita.</p>
 </div>
-<!-- Status Info Bar -->
-<div class="status-info">
-<div class="status-item text-green-700">
-<i class="fas fa-check-circle"></i>
-<span>All Tests Passed</span>
+<!-- Inner Card 3: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 855px; top: 400px; width: 360px; height: 100px; z-index: 5; background-color: rgba(0, 0, 0, 0.4); border: 1px solid rgba(248, 0, 0, 0.3); border-radius: 8px; box-sizing: border-box;"></div>
+<!-- Inner Card 3: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 1020px; top: 410px; width: 30px; height: 30px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-code" style="color: #FF6B35; font-size: 24px;"></i>
 </div>
-<div class="status-item text-blue-700">
-<i class="fas fa-cube"></i>
-<span>BlueJ Environment</span>
+<!-- Inner Card 3: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 865px; top: 445px; width: 340px; height: 50px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 4px 0; text-align: center;">SQL Snippets</p>
+<p style="font-family: 'Roboto', sans-serif; color: #9CA3AF; font-size: 11px; line-height: 1.3; margin: 0; text-align: center;">Provee plantillas predefinidas de consultas complejas, lo que impide desarrollar la memoria técnica requerida.</p>
 </div>
-<div class="status-item text-orange-700">
-<i class="fas fa-bug"></i>
-<span>Bug Fixed</span>
+<!-- Bottom Message 1: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 540px; width: 810px; height: 80px; z-index: 1; background-color: rgba(255, 107, 53, 0.1); border-left: 4px solid #FF6B35; border-radius: 0 8px 8px 0; box-sizing: border-box;"></div>
+<!-- Bottom Message 1: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 60px; top: 560px; width: 40px; height: 40px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-bullseye" style="color: #FF6B35; font-size: 30px; opacity: 0.8;"></i>
 </div>
+<!-- Bottom Message 1: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 110px; top: 555px; width: 720px; height: 60px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 16px; font-weight: 700; margin: 0 0 4px 0;">Uso Responsable (Objetivo del Curso)</p>
+<p style="font-family: 'Roboto', sans-serif; color: #D1D5DB; font-size: 13px; line-height: 1.4; margin: 0;">"El objetivo primordial de este curso es aprender SQL desde cero y comprender la teoría relacional, <strong style="font-weight: 700; color: white;">no depender de asistentes de IA</strong>. Escribir las sentencias manualmente es la única forma de consolidar tu conocimiento técnico."</p>
 </div>
-<div class="text-right text-xs text-gray-400 mt-1 font-mono">
-<p>YouTube ID: UAhh8al2eo8</p>
+<!-- Bottom Message 2: Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 870px; top: 540px; width: 370px; height: 80px; z-index: 1; background-color: rgba(0, 212, 255, 0.05); border-left: 4px solid #00D4FF; border-radius: 0 8px 8px 0; box-sizing: border-box;"></div>
+<!-- Bottom Message 2: Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 890px; top: 565px; width: 30px; height: 30px; z-index: 10; display: flex; justify-content: center; align-items: center;">
+<i class="fa-solid fa-graduation-cap" style="color: #00D4FF; font-size: 24px; opacity: 0.8;"></i>
 </div>
+<!-- Bottom Message 2: Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 930px; top: 555px; width: 290px; height: 60px; z-index: 10;">
+<p style="font-family: 'Orbitron', sans-serif; color: white; font-size: 14px; font-weight: 700; margin: 0 0 6px 0;">Proyección Profesional</p>
+<p style="font-family: 'Roboto', sans-serif; color: #D1D5DB; font-size: 12px; line-height: 1.4; margin: 0;">Para cursos avanzados y vida laboral, VS Code es una excelente opción profesional.</p>
 </div>
+<!-- Footer Separator -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 650px; width: 1200px; height: 1px; z-index: 1; background-color: rgba(255, 255, 255, 0.1);"></div>
+<!-- Footer Logo Box -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 665px; width: 24px; height: 24px; z-index: 5; background-color: #B91C1C; border-radius: 2px;"></div>
+<!-- Footer Logo Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 40px; top: 665px; width: 24px; height: 24px; z-index: 10;">
+<p style="font-family: serif; color: white; font-size: 14px; font-weight: bold; margin: 0; text-align: center; line-height: 24px;">E</p>
 </div>
-<!-- Footer -->
-<div class="footer">
-<p>Monitor MYSD &amp; DOPO</p>
-<p>Evidencia Completa: TDD en Acción</p>
+<!-- Footer Name Text - Expanded width to 800px to ensure it never gets cut off -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 75px; top: 667px; width: 800px; height: 20px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; font-size: 12px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; line-height: 20px;">Universidad Escuela Colombiana de Ingeniería</p>
+</div>
+<!-- Footer Slide Number - Updated to 8/11 -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 1100px; top: 667px; width: 140px; height: 20px; z-index: 10;">
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B7280; margin: 0; text-align: right; line-height: 20px;">SLIDE 8/11</p>
 </div>
 </div>
 </body>

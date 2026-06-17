@@ -4,272 +4,154 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tipos de Pruebas Unitarias</title>
+<title>Módulo A: Protocolo de Vaciado</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            background-color: #0a0e27;
         }
-
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            background-color: #ffffff;
-            color: #333;
-            overflow: hidden;
-        }
-
-        /* Header */
-        .header {
-            height: 100px;
-            background-color: #003366; /* Deep Blue */
-            display: flex;
-            align-items: center;
-            padding: 0 60px;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background-color: #f89820; /* Java Orange */
-        }
-
-        .header h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: white;
-            font-size: 2.6rem;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .header-icon {
-            color: #f89820;
-            font-size: 2.2rem;
-            margin-right: 20px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 40px 60px;
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: stretch;
-            background-color: #f8f9fa;
-        }
-
-        /* Cards */
-        .card {
-            flex: 1;
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .card-top-border {
-            height: 12px;
-            width: 100%;
-        }
-
-        .card-content {
-            padding: 30px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* Specific Card Styles */
-        /* Nominal */
-        .card-nominal .card-top-border { background-color: #2e7d32; }
-        .card-nominal .icon-circle { color: #2e7d32; background-color: #e8f5e9; border: 2px solid #c8e6c9; }
-        .card-nominal h3 { color: #1b5e20; }
-        
-        /* Edge */
-        .card-edge .card-top-border { background-color: #ef6c00; }
-        .card-edge .icon-circle { color: #ef6c00; background-color: #fff3e0; border: 2px solid #ffe0b2; }
-        .card-edge h3 { color: #e65100; }
-
-        /* Error */
-        .card-error .card-top-border { background-color: #c62828; }
-        .card-error .icon-circle { color: #c62828; background-color: #ffebee; border: 2px solid #ffcdd2; }
-        .card-error h3 { color: #b71c1c; }
-
-        /* Icon */
-        .icon-circle {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 3rem;
-            margin-bottom: 25px;
-        }
-
-        /* Typography */
-        .card h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 1.6rem;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
-
-        .card-desc {
-            font-size: 1.1rem;
-            color: #555;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            flex-grow: 1;
-        }
-
-        /* Code Block in Card */
-        .code-block {
-            background-color: #282c34;
-            color: #abb2bf;
-            font-family: 'Fira Code', monospace;
-            padding: 15px;
-            border-radius: 8px;
-            width: 100%;
-            text-align: left;
-            font-size: 0.95rem;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .code-label {
-            position: absolute;
-            top: -10px;
-            right: 15px;
-            background-color: #444;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* Footer */
-        .footer {
-            height: 40px;
-            background-color: #002244;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            color: #bbdefb;
-            font-size: 0.9rem;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .highlight-code { color: #e5c07b; } /* Yellowish for method names */
-        .highlight-val { color: #98c379; } /* Green for values */
-        .highlight-err { color: #e06c75; } /* Red for errors */
-
     </style>
 </head>
 <body>
-<div class="slide-container">
-<!-- Header -->
-<div class="header">
-<i class="fas fa-layer-group header-icon"></i>
-<h2>Tipos de Pruebas en DOPO</h2>
+<div class="slide-container" style="position: relative; width: 1280px; height: 720px; overflow: hidden;">
+<!-- Background Overlay Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 0px; top: 0px; width: 1280px; height: 720px; z-index: 1; background-image: url('https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp'); background-size: cover; background-position: center; opacity: 0.3;"></div>
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 0px; top: 0px; width: 1280px; height: 720px; z-index: 1; background-color: #0a0e27; opacity: 0.95;"></div>
+<!-- Header Line -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 125px; width: 1200px; height: 1px; z-index: 1; background-color: rgba(255,255,255,0.1);"></div>
+<!-- Header Subtitle Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 40px; top: 41px; width: 16px; height: 16px; z-index: 10;">
+<i class="fa-solid fa-broom" style="color: #FF6B35; font-size: 14px;"></i>
 </div>
-<!-- Main Content -->
-<div class="main-content">
-<!-- Card 1: Nominal Case -->
-<div class="card card-nominal">
-<div class="card-top-border"></div>
-<div class="card-content">
-<div class="icon-circle">
-<i class="fas fa-smile-beam"></i>
+<!-- Header Text -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 64px; top: 40px; width: 800px; height: 70px; z-index: 10;">
+<p style="font-family: 'JetBrains Mono', monospace; color: #FF6B35; font-size: 14px; margin: 0 0 8px 0; text-transform: uppercase;">Módulo A: Buenas Prácticas</p>
+<h1 style="font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: bold; color: #ffffff; margin: 0; letter-spacing: 2px;">PROTOCOLO DE <span style="color: #F80000;">VACIADO</span></h1>
 </div>
-<h3>Caso Nominal</h3>
-<p class="card-desc">
-                    El "Camino Feliz" (Happy Path). Entradas válidas donde todo funciona según lo esperado y devuelve un resultado correcto.
-                </p>
-<div class="code-block">
-<span class="code-label">Ejemplo</span>
-<p>
-                        // Factorial de 5 es 120<br/>
-<span class="highlight-code">factorial</span>(<span class="highlight-val">5</span>) → <span class="highlight-val">120</span>
-</p>
+<!-- Badge BG Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 950px; top: 50px; width: 155px; height: 28px; z-index: 1; background-color: rgba(248,0,0,0.1); border: 1px solid rgba(248,0,0,0.3); border-radius: 4px;"></div>
+<!-- Badge Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 960px; top: 57px; width: 14px; height: 14px; z-index: 10;">
+<i class="fa-solid fa-triangle-exclamation" style="color: #F80000; font-size: 12px;"></i>
+</div>
+<!-- Badge Texts -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 980px; top: 56px; width: 120px; height: 20px; z-index: 10;">
+<p style="margin: 0; color: #F80000; font-size: 12px; font-family: 'JetBrains Mono', monospace; font-weight: bold;">ACCIÓN REQUERIDA</p>
+</div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 1120px; top: 55px; width: 100px; height: 20px; z-index: 10;">
+<p style="margin: 0; font-family: 'Orbitron', sans-serif; color: #888; font-size: 14px;">PASO FINAL</p>
+</div>
+<!-- ================= LEFT COLUMN ================= -->
+<!-- Warning Box BG Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 160px; width: 500px; height: 210px; z-index: 1; background-color: rgba(13, 27, 62, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #F80000; border-radius: 8px;"></div>
+<!-- Giant Faded Icon in Warning Box -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 430px; top: 180px; width: 100px; height: 100px; z-index: 5;">
+<i class="fa-solid fa-database" style="font-size: 90px; color: rgba(248,0,0,0.1);"></i>
+</div>
+<!-- Warning Box Title Icon -->
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 64px; top: 184px; width: 20px; height: 20px; z-index: 10;">
+<i class="fa-solid fa-circle-exclamation" style="color: #F80000; font-size: 20px;"></i>
+</div>
+<!-- Warning Box Content -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 96px; top: 182px; width: 420px; height: 30px; z-index: 10;">
+<h3 style="font-family: 'Orbitron', sans-serif; font-size: 20px; color: #ffffff; margin: 0;">ZONA DE CONTROL</h3>
+</div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 64px; top: 230px; width: 450px; height: 80px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; font-size: 15px; color: #d1d5db; line-height: 1.6; margin: 0;">
+                El servidor <strong>granate</strong> es un recurso compartido académico. Dejar tablas masivas u objetos huérfanos consume tu cuota asignada y puede bloquear tu usuario.
+            </p>
+</div>
+<!-- Impact Label Shape -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 64px; top: 320px; width: 110px; height: 28px; z-index: 1; background-color: rgba(248,0,0,0.2); border: 1px solid rgba(248,0,0,0.3); border-radius: 4px;"></div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 74px; top: 326px; width: 100px; height: 20px; z-index: 10;">
+<p style="margin: 0; color: #F80000; font-size: 12px; font-family: 'JetBrains Mono', monospace; font-weight: bold;">IMPACTO: ALTO</p>
+</div>
+<!-- Reasons Title -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 40px; top: 410px; width: 500px; height: 30px; z-index: 10; border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
+<h4 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #00D4FF; margin: 0; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 8px;">¿Por qué limpiar?</h4>
+</div>
+<!-- Reason 1 -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 470px; width: 40px; height: 40px; z-index: 1; background-color: rgba(255, 107, 53, 0.2); border-radius: 6px;"></div>
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 51px; top: 481px; width: 18px; height: 18px; z-index: 10;">
+<i class="fa-solid fa-hard-drive" style="color: #FF6B35; font-size: 18px;"></i>
+</div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 470px; width: 440px; height: 60px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; font-weight: bold; font-size: 16px; color: #ffffff; margin: 0 0 4px 0;">Cuota de Disco Limitada</p>
+<p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #9ca3af; margin: 0; line-height: 1.4;">Cada estudiante tiene un espacio restringido (Tablespace Quota).</p>
+</div>
+<!-- Reason 2 -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 550px; width: 40px; height: 40px; z-index: 1; background-color: rgba(0, 212, 255, 0.2); border-radius: 6px;"></div>
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 51px; top: 561px; width: 18px; height: 18px; z-index: 10;">
+<i class="fa-solid fa-people-arrows" style="color: #00D4FF; font-size: 18px;"></i>
+</div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 550px; width: 440px; height: 60px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; font-weight: bold; font-size: 16px; color: #ffffff; margin: 0 0 4px 0;">Cortesía Profesional</p>
+<p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #9ca3af; margin: 0; line-height: 1.4;">Mantener el esquema limpio evita conflictos de nombres en futuros laboratorios.</p>
+</div>
+<!-- Reason 3 -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 40px; top: 630px; width: 40px; height: 40px; z-index: 1; background-color: rgba(0, 255, 136, 0.2); border-radius: 6px;"></div>
+<div data-object="true" data-object-type="icon" style="position: absolute; left: 51px; top: 641px; width: 18px; height: 18px; z-index: 10;">
+<i class="fa-solid fa-rotate-left" style="color: #00FF88; font-size: 18px;"></i>
+</div>
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 630px; width: 440px; height: 60px; z-index: 10;">
+<p style="font-family: 'Roboto', sans-serif; font-weight: bold; font-size: 16px; color: #ffffff; margin: 0 0 4px 0;">Prevención de Errores</p>
+<p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #9ca3af; margin: 0; line-height: 1.4;">Evita el error ORA-01536: space quota exceeded for tablespace.</p>
+</div>
+<!-- ================= RIGHT COLUMN (TERMINAL) ================= -->
+<!-- Terminal Base Shape with Inner Visual Elements (Not textboxes) -->
+<div data-object="true" data-object-type="shape" style="position: absolute; left: 580px; top: 160px; width: 660px; height: 520px; z-index: 1; background-color: #05081a; border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; box-shadow: 0 0 20px rgba(0,255,136,0.05); overflow: hidden;">
+<!-- Header bar -->
+<div style="background-color: rgba(0,0,0,0.4); height: 36px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 16px;">
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #9ca3af; margin: 0;">SQL Worksheet - CleanUp.sql</p>
+<div style="display: flex; gap: 6px;">
+<div style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(239, 68, 68, 0.5);"></div>
+<div style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(245, 158, 11, 0.5);"></div>
+<div style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(16, 185, 129, 0.5);"></div>
 </div>
 </div>
+<!-- Line number Column BG -->
+<div style="width: 40px; height: 100%; background-color: rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05);"></div>
 </div>
-<!-- Card 2: Edge Case -->
-<div class="card card-edge">
-<div class="card-top-border"></div>
-<div class="card-content">
-<div class="icon-circle">
-<i class="fas fa-ruler-combined"></i>
+<!-- Terminal Line Numbers -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 580px; top: 215px; width: 40px; height: 450px; z-index: 10; text-align: right; padding-right: 12px; box-sizing: border-box;">
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">1</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">2</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">3</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">4</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">5</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">6</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">7</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">8</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">9</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">10</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">11</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">12</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">13</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4b5563; margin: 0; line-height: 28px;">14</p>
 </div>
-<h3>Caso de Borde</h3>
-<p class="card-desc">
-                    Valores límite o extremos donde la lógica suele fallar. Puntos de inflexión (0, null, vacíos, máximos).
-                </p>
-<div class="code-block">
-<span class="code-label">Ejemplo</span>
-<p>
-                        // Factorial de 0 es 1<br/>
-<span class="highlight-code">factorial</span>(<span class="highlight-val">0</span>) → <span class="highlight-val">1</span>
-</p>
-<p class="mt-2 text-xs text-gray-400">// Lista vacía size = 0</p>
-</div>
-</div>
-</div>
-<!-- Card 3: Error Case -->
-<div class="card card-error">
-<div class="card-top-border"></div>
-<div class="card-content">
-<div class="icon-circle">
-<i class="fas fa-bug"></i>
-</div>
-<h3>Caso de Error</h3>
-<p class="card-desc">
-                    Entradas inválidas que el sistema debe <strong>rechazar</strong> explícitamente, generalmente lanzando una Excepción.
-                </p>
-<div class="code-block">
-<span class="code-label">Ejemplo</span>
-<p>
-                        // No existe factorial negativo<br/>
-<span class="highlight-code">factorial</span>(<span class="highlight-err">-1</span>) <br/>
-                        throws <span class="highlight-err">IllegalArgumentEx</span>
-</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Footer -->
-<div class="footer">
-<p>DOPO - Desarrollo Orientado por Objetos</p>
-<p>Cobertura: Feliz + Borde + Error = Calidad</p>
+<!-- Terminal Code Content -->
+<div data-object="true" data-object-type="textbox" style="position: absolute; left: 635px; top: 215px; width: 580px; height: 450px; z-index: 10;">
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 1. Eliminar datos (rápido, mantiene estructura)</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"><span style="color: #FF6B35;">TRUNCATE TABLE</span> <span style="color: #ffffff;">estudiantes</span>;</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"> </p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 2. Eliminar tablas permanentemente (con dependencias)</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"><span style="color: #FF6B35;">DROP TABLE</span> <span style="color: #ffffff;">proyectos</span> <span style="color: #FF6B35;">CASCADE CONSTRAINTS</span>;</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"> </p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 3. Eliminar vistas asociadas</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"><span style="color: #FF6B35;">DROP VIEW</span> <span style="color: #ffffff;">vista_proyectos</span>;</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"> </p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 4. Eliminar paquetes (procedimientos/funciones)</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"><span style="color: #FF6B35;">DROP PACKAGE</span> <span style="color: #ffffff;">utilidades_bd</span>;</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"> </p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 5. ¡CRÍTICO! Liberar espacio real en disco (Papelera)</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #00FF88; font-weight: bold; text-shadow: 0 0 5px rgba(0, 255, 136, 0.5); margin: 0; line-height: 28px;">PURGE RECYCLEBIN;</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"> </p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #6b7280; font-style: italic; margin: 0; line-height: 28px;">-- 6. Confirmar transacciones pendientes</p>
+<p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0; line-height: 28px;"><span style="color: #FF6B35;">COMMIT</span>;</p>
 </div>
 </div>
 </body>

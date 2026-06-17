@@ -26,13 +26,13 @@ DECKS = [
     },
     {
         "folder": "Oracle SQL Developer - MYSD",
-        "count":  9,
+        "count":  11,
         "output": "OracleSQL-presentation.html",
         "title":  "Oracle SQL Developer — MYSD",
     },
     {
         "folder": "Pruebas Unitarias - DOPO",
-        "count":  11,
+        "count":  9,
         "output": "PruebasUnitarias-presentation.html",
         "title":  "Pruebas Unitarias en Java — DOPO",
     },
@@ -291,7 +291,9 @@ def escape_js_template(html: str) -> str:
     html = html.replace('${', '\\${')
     # Prevent the HTML parser from closing the outer <script> block when it
     # encounters </script> inside a slide's embedded HTML string.
-    html = re.sub(r'<(/script)', r'<\\/\1', html, flags=re.IGNORECASE)
+    # Using <\/script>: the outer HTML parser does not see this as </script>,
+    # but JavaScript evaluates \/ as / so srcdoc receives the correct </script>.
+    html = re.sub(r'</script', r'<\\/script', html, flags=re.IGNORECASE)
     return html
 
 

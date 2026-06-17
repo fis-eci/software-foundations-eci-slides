@@ -4,123 +4,316 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Módulo B: Instalación SQL Developer</title>
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Roboto:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
-<!-- Icons -->
+<title>Introducción a BDD</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
 <style>
-    body { 
-        margin: 0; 
-        padding: 0; 
-        overflow: hidden; 
-        background-color: #0a0e27; 
-        font-family: 'Roboto', sans-serif; 
-    }
-    .slide-container { 
-        position: relative; 
-        width: 1280px; 
-        height: 720px; 
-        overflow: hidden; 
-        background-image: url("https://page.gensparksite.com/slides_images/b22e5ad329958924a4b8fede118a9e06.webp"); 
-        background-size: cover; 
-        background-position: center; 
-    }
-</style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f89820; /* Java Orange */
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+            margin-right: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 900px;
+            background-color: #e3f2fd;
+            padding: 20px 30px;
+            border-radius: 12px;
+            border-left: 6px solid #1565c0;
+        }
+
+        .intro-text {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: #003366;
+            margin: 0;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: #d84315;
+        }
+
+        /* BDD Cards Container */
+        .bdd-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            width: 100%;
+            gap: 30px;
+        }
+
+        /* Individual Card */
+        .bdd-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+        }
+
+        .bdd-card-header {
+            padding: 25px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        /* Card Header Colors */
+        .card-given .bdd-card-header { background-color: #1565c0; } /* Blue */
+        .card-when .bdd-card-header { background-color: #f89820; } /* Orange */
+        .card-then .bdd-card-header { background-color: #2e7d32; } /* Green */
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px auto;
+            font-size: 2rem;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+
+        .step-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .step-subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .bdd-card-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .concept-text {
+            font-size: 1.2rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .example-box {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #ccc;
+        }
+
+        .card-given .example-box { border-left-color: #1565c0; background-color: #e3f2fd; }
+        .card-when .example-box { border-left-color: #f89820; background-color: #fff3e0; }
+        .card-then .example-box { border-left-color: #2e7d32; background-color: #e8f5e9; }
+
+        .example-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #777;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .example-code {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Connector Arrows */
+        .arrow-connector {
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            font-size: 2rem;
+            margin-top: -60px; /* Align with headers somewhat */
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    </style>
 </head>
 <body>
 <div class="slide-container">
-<!-- Background Overlay -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 0; left: 0; width: 1280px; height: 720px; background-color: rgba(10, 14, 39, 0.95); z-index: 1;"></div>
-<!-- Header Section -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 40px; left: 60px; width: 800px; height: 90px; z-index: 10;">
-<p style="margin: 0 0 5px 0; font-family: 'JetBrains Mono', monospace; color: #FF6B35; font-size: 14px; font-weight: 700; letter-spacing: 1px;"><i class="fa-solid fa-layer-group"></i> MÓDULO B: INSTALACIÓN DE SOFTWARE</p>
-<p style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 2px;">Instalación <span style="color: #00D4FF;">SQL Developer</span></p>
+<!-- Header -->
+<div class="header">
+<i class="fas fa-users-cog header-icon"></i>
+<h2>Introducción a BDD</h2>
 </div>
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 85px; left: 1020px; width: 200px; height: 20px; z-index: 10; text-align: right;">
-<p style="margin: 0; font-family: 'Orbitron', sans-serif; color: #888; font-size: 14px; font-weight: 700;">PASOS PRINCIPALES</p>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Explanation -->
+<div class="intro-section">
+<p class="intro-text">
+                Behavior-Driven Development (BDD) se enfoca en el <span class="highlight">comportamiento</span> esperado del usuario, no en la implementación técnica. Escribimos pruebas como <span class="highlight">historias</span>.
+            </p>
 </div>
-<!-- Header Divider -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 130px; left: 60px; width: 1160px; height: 1px; background-color: rgba(255, 255, 255, 0.1); z-index: 1;"></div>
-<!-- Card 1: Descargar -->
-<!-- Card Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 160px; left: 60px; width: 360px; height: 410px; background: rgba(13, 27, 62, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; backdrop-filter: blur(10px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1;"></div>
-<!-- Background Number 01 -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 145px; left: 330px; width: 80px; height: 60px; z-index: 1;">
-<p style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 48px; font-weight: 900; color: rgba(255, 255, 255, 0.05); line-height: 1; text-align: right;">01</p>
+<!-- 3 Steps Grid -->
+<div class="bdd-container">
+<!-- Step 1: GIVEN -->
+<div class="bdd-card card-given">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-database"></i>
 </div>
-<!-- Icon Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 180px; left: 80px; width: 60px; height: 60px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 12px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.1); z-index: 1;"></div>
-<!-- Icon -->
-<div data-object="true" data-object-type="icon" style="position: absolute; top: 196px; left: 96px; width: 28px; height: 28px; z-index: 10; color: #00D4FF; font-size: 28px; text-align: center;">
-<i class="fa-solid fa-download"></i>
+<h3 class="step-title">GIVEN</h3>
+<p class="step-subtitle">(DADO)</p>
 </div>
-<!-- Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 260px; left: 80px; width: 320px; height: 160px; z-index: 10;">
-<p style="margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: #fff;">Descargar</p>
-<p style="margin: 0; font-family: 'Roboto', sans-serif; font-size: 15px; line-height: 1.5; color: #ccc;">Visita <strong style="color: #fff;">oracle.com</strong>. Busca la sección de descargas de "SQL Developer". Solo requieres una cuenta gratuita básica para iniciar la descarga.</p>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Define el <strong>contexto inicial</strong> o las precondiciones del sistema antes de la acción.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo Cuenta Bancaria:</span>
+<div class="example-code">Dado una cuenta con saldo $100</div>
 </div>
-<!-- Action Box Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 490px; left: 80px; width: 320px; height: 60px; background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(0, 212, 255, 0.3); border-radius: 4px; z-index: 1;"></div>
-<!-- Action Box Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 500px; left: 95px; width: 290px; height: 40px; z-index: 10;">
-<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #00D4FF; line-height: 1.5;"><i class="fa-solid fa-desktop"></i> Disponible para Windows, macOS y Linux</p>
 </div>
-<!-- Card 2: Descomprimir y Ejecutar -->
-<!-- Card Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 160px; left: 440px; width: 360px; height: 410px; background: rgba(13, 27, 62, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; backdrop-filter: blur(10px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1;"></div>
-<!-- Background Number 02 -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 145px; left: 710px; width: 80px; height: 60px; z-index: 1;">
-<p style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 48px; font-weight: 900; color: rgba(255, 255, 255, 0.05); line-height: 1; text-align: right;">02</p>
 </div>
-<!-- Icon Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 180px; left: 460px; width: 60px; height: 60px; background: rgba(255, 107, 53, 0.1); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 12px; box-shadow: 0 0 15px rgba(255, 107, 53, 0.1); z-index: 1;"></div>
-<!-- Icon -->
-<div data-object="true" data-object-type="icon" style="position: absolute; top: 196px; left: 476px; width: 28px; height: 28px; z-index: 10; color: #FF6B35; font-size: 28px; text-align: center;">
-<i class="fa-solid fa-box-open"></i>
+<!-- Arrow -->
+<div class="arrow-connector">
+<i class="fas fa-chevron-right"></i>
 </div>
-<!-- Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 260px; left: 460px; width: 320px; height: 160px; z-index: 10;">
-<p style="margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: #fff;">Descomprimir y Ejecutar</p>
-<p style="margin: 0; font-family: 'Roboto', sans-serif; font-size: 15px; line-height: 1.5; color: #ccc;">Es una aplicación portable (no requiere instalación tradicional). Extrae el archivo en una ruta corta y sin espacios, luego ejecuta el archivo principal.</p>
+<!-- Step 2: WHEN -->
+<div class="bdd-card card-when">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-hand-pointer"></i>
 </div>
-<!-- Action Box Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 490px; left: 460px; width: 320px; height: 60px; background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(0, 212, 255, 0.3); border-radius: 4px; z-index: 1;"></div>
-<!-- Action Box Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 500px; left: 475px; width: 290px; height: 40px; z-index: 10;">
-<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #00D4FF; line-height: 1.5;"><i class="fa-solid fa-terminal"></i> Ej: Ejecutar sqldeveloper.exe / .sh / .app</p>
+<h3 class="step-title">WHEN</h3>
+<p class="step-subtitle">(CUANDO)</p>
 </div>
-<!-- Card 3: Demo -->
-<!-- Card Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 160px; left: 820px; width: 400px; height: 410px; background: rgba(0, 212, 255, 0.05); border: 2px dashed #00D4FF; border-radius: 12px; box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05); backdrop-filter: blur(5px); z-index: 1;"></div>
-<!-- Demo Icon -->
-<div data-object="true" data-object-type="icon" style="position: absolute; top: 220px; left: 986px; width: 68px; height: 68px; z-index: 10; color: #00D4FF; font-size: 68px; text-align: center; text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);">
-<i class="fa-solid fa-circle-play"></i>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Describe la <strong>acción</strong> específica o el evento que dispara el comportamiento.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo:</span>
+<div class="example-code">Cuando deposito $50</div>
 </div>
-<!-- Demo Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 320px; left: 840px; width: 360px; height: 100px; z-index: 10; text-align: center;">
-<p style="margin: 0 0 15px 0; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #fff; letter-spacing: 1px;">VIDEO DEMO</p>
-<p style="margin: 0; font-family: 'Roboto', sans-serif; font-size: 16px; color: #ccc; line-height: 1.4;">Instalación en diferentes sistemas operativos</p>
 </div>
-<!-- Demo OS Icons -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 430px; left: 840px; width: 360px; height: 40px; z-index: 10; text-align: center;">
-<p style="margin: 0; color: #FF6B35; font-size: 28px;">
-<i class="fa-brands fa-windows" style="margin: 0 15px;"></i>
-<i class="fa-brands fa-apple" style="margin: 0 15px;"></i>
-<i class="fa-brands fa-linux" style="margin: 0 15px;"></i>
-</p>
 </div>
-<!-- Pro Tip Footer -->
-<!-- Pro Tip Shape -->
-<div data-object="true" data-object-type="shape" style="position: absolute; top: 590px; left: 60px; width: 1160px; height: 90px; background: rgba(0, 255, 136, 0.05); border-left: 4px solid #00FF88; border-radius: 0 8px 8px 0; z-index: 1;"></div>
-<!-- Pro Tip Icon -->
-<div data-object="true" data-object-type="icon" style="position: absolute; top: 620px; left: 85px; width: 24px; height: 24px; z-index: 10; color: #00FF88; font-size: 24px; text-align: center;">
-<i class="fa-solid fa-lightbulb"></i>
+<!-- Arrow -->
+<div class="arrow-connector">
+<i class="fas fa-chevron-right"></i>
 </div>
-<!-- Pro Tip Text -->
-<div data-object="true" data-object-type="textbox" style="position: absolute; top: 610px; left: 130px; width: 1070px; height: 70px; z-index: 10;">
-<p style="margin: 0 0 5px 0; font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00FF88; font-weight: 700; letter-spacing: 1px;">NOTA SOBRE JAVA (JDK):</p>
-<p style="margin: 0; font-family: 'Roboto', sans-serif; font-size: 14px; color: #ddd; line-height: 1.5;">Para Windows, puedes descargar la versión <em style="color: #fff;">"With JDK Included"</em> para mayor facilidad. Para macOS y Linux, asegúrate de tener una versión compatible de Java (JDK) instalada previamente en tu sistema operativo.</p>
+<!-- Step 3: THEN -->
+<div class="bdd-card card-then">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-check-circle"></i>
+</div>
+<h3 class="step-title">THEN</h3>
+<p class="step-subtitle">(ENTONCES)</p>
+</div>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Verifica el <strong>resultado observable</strong> y asegura que se cumple la expectativa.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo:</span>
+<div class="example-code">Entonces el saldo debe ser $150</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Modelo Mental: Given / When / Then</p>
 </div>
 </div>
 </body>
