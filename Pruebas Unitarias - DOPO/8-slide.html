@@ -184,70 +184,76 @@
 
         .video-container {
             flex: 1;
-            background-color: #0f172a; /* Dark background for video placeholder */
+            background-image: url('https://img.youtube.com/vi/UAhh8al2eo8/maxresdefault.jpg');
+            background-size: cover;
+            background-position: center;
             border-radius: 8px;
             position: relative;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             border: 1px solid #333;
-            text-align: center;
-            padding: 20px;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        .yt-icon {
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            transition: background 0.2s;
+        }
+
+        .video-container:hover .video-overlay {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .play-button {
+            position: relative;
+            z-index: 2;
             font-size: 5rem;
             color: #FF0000;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-            transition: transform 0.3s;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+            transition: transform 0.25s;
+        }
+
+        .video-container:hover .play-button {
+            transform: scale(1.12);
+        }
+
+        .video-title-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.82));
+            padding: 30px 16px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 2;
         }
 
         .video-title {
             color: white;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            margin: 0 0 10px 0;
+            font-size: 1rem;
+            margin: 0;
             font-weight: 700;
         }
 
-        .video-desc {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin: 0 0 25px 0;
-            max-width: 80%;
-        }
-
-        .yt-button {
+        .video-badge {
             background-color: #FF0000;
             color: white;
-            text-decoration: none;
-            padding: 12px 28px;
-            border-radius: 50px;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 3px;
             font-weight: 700;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
-            font-size: 1rem;
-        }
-
-        .yt-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(255, 0, 0, 0.4);
-            background-color: #cc0000;
-        }
-
-        .video-meta {
-            color: #64748b;
-            font-size: 0.8rem;
-            margin-top: 15px;
-            font-family: 'Fira Code', monospace;
+            white-space: nowrap;
+            margin-left: 10px;
+            flex-shrink: 0;
         }
 
         /* Status Info Box below video */
@@ -371,23 +377,14 @@
 </div>
 <!-- Video Panel -->
 <div class="video-panel">
-<div class="video-container">
-<!-- YouTube External Link Placeholder -->
-<i class="fab fa-youtube yt-icon"></i>
-<h3 class="video-title">
-                    Demo: TDD en BlueJ - CuentaBancaria
-                </h3>
-<p class="video-desc">
-                    La visualización embebida está restringida. Haz clic abajo para ver la práctica completa en YouTube.
-                </p>
-<a class="yt-button" href="https://youtu.be/UAhh8al2eo8?si=_1DkYv2ACI4tWoyl" target="_blank">
-<i class="fas fa-external-link-alt"></i>
-                    VER VIDEO EN YOUTUBE
-                </a>
-<p class="video-meta">
-                    Duración: 05:30 min • 1080p HD
-                </p>
+<a class="video-container" href="https://youtu.be/UAhh8al2eo8?si=_1DkYv2ACI4tWoyl" target="_blank">
+<div class="video-overlay"></div>
+<i class="fab fa-youtube play-button"></i>
+<div class="video-title-bar">
+<h3 class="video-title">Demo: TDD en BlueJ - CuentaBancaria</h3>
+<span class="video-badge">Ver en YouTube</span>
 </div>
+</a>
 <!-- Status Info Bar -->
 <div class="status-info">
 <div class="status-item text-green-700">
@@ -402,9 +399,6 @@
 <i class="fas fa-bug"></i>
 <span>Bug Fixed</span>
 </div>
-</div>
-<div class="text-right text-xs text-gray-400 mt-1 font-mono">
-<p>YouTube ID: UAhh8al2eo8</p>
 </div>
 </div>
 </div>
