@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Las 3 Reglas de Oro</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #001e3c;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #002244; /* Deepest Blue */
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Background texture - Gradients removed for export compatibility */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            /* background-image: url("https://page.gensparksite.com/slides_images/020c795e10a55e0d2410d5451b759c4d.png"); Optional texture if needed, currently just using base color */
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            height: 110px;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-icon {
+            color: #ffc107; /* Gold */
+            font-size: 2.5rem;
+            margin-right: 25px;
+            filter: drop-shadow(0 0 5px rgba(255, 193, 7, 0.4));
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 35px;
+            z-index: 10;
+        }
+
+        /* Rule Card */
+        .rule-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rule-card:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(10px);
+            border-color: rgba(248, 152, 32, 0.3);
+        }
+
+        /* Number Circle */
+        .number-circle {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            border-radius: 50%;
+            background-color: #003366;
+            border: 4px solid #f89820;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(248, 152, 32, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Text Content */
+        .rule-text {
+            flex: 1;
+        }
+
+        .rule-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rule-desc {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: #b0bec5;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Badges */
+        .badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .badge-red {
+            background-color: #c62828;
+            color: white;
+            border: 1px solid #ef5350;
+        }
+
+        .badge-green {
+            background-color: #2e7d32;
+            color: white;
+            border: 1px solid #66bb6a;
+        }
+
+        .badge-purple {
+            background-color: #6a1b9a;
+            color: white;
+            border: 1px solid #ab47bc;
+        }
+
+        /* Icons in title */
+        .title-icon {
+            font-size: 1.4rem;
+            opacity: 0.8;
+        }
+        
+        /* Progress arrows decoration */
+        .tdd-arrow {
+            color: #81c784;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        /* Footer */
+        .footer {
+            height: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
+            color: #90caf9;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10;
+        }
+
+        /* Accents */
+        .accent-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background-color: #f89820;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Pattern -->
+<div class="bg-pattern"></div>
+<!-- Header -->
+<div class="header">
+<i class="fas fa-crown header-icon"></i>
+<h2>Las 3 Reglas de Oro</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Rule 1 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #f44336;"></div>
+<div class="number-circle">1</div>
+<div class="rule-text">
+<div class="rule-title">
+                        Code the Unit Test First
+                        <span class="badge badge-red">TDD</span>
+</div>
+<p class="rule-desc">
+                        Antes de escribir código funcional, escribe la prueba. <br/>
+                        Ciclo: <strong>Rojo</strong> (Falla) <span class="tdd-arrow">→</span> <strong>Verde</strong> (Pasa) <span class="tdd-arrow">→</span> <strong>Refactor</strong> (Mejora).
+                    </p>
+</div>
+<i class="fas fa-traffic-light text-4xl text-gray-500 opacity-30"></i>
+</div>
+<!-- Rule 2 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #4caf50;"></div>
+<div class="number-circle">2</div>
+<div class="rule-text">
+<div class="rule-title">
+                        All Code Must Have Tests
+                        <span class="badge badge-green">Zero Tolerance</span>
+</div>
+<p class="rule-desc">
+                        No se entrega ni se hace commit de código sin pruebas asociadas.<br/>
+                        La cobertura debe ser total para la lógica de negocio crítica.
+                    </p>
+</div>
+<i class="fas fa-check-double text-4xl text-gray-500 opacity-30"></i>
+</div>
+<!-- Rule 3 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #9c27b0;"></div>
+<div class="number-circle">3</div>
+<div class="rule-text">
+<div class="rule-title">
+                        Found a Bug? Create a Test!
+                        <span class="badge badge-purple">Regression Shield</span>
+</div>
+<p class="rule-desc">
+                        Si reportan un error, primero crea una prueba que replique el fallo (rojo).<br/>
+                        Solo entonces arregla el código. Esto evita que el error vuelva a ocurrir.
+                    </p>
+</div>
+<i class="fas fa-bug-slash text-4xl text-gray-500 opacity-30"></i>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Disciplina = Calidad de Software</p>
+</div>
+</div>
+</body>
+</html>

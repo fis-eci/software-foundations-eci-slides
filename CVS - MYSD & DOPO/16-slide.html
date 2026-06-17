@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Contacto y Soporte</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(210, 153, 34, 0.15); /* Orange for support */
+            color: #D29922;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .intro-text {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .intro-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+        }
+
+        .intro-desc {
+            font-size: 18px;
+            color: #8B949E;
+            line-height: 1.5;
+        }
+
+        /* Contact Cards Container */
+        .cards-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            flex: 1;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .contact-card:hover.github-card {
+            border-color: #C9D1D9;
+        }
+
+        .contact-card:hover.email-card {
+            border-color: #58A6FF;
+        }
+
+        .card-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 36px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .github-icon {
+            background-color: rgba(240, 246, 252, 0.1);
+            color: #F0F6FC;
+            border: 1px solid rgba(240, 246, 252, 0.2);
+        }
+
+        .email-icon {
+            background-color: rgba(88, 166, 255, 0.15);
+            color: #58A6FF;
+            border: 1px solid rgba(88, 166, 255, 0.3);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #8B949E;
+            margin-bottom: 20px;
+            background-color: #0D1117;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #30363D;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-action {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .action-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-size: 15px;
+        }
+
+        .github-btn {
+            background-color: #238636;
+            color: #FFFFFF;
+        }
+        
+        .github-btn:hover {
+            background-color: #2EA44F;
+        }
+
+        .email-btn {
+            background-color: #1F6FEB;
+            color: #FFFFFF;
+        }
+
+        .email-btn:hover {
+            background-color: #388BFD;
+        }
+
+        .card-tip {
+            font-size: 13px;
+            color: #8B949E;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Monitor Badge */
+        .monitor-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: 1px solid rgba(46, 164, 79, 0.3);
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 735px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-962901" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">SOPORTE</span>
+<h1 class="header-title">¿Tienes dudas o problemas?</h1>
+</div>
+
+<div class="content-wrapper">
+<div class="intro-text">
+<p class="intro-title">Estamos aquí para ayudarte</p>
+<p class="intro-desc">Si tienes bloqueos con Git, problemas de configuración o dudas sobre el flujo de trabajo, utiliza cualquiera de estos canales oficiales de monitoría.</p>
+</div>
+<div class="cards-container">
+
+<div class="contact-card github-card">
+<div class="monitor-badge">Recomendado</div>
+<div class="card-icon-wrapper github-icon">
+<i class="fab fa-github"></i>
+</div>
+<p class="card-title">GitHub Issues</p>
+<p class="card-subtitle">@fis-eci</p>
+<p class="card-tip">Ideal para reportar errores técnicos. Puedes crear un issue en <strong>cualquier repositorio</strong> del monitor para realizar tus preguntas.</p>
+<div class="card-action">
+<a class="action-btn github-btn" href="https://github.com/AnderssonProgramming" target="_blank">
+<i class="fas fa-code-branch"></i>
+<span>Crear Issue / Revisar Repo</span>
+</a>
+</div>
+</div>
+
+<div class="contact-card email-card">
+<div class="monitor-badge">Oficial</div>
+<div class="card-icon-wrapper email-icon">
+<i class="fas fa-envelope"></i>
+</div>
+<p class="card-title">Correo Institucional</p>
+<p class="card-subtitle" style="font-size: 11px;">fis@escuelaing.edu.co</p>
+<p class="card-tip">Úsalo para dudas administrativas, agendar tutorías o problemas que requieran privacidad.</p>
+<div class="card-action">
+<a class="action-btn email-btn" href="mailto:andersson.sanchez-m@mail.escuelaing.edu.co">
+<i class="fas fa-paper-plane"></i>
+<span>Enviar Correo</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>

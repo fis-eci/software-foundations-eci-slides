@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S2: Buenas Prácticas para Proyectos por Pares</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(210, 153, 34, 0.15); /* Yellow for Best Practices */
+            color: #D29922;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: flex;
+            height: 640px; /* 720 - 80 */
+            padding: 30px 40px;
+            gap: 30px;
+        }
+
+        /* Left Panel - The Rules Grid */
+        .rules-panel {
+            flex: 1.8;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8B949E;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #30363D;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .practice-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .practice-card:hover {
+            border-color: #58A6FF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .icon-structure { background-color: rgba(56, 139, 253, 0.15); color: #58A6FF; }
+        .icon-rule { background-color: rgba(235, 172, 38, 0.15); color: #D29922; }
+        .icon-sync { background-color: rgba(163, 113, 247, 0.15); color: #A371F7; }
+        .icon-quality { background-color: rgba(35, 134, 54, 0.15); color: #2EA44F; }
+        .icon-history { background-color: rgba(247, 129, 102, 0.15); color: #F78166; }
+
+        .card-tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            background-color: #0D1117;
+        }
+
+        .card-title {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #8B949E;
+            line-height: 1.5;
+        }
+
+        .card-full {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .card-full .card-header {
+            margin-bottom: 0;
+        }
+
+        /* Right Panel - Technical Details */
+        .tech-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #0D1117;
+            border-left: 1px solid #30363D;
+            padding-left: 30px;
+            margin: -30px -40px -30px 0;
+            padding: 30px 40px;
+            background: linear-gradient(90deg, rgba(13,17,23,0) 0%, rgba(22,27,34,0.5) 100%);
+        }
+
+        /* Code Block */
+        .terminal-window {
+            background-color: #090C10;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background-color: #161B22;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background-color: #FF5F56; }
+        .yellow { background-color: #FFBD2E; }
+        .green { background-color: #27C93F; }
+
+        .terminal-body {
+            padding: 16px;
+            color: #C9D1D9;
+        }
+
+        .cmd-line { margin-bottom: 12px; display: block; }
+        .cmd-comment { color: #8B949E; display: block; margin-bottom: 4px; }
+        .cmd-prompt::before { content: "$ "; color: #58A6FF; }
+        
+        .bad-practice { color: #F85149; opacity: 0.8; text-decoration: line-through; }
+        .good-practice { color: #2EA44F; font-weight: 700; }
+
+        /* Anti-Patterns Box */
+        .warning-box {
+            margin-top: auto;
+            background-color: rgba(248, 81, 73, 0.05);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #F85149;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .warning-list p {
+            font-size: 13px;
+            color: #C9D1D9;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .warning-list p::before {
+            content: "\f05e"; /* fa-ban */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #F85149;
+            font-size: 12px;
+        }
+
+        .gitignore-tip {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #8B949E;
+            background-color: #161B22;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px dashed #30363D;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+        
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 733px !important;"></lt-div></lt-div></lt-highlighter><body style="">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S2: BUENAS PRÁCTICAS</span>
+<h1 class="header-title">Buenas Prácticas para Proyectos por Pares</h1>
+</div>
+
+<div class="content-layout">
+
+<div class="rules-panel">
+<div class="section-title">Reglas de Juego</div>
+<div class="cards-grid">
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-structure"><i class="fas fa-code-branch"></i></div>
+<span class="card-tag">ESTRUCTURA</span>
+</div>
+<h3 class="card-title">Rama por Integrante</h3>
+<p class="card-desc">Crea una rama con tu <strong>Apellido</strong> para aislar tus cambios. Nunca trabajes directo en <code>main</code>.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-rule"><i class="fas fa-shield-alt"></i></div>
+<span class="card-tag">REGLA DE ORO</span>
+</div>
+<h3 class="card-title">Main es Sagrada</h3>
+<p class="card-desc">La rama principal debe tener siempre código estable. Solo se actualiza vía <strong>Pull Request</strong>.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-sync"><i class="fas fa-sync-alt"></i></div>
+<span class="card-tag">SINCRONIZACIÓN</span>
+</div>
+<h3 class="card-title">Pull Frecuente</h3>
+<p class="card-desc">Antes de empezar, haz <code>git pull origin main</code> para evitar conflictos grandes después.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-quality"><i class="fas fa-user-check"></i></div>
+<span class="card-tag">CALIDAD</span>
+</div>
+<h3 class="card-title">Revisión por Pares</h3>
+<p class="card-desc">Todo cambio requiere la aprobación de tu compañero (Reviewer) antes de fusionarse.</p>
+</div>
+
+<div class="practice-card card-full">
+<div style="flex: 1;">
+<div class="card-header">
+<div class="card-icon icon-history"><i class="fas fa-history"></i></div>
+<span class="card-tag">HISTORIAL</span>
+</div>
+<h3 class="card-title">Commits Descriptivos</h3>
+<p class="card-desc">Usa verbos imperativos. Ej: "feat: crear login" en vez de "cambios".</p>
+</div>
+<div style="flex: 1; border-left: 1px solid #30363D; padding-left: 15px;">
+<span style="font-size: 11px; color: #8B949E; display: block; margin-bottom: 5px;">Ejemplo:</span>
+<code style="display: block; font-family: 'Roboto Mono'; font-size: 11px; color: #F85149; margin-bottom: 2px;">❌ "arreglando cosas"</code>
+<code style="display: block; font-family: 'Roboto Mono'; font-size: 11px; color: #2EA44F;">✅ "fix: corregir error en conexión DB"</code>
+</div>
+</div>
+</div>
+</div>
+
+<div class="tech-panel">
+<div class="section-title">En la Práctica</div>
+
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+<span style="margin-left: 8px; color: #8B949E;">bash — flujo ideal</span>
+</div>
+<div class="terminal-body">
+<span class="cmd-comment"># 1. Crear rama personal</span>
+<span class="cmd-line cmd-prompt">git checkout -b <span style="color: #58A6FF;">sanchez-feature</span></span>
+<span class="cmd-comment"># 2. Guardar cambios (semántico)</span>
+<span class="cmd-line cmd-prompt">git add .</span>
+<span class="cmd-line cmd-prompt">git commit -m "<span class="good-practice">feat: implementar login</span>"</span>
+<span class="cmd-comment"># 3. Subir a la nube</span>
+<span class="cmd-line cmd-prompt">git push origin sanchez-feature</span>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="warning-header">
+<i class="fas fa-exclamation-triangle"></i>
+<span>LO QUE NO DEBES SUBIR</span>
+</div>
+<div class="warning-list">
+<p>Archivos compilados (.class, .exe)</p>
+<p>Carpetas IDE (.vscode, .idea)</p>
+<p>Contraseñas o credenciales</p>
+</div>
+<div class="gitignore-tip">
+<i class="fas fa-file-code" style="margin-right: 5px;"></i>
+<span>Usa <strong>.gitignore</strong> para excluir esto automáticamente.</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer" style="transform: translate(-3.63459px, 14.5383px);">
+<div class="footer-dot"></div>
+<span style="position: relative; transform: translate(0.908643px, 0.908651px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>

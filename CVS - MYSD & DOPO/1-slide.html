@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Control de Versiones para Proyectos Colaborativos</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+        
+        /* Grid background effect */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Tech glow effects - using box-shadow instead of gradients */
+        .glow-green {
+            box-shadow: 0 0 60px 20px rgba(46, 164, 79, 0.15);
+            border-radius: 50%;
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -50px;
+            z-index: 0;
+        }
+        
+        .glow-blue {
+            box-shadow: 0 0 80px 30px rgba(0, 102, 255, 0.15);
+            border-radius: 50%;
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            left: -100px;
+            z-index: 0;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 80px;
+        }
+
+        .badge {
+            background-color: rgba(56, 139, 253, 0.15);
+            color: #58A6FF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #8B949E;
+            margin-bottom: 40px;
+            max-width: 900px;
+            line-height: 1.5;
+        }
+
+        .highlight-green {
+            color: #2EA44F;
+            font-weight: 700;
+        }
+        
+        .highlight-blue {
+            color: #58A6FF;
+            font-weight: 700;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .info-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 320px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        /* Removed hover transform to avoid animation issues in export */
+        .info-card {
+            border-color: #58A6FF;
+        }
+
+        .info-card i {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #FFFFFF;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: #8B949E;
+            margin: 0;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #238636;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .author-info {
+            text-align: left;
+        }
+
+        .author-name {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .author-role {
+            color: #8B949E;
+            font-size: 12px;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        /* Bottom decorative bar */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            display: flex;
+        }
+        
+        .bar-green { flex: 1; background-color: #2EA44F; }
+        .bar-blue { flex: 1; background-color: #58A6FF; }
+        .bar-purple { flex: 1; background-color: #A371F7; }
+
+        .tech-icons {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 120px;
+            z-index: 1;
+        }
+        
+        .icon-git { top: 100px; left: 100px; transform: rotate(-15deg); }
+        .icon-code { bottom: 120px; right: 100px; transform: rotate(15deg); }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1330px !important; height: 870px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-857754" spellcheck="false" data-gramm="false">
+<div class="grid-bg"></div>
+<div class="glow-green"></div>
+<div class="glow-blue"></div>
+<i class="fab fa-git-alt tech-icons icon-git"></i>
+<i class="fas fa-code-branch tech-icons icon-code"></i>
+<div class="content-container">
+<div class="badge">
+<p><i class="fas fa-cube mr-2"></i>&nbsp;UNIDAD DE APRENDIZAJE • NIVEL INTRODUCTORIO</p>
+</div>
+<h1>Control de Versiones para<br><span class="highlight-blue">Proyectos Colaborativos</span></h1>
+<div class="subtitle">
+<p>Guía fundamental para estudiantes de <span class="highlight-green">MYSD</span> (Modelos y Servicios de Datos) &amp; <span class="highlight-blue">DOPO</span> (Desarrollo Orientado por Objetos)</p>
+</div>
+<div class="card-container">
+<div class="info-card" style="border-top: 4px solid #2EA44F;">
+<i class="fas fa-book-reader" style="color: #2EA44F;"></i>
+<h3>S1: Teoría</h3>
+<p>Conceptos y Estructura</p>
+</div>
+<div class="info-card" style="border-top: 4px solid #A371F7;">
+<i class="fas fa-check-circle" style="color: #A371F7;"></i>
+<h3>S2: Buenas Prácticas</h3>
+<p>Colaboración por Pares</p>
+</div>
+<div class="info-card" style="border-top: 4px solid #58A6FF;">
+<i class="fab fa-git-alt" style="color: #58A6FF;"></i>
+<h3>S3: Herramienta</h3>
+<p>Git &amp; GitHub</p>
+</div>
+</div>
+<div class="author-box" style="position: relative; transform: translate(3.63459px, -29.9854px);">
+<div class="author-avatar">A</div>
+<div class="author-info">
+<p class="author-name">Andersson David Sánchez Méndez</p>
+<p class="author-role">Autor • Monitor MYSD &amp; DOPO</p>
+</div>
+</div>
+</div>
+<div class="bottom-bar">
+<div class="bar-green"></div>
+<div class="bar-purple"></div>
+<div class="bar-blue"></div>
+</div>
+
+</body></html>

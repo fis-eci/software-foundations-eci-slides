@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S1: Estructura de Control - DAG</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px;
+            gap: 40px;
+            z-index: 10;
+            height: calc(720px - 80px);
+        }
+
+        /* Left Column: Theory & Definitions */
+        .theory-col {
+            flex: 0 0 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .concept-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #58A6FF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #8B949E;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .term-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .term-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(13, 17, 23, 0.6);
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 12px 15px;
+        }
+
+        .term-name {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: #A371F7; /* Purple for terms */
+            font-size: 14px;
+            width: 130px;
+            flex-shrink: 0;
+        }
+
+        .term-desc {
+            font-size: 13px;
+            color: #C9D1D9;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Visual Diagram */
+        .visual-col {
+            flex: 1;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .diagram-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161B22;
+        }
+
+        .diagram-label {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #8B949E;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-family: 'Roboto Mono', monospace;
+            color: #8B949E;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* SVG Graph Container */
+        .svg-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG Styles */
+        svg {
+            width: 100%;
+            height: 100%;
+            max-height: 480px;
+        }
+        
+        .path-main {
+            fill: none;
+            stroke: #2EA44F;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .path-branch {
+            fill: none;
+            stroke: #58A6FF;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 8, 4; /* Solid looks better, but let's try solid */
+            stroke-dasharray: 0; 
+        }
+
+        .commit-circle {
+            fill: #0D1117;
+            stroke-width: 3;
+            r: 10;
+            transition: r 0.3s ease;
+        }
+
+        .commit-circle:hover {
+            r: 14;
+            cursor: pointer;
+        }
+
+        .commit-main { stroke: #2EA44F; }
+        .commit-branch { stroke: #58A6FF; }
+        .commit-merge { stroke: #A371F7; }
+
+        /* Annotations/Tooltips positioned absolutely over SVG */
+        .annotation {
+            position: absolute;
+            background-color: rgba(22, 27, 34, 0.95);
+            border: 1px solid #30363D;
+            border-left: 3px solid;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #C9D1D9;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            pointer-events: none;
+            max-width: 180px;
+            z-index: 20;
+        }
+
+        .annotation strong {
+            display: block;
+            margin-bottom: 2px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+        }
+
+        .line-connector {
+            position: absolute;
+            background-color: #30363D;
+            width: 1px;
+            z-index: 5;
+        }
+
+        .dag-note {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(13, 17, 23, 0.8);
+            border-top: 1px solid #30363D;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .dag-note i {
+            color: #E3B341; /* Warning yellow */
+            margin-top: 3px;
+        }
+
+        .dag-note p {
+            margin: 0;
+            font-size: 12px;
+            color: #8B949E;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 720px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-891540" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Estructura de Control</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="theory-col">
+<div class="concept-card">
+<div class="card-title">
+<i class="fas fa-project-diagram"></i>
+<p style="margin:0;">Grafo Dirigido Acíclico (DAG)</p>
+</div>
+<p class="card-text">
+                        El historial de Git no es una línea recta simple, sino un árbol que crece en una sola dirección (el tiempo).
+                    </p>
+<div style="margin-top: 15px; padding-left: 15px; border-left: 2px solid #30363D;">
+<p class="card-text" style="font-size: 13px; margin-bottom: 5px;">• <strong>Vértices:</strong> Son las versiones (puntos en la historia).</p>
+<p class="card-text" style="font-size: 13px;">• <strong>Arcos:</strong> Indican evolución (quién es el padre de quién).</p>
+</div>
+</div>
+<div class="concept-card" style="border-left-color: #2EA44F;">
+<div class="card-title">
+<i class="fas fa-code-branch" style="color: #2EA44F;"></i>
+<p style="margin:0;">Tronco y Ramas</p>
+</div>
+<p class="card-text" style="margin-bottom: 8px;">
+<strong style="color: #2EA44F;">Tronco (Main):</strong> Eje central y estable del proyecto. Es la "verdad oficial".
+                    </p>
+<p class="card-text">
+<strong style="color: #58A6FF;">Ramas:</strong> Líneas paralelas para experimentar sin romper lo estable.
+                    </p>
+</div>
+
+<div class="term-box">
+<div class="term-item">
+<span class="term-name">Versión (Commit)</span>
+<p class="term-desc">Estado completo del proyecto en un momento dado (inmutable).</p>
+</div>
+<div class="term-item">
+<span class="term-name">Rama (Branch)</span>
+<p class="term-desc">Línea de desarrollo independiente (puntero móvil).</p>
+</div>
+</div>
+</div>
+
+<div class="visual-col">
+<div class="diagram-header">
+<span class="diagram-label">Modelo Visual del Historial</span>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background:#2EA44F;"></div>main</div>
+<div class="legend-item"><div class="legend-dot" style="background:#58A6FF;"></div>rama</div>
+<div class="legend-item"><div class="legend-dot" style="background:#A371F7;"></div>merge</div>
+</div>
+</div>
+<div class="svg-container">
+
+<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 400">
+
+<defs>
+<marker id="arrow-green" markerHeight="6" markerWidth="6" orient="auto" refX="18" refY="3">
+<path d="M0,0 L6,3 L0,6 L0,0" fill="#2EA44F"></path>
+</marker>
+<marker id="arrow-blue" markerHeight="6" markerWidth="6" orient="auto" refX="18" refY="3">
+<path d="M0,0 L6,3 L0,6 L0,0" fill="#58A6FF"></path>
+</marker>
+</defs>
+
+
+<path class="path-main" d="M 50 300 L 750 300" marker-end="url(#arrow-green)"></path>
+
+
+<path class="path-branch" d="M 250 300 C 290 300, 290 150, 330 150 L 470 150 C 510 150, 510 300, 550 300" marker-mid="url(#arrow-blue)"></path>
+
+
+<circle class="commit-circle commit-main" cx="50" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="150" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="250" cy="300"></circle> 
+<circle class="commit-circle commit-main" cx="650" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="750" cy="300"></circle>
+
+<circle class="commit-circle commit-branch" cx="350" cy="150"></circle>
+<circle class="commit-circle commit-branch" cx="450" cy="150"></circle>
+
+<circle class="commit-circle commit-merge" cx="550" cy="300"></circle>
+
+<text fill="#2EA44F" font-family="Roboto Mono" font-size="14" font-weight="bold" x="660" y="330">main</text>
+<text fill="#58A6FF" font-family="Roboto Mono" font-size="14" font-weight="bold" x="360" y="130">rama-experimento</text>
+</svg>
+
+
+<div class="annotation" style="left: 30px; top: 330px; border-left-color: #2EA44F;">
+<strong>Versión Inicial</strong>
+                    Punto de partida
+                </div>
+
+<div class="line-connector" style="left: 50px; top: 310px; height: 20px;"></div>
+
+<div class="annotation" style="left: 200px; top: 330px; border-left-color: #58A6FF;">
+<strong>Crear Rama</strong>
+                    Nace línea paralela
+                </div>
+<div class="line-connector" style="left: 250px; top: 310px; height: 20px;"></div>
+
+<div class="annotation" style="left: 380px; top: 180px; border-left-color: #58A6FF;">
+<strong>Desarrollo</strong>
+                    Commits aislados
+                </div>
+<div class="line-connector" style="left: 450px; top: 160px; height: 20px;"></div>
+
+<div class="annotation" style="left: 500px; top: 330px; border-left-color: #A371F7;">
+<strong>Fusión (Merge)</strong>
+                    Unir historias
+                </div>
+<div class="line-connector" style="left: 550px; top: 310px; height: 20px;"></div>
+</div>
+
+<div class="dag-note">
+<i class="fas fa-lightbulb"></i>
+<p><strong>Nota Pedagógica:</strong> Una versión creada NUNCA se modifica. El historial siempre avanza. Cuando "borras" algo en Git, en realidad estás creando una <em>nueva</em> versión donde eso ya no existe, pero el pasado permanece intacto.</p>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(0px, 7.26917px);"></div>
+<span style="position: relative; transform: translate(2.72594px, 7.26917px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>

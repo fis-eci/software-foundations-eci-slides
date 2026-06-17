@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nomenclatura de Métodos</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 6px solid #f89820; /* Java Orange */
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+        }
+
+        .header-subtitle {
+            font-family: 'Fira Code', monospace;
+            color: #bbdefb;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 4px;
+        }
+
+        /* Main Layout */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Top Section: The Pattern */
+        .pattern-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 8px solid #1565c0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .pattern-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #003366;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pattern-part {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .p-should { background-color: #003366; color: white; }
+        .p-var { background-color: #fff; color: #d84315; border: 2px dashed #d84315; }
+        .p-when { background-color: #003366; color: white; }
+        .p-context { background-color: #fff; color: #2e7d32; border: 2px dashed #2e7d32; }
+
+        /* Code Examples Area */
+        .examples-grid {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .code-card {
+            flex: 1;
+            background-color: #1e1e1e; /* VS Code Dark */
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .code-header {
+            background-color: #2d2d2d;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+        }
+
+        .file-tab {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .java-icon-small { color: #f89820; }
+
+        .code-body {
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+            overflow-y: hidden;
+        }
+
+        /* Syntax Highlighting */
+        .kwd { color: #569cd6; } /* Keywords: public, void */
+        .anno { color: #dcdcaa; } /* Annotations: @Test */
+        .cls { color: #4ec9b0; } /* Classes */
+        .func { color: #dcdcaa; } /* Methods */
+        .str { color: #ce9178; } /* Strings */
+        .num { color: #b5cea8; } /* Numbers */
+        .com { color: #6a9955; font-style: italic; } /* Comments */
+        .op { color: #d4d4d4; } /* Operators */
+
+        /* Labels for code blocks */
+        .case-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom-left-radius: 12px;
+            color: white;
+            z-index: 5;
+        }
+
+        .label-nominal { background-color: #2e7d32; }
+        .label-error { background-color: #c62828; }
+
+        /* Bottom Note */
+        .note-box {
+            background-color: #fff3e0;
+            border-left: 6px solid #f89820;
+            padding: 15px 25px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .note-icon {
+            font-size: 2rem;
+            color: #ef6c00;
+        }
+
+        .note-content h4 {
+            margin: 0 0 5px 0;
+            color: #ef6c00;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .note-content p {
+            margin: 0;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div class="header-title-container">
+<i class="fas fa-tag header-icon"></i>
+<h2>Nomenclatura Estricta</h2>
+</div>
+<div class="header-subtitle">
+            Convention: shouldXWhenY
+        </div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Pattern Explanation -->
+<div class="pattern-container">
+<p class="pattern-text">
+<span class="pattern-part p-should">should</span>
+<span class="pattern-part p-var">ComportamientoEsperado</span>
+<span class="pattern-part p-when">When</span>
+<span class="pattern-part p-context">CondiciónOEstado</span>
+</p>
+</div>
+<!-- Code Examples -->
+<div class="examples-grid">
+<!-- Example 1: Nominal Case -->
+<div class="code-card">
+<div class="case-label label-nominal">Caso Nominal</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> CalculatorTest.java</div>
+</div>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldCalculateTotalWhenItemsAreValid</span>() {<br/>
+                      <span class="com">// Given (Dado)</span><br/>
+                      <span class="cls">Cart</span> cart <span class="op">=</span> <span class="kwd">new</span> <span class="cls">Cart</span>();<br/>
+                      cart.add(<span class="kwd">new</span> <span class="cls">Item</span>(<span class="num">100</span>));<br/><br/>
+                      <span class="com">// When (Cuando)</span><br/>
+                      <span class="kwd">int</span> total <span class="op">=</span> cart.calculateTotal();<br/><br/>
+                      <span class="com">// Then (Entonces)</span><br/>
+                      <span class="func">assertEquals</span>(<span class="num">100</span>, total);<br/>
+                    }
+                </div>
+</div>
+<!-- Example 2: Error Case -->
+<div class="code-card">
+<div class="case-label label-error">Caso de Error</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> UserServiceTest.java</div>
+</div>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldThrowExceptionWhenUserIsNull</span>() {<br/>
+                      <span class="com">// Given</span><br/>
+                      <span class="cls">User</span> user <span class="op">=</span> <span class="kwd">null</span>;<br/><br/>
+                      <span class="com">// When / Then</span><br/>
+                      <span class="func">assertThrows</span>(<span class="cls">IllegalArgumentException</span>.<span class="kwd">class</span>, () <span class="op">-&gt;</span> {<br/>
+                        service.register(user);<br/>
+                      });<br/>
+                    }
+                </div>
+</div>
+</div>
+<!-- Pedagogical Note -->
+<div class="note-box">
+<div class="note-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div class="note-content">
+<h4>Regla de Oro de DOPO:</h4>
+<p>El nombre de la prueba es su mejor documentación. Si una prueba falla en el servidor, debes poder entender <strong>qué se rompió</strong> y <strong>bajo qué circunstancias</strong> solo leyendo el nombre del método, sin mirar el código.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Pruebas Unitarias: Claridad y Mantenibilidad</p>
+</div>
+</div>
+</body>
+</html>

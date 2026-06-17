@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Componentes de CVS</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px 100px 40px; /* Added bottom padding to make space for footer note */
+            gap: 40px;
+            z-index: 10;
+            align-items: stretch;
+            position: relative;
+        }
+
+        /* Component Cards */
+        .component-card {
+            flex: 1;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .component-card.local {
+            border-top: 6px solid #2EA44F; /* GitHub Green */
+        }
+
+        .component-card.remote {
+            border-top: 6px solid #58A6FF; /* GitHub Blue */
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            background-color: #0D1117;
+            border: 2px solid #30363D;
+        }
+
+        .local .icon-wrapper {
+            box-shadow: 0 0 30px rgba(46, 164, 79, 0.2);
+            border-color: #2EA44F;
+        }
+
+        .remote .icon-wrapper {
+            box-shadow: 0 0 30px rgba(88, 166, 255, 0.2);
+            border-color: #58A6FF;
+        }
+
+        .card-icon {
+            font-size: 40px;
+        }
+
+        .local .card-icon { color: #2EA44F; }
+        .remote .card-icon { color: #58A6FF; }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .card-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            background-color: rgba(13, 17, 23, 0.5);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .feature-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: rgba(13, 17, 23, 0.3);
+        }
+
+        .feature-icon {
+            margin-top: 3px;
+            font-size: 14px;
+            min-width: 16px;
+        }
+
+        .local .feature-icon { color: #2EA44F; }
+        .remote .feature-icon { color: #58A6FF; }
+
+        .feature-text {
+            font-size: 14px;
+            color: #C9D1D9;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Pedagogical Note */
+        .pedagogical-note {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(31, 111, 235, 0.1);
+            border: 1px solid #1F6FEB;
+            border-radius: 50px;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: auto;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 20;
+            white-space: nowrap;
+        }
+
+        .note-icon {
+            background-color: #1F6FEB;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .note-content p {
+            margin: 0;
+            color: #C9D1D9;
+            font-size: 14px;
+        }
+
+        .highlight-text {
+            color: #58A6FF;
+            font-weight: 700;
+        }
+
+        /* Connector Arrow */
+        .connector {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #8B949E;
+            font-size: 32px;
+            gap: 8px;
+            opacity: 0.6;
+            margin-bottom: 40px;
+        }
+
+        .connector-label {
+            font-size: 11px;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Componentes de un CVS</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Local Repository Card -->
+<div class="component-card local">
+<div class="icon-wrapper">
+<i class="fas fa-laptop-code card-icon"></i>
+</div>
+<h2 class="card-title">Repositorio Local</h2>
+<div class="card-subtitle">Tu Computador</div>
+<div class="feature-list">
+<div class="feature-item">
+<i class="fas fa-user-lock feature-icon"></i>
+<p class="feature-text"><strong>Espacio Privado:</strong> Solo tú puedes ver y modificar los archivos aquí.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-vial feature-icon"></i>
+<p class="feature-text"><strong>Experimentación:</strong> Puedes probar cambios sin miedo a romper el proyecto de los demás.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-history feature-icon"></i>
+<p class="feature-text"><strong>Historial Completo:</strong> Tienes una copia de todas las versiones en tu máquina.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-bolt feature-icon"></i>
+<p class="feature-text"><strong>Velocidad:</strong> Todo ocurre instantáneamente sin necesitar internet.</p>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="connector">
+<span class="connector-label">Sincronización</span>
+<i class="fas fa-exchange-alt"></i>
+</div>
+<!-- Remote Repository Card -->
+<div class="component-card remote">
+<div class="icon-wrapper">
+<i class="fas fa-cloud card-icon"></i>
+</div>
+<h2 class="card-title">Repositorio Remoto</h2>
+<div class="card-subtitle">La Nube (GitHub)</div>
+<div class="feature-list">
+<div class="feature-item">
+<i class="fas fa-users feature-icon"></i>
+<p class="feature-text"><strong>Espacio Compartido:</strong> Punto de encuentro para todo el equipo.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-shield-alt feature-icon"></i>
+<p class="feature-text"><strong>Verdad Oficial:</strong> Contiene la versión "estable" y consolidada del proyecto.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-server feature-icon"></i>
+<p class="feature-text"><strong>Respaldo:</strong> Protege el código si tu computador se daña.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-code-branch feature-icon"></i>
+<p class="feature-text"><strong>Colaboración:</strong> Permite revisar (Pull Request) y fusionar el trabajo de otros.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Pedagogical Note -->
+<div class="pedagogical-note">
+<div class="note-icon">
+<i class="fas fa-graduation-cap"></i>
+</div>
+<div class="note-content">
+<p><strong>Ruta de Aprendizaje:</strong> Primero domina el <span class="highlight-text" style="color: #2EA44F;">Repositorio Local</span> antes de sincronizar con el <span class="highlight-text">Repositorio Remoto</span>.</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>

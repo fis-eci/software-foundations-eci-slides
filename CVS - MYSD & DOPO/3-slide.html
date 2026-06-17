@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Teoría - Problemas que Resuelve un CVS</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Container setup */
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Header styling */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main content layout */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#30363D 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Left Column: Problems */
+        .col-left {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            color: #FF7B72; /* GitHub Red for problems */
+        }
+
+        .section-header i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .problem-card {
+            display: flex;
+            align-items: flex-start;
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid #FF7B72;
+            transition: transform 0.2s;
+        }
+
+        .problem-icon {
+            color: #FF7B72;
+            font-size: 20px;
+            margin-right: 16px;
+            margin-top: 2px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .problem-content h3 {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .problem-content p {
+            color: #8B949E;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Definition */
+        .col-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .definition-box {
+            background-color: #161B22;
+            border: 1px solid #58A6FF;
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .definition-label {
+            position: absolute;
+            top: -14px;
+            left: 40px;
+            background-color: #58A6FF;
+            color: #0D1117;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .definition-title {
+            color: #FFFFFF;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 24px 0;
+            line-height: 1.2;
+        }
+
+        .definition-text {
+            color: #C9D1D9;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 0 30px 0;
+        }
+
+        .key-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .action-tag {
+            background-color: rgba(56, 139, 253, 0.1);
+            color: #58A6FF;
+            border: 1px solid rgba(56, 139, 253, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Arrow connector */
+        .connector-arrow {
+            position: absolute;
+            top: 50%;
+            left: 48%;
+            transform: translate(-50%, -50%);
+            color: #58A6FF;
+            font-size: 40px;
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">¿Qué problema resuelve un CVS?</h1>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<div class="bg-pattern"></div>
+<!-- Left Column: Problems -->
+<div class="col-left">
+<div class="section-header">
+<i class="fas fa-exclamation-triangle"></i>
+<h2>Problemas Comunes sin CVS</h2>
+</div>
+<div class="problems-list">
+<!-- Problem 1 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-history"></i></div>
+<div class="problem-content">
+<h3>Pérdida del Historial</h3>
+<p>Sin registro estructurado, no se sabe qué cambió, quién lo hizo ni cuándo ocurrió.</p>
+</div>
+</div>
+<!-- Problem 2 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-file-signature"></i></div>
+<div class="problem-content">
+<h3>Sobrescritura de Trabajo</h3>
+<p>Los cambios de una persona pueden borrar accidentalmente el trabajo de otra.</p>
+</div>
+</div>
+<!-- Problem 3 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-undo-alt"></i></div>
+<div class="problem-content">
+<h3>Imposibilidad de Deshacer</h3>
+<p>No existe una forma segura y rápida de volver a un estado anterior tras un error.</p>
+</div>
+</div>
+<!-- Problem 4 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-users-slash"></i></div>
+<div class="problem-content">
+<h3>Desorden en la Colaboración</h3>
+<p>No existe una "versión oficial" clara para coordinarse (final_v1.zip, final_final.zip).</p>
+</div>
+</div>
+<!-- Problem 5 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-random"></i></div>
+<div class="problem-content">
+<h3>Falta de Trabajo Paralelo</h3>
+<p>No se pueden probar ideas nuevas sin afectar el código estable del proyecto.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector Arrow -->
+<div class="connector-arrow">
+<i class="fas fa-chevron-right"></i>
+</div>
+<!-- Right Column: Definition -->
+<div class="col-right">
+<div class="definition-box">
+<div class="definition-label">DEFINICIÓN</div>
+<h2 class="definition-title">Sistema de Control de Versiones (CVS)</h2>
+<p class="definition-text">
+                        Es un conjunto de principios y métodos que permiten <strong style="color: #FFFFFF;">registrar</strong>, <strong style="color: #FFFFFF;">organizar</strong> y <strong style="color: #FFFFFF;">recuperar</strong> los cambios realizados sobre uno o varios archivos a lo largo del tiempo.
+                    </p>
+<div class="key-actions">
+<div class="action-tag"><i class="fas fa-save"></i> Registrar</div>
+<div class="action-tag"><i class="fas fa-folder-tree"></i> Organizar</div>
+<div class="action-tag"><i class="fas fa-clock"></i> Recuperar</div>
+</div>
+</div>
+<div style="margin-top: 24px; background: rgba(35, 134, 54, 0.1); border: 1px solid #238636; border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+<i class="fas fa-lightbulb" style="color: #2EA44F; font-size: 20px;"></i>
+<p style="margin: 0; font-size: 14px; color: #C9D1D9;">
+<strong>Analogía:</strong> Imagina un "punto de guardado" en un videojuego al que puedes volver en cualquier momento si algo sale mal.
+                    </p>
+</div>
+</div>
+<!-- Footer info -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</div>
+</body>
+</html>

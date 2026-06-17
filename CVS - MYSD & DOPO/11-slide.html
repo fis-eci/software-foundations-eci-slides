@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S3: Comandos Básicos (Parte 1)</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 70px; /* Reduced from 80px */
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15); /* Green */
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 22px; /* Slightly reduced */
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px 40px; /* Reduced padding */
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Reduced gap from 25px */
+            justify-content: center; /* Center vertically */
+        }
+
+        /* Command Blocks */
+        .command-section {
+            display: flex;
+            gap: 15px; /* Reduced gap */
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 15px 20px; /* Compact padding */
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .command-section:hover {
+            border-color: #58A6FF;
+            transform: translateX(5px);
+        }
+
+        .section-icon {
+            width: 42px; /* Reduced from 50px */
+            height: 42px; /* Reduced from 50px */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px; /* Reduced from 24px */
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .icon-config { background-color: rgba(210, 153, 34, 0.15); color: #D29922; border: 1px solid rgba(210, 153, 34, 0.3); }
+        .icon-init { background-color: rgba(46, 164, 79, 0.15); color: #2EA44F; border: 1px solid rgba(46, 164, 79, 0.3); }
+        .icon-clone { background-color: rgba(88, 166, 255, 0.15); color: #58A6FF; border: 1px solid rgba(88, 166, 255, 0.3); }
+
+        .section-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px; /* Reduced margin */
+        }
+
+        .section-title {
+            color: #FFFFFF;
+            font-size: 16px; /* Reduced from 18px */
+            font-weight: 700;
+        }
+
+        .section-tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            text-transform: uppercase;
+        }
+
+        .section-desc {
+            color: #8B949E;
+            font-size: 13px; /* Reduced from 14px */
+            line-height: 1.4;
+            margin: 0 0 8px 0; /* Reduced margin */
+        }
+
+        .code-block {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 8px 12px; /* Compact padding */
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px; /* Reduced from 13px */
+            color: #C9D1D9;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: block;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        
+        .code-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .code-comment {
+            color: #8B949E;
+            display: block;
+            margin-bottom: 2px;
+            font-style: italic;
+            font-size: 11px;
+        }
+
+        .cmd-prompt { color: #8B949E; margin-right: 8px; user-select: none; }
+        .cmd-command { color: #58A6FF; font-weight: 700; }
+        .cmd-param { color: #79C0FF; }
+        .cmd-string { color: #A5D6FF; }
+        .cmd-flag { color: #D29922; }
+
+        /* Parameter Explanation Box */
+        .param-box {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(48, 54, 61, 0.5);
+            display: flex;
+            gap: 12px;
+        }
+
+        .param-item {
+            font-size: 11px; /* Reduced size */
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .param-key {
+            font-family: 'Roboto Mono', monospace;
+            color: #D29922;
+            background-color: rgba(210, 153, 34, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 720px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-96731" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S3: COMANDOS BÁSICOS (1/2)</span>
+<h1 class="header-title">Configuración e Inicio</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="command-section">
+<div class="section-icon icon-config">
+<i class="fas fa-user-cog"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">1. Configurar Identidad</span>
+<span class="section-tag">Obligatorio</span>
+</div>
+<p class="section-desc">
+                        Antes de empezar, debes decirle a Git quién eres. Esto es vital para que tus cambios en GitHub aparezcan con tu nombre y foto correctos. Se hace <strong>una sola vez</strong> por computador.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Configura tu nombre completo real</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> config <span class="cmd-flag">--global</span> user.name <span class="cmd-string">"Andersson David Sánchez Méndez"</span></span>
+<span class="code-comment"># Configura tu correo institucional</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> config <span class="cmd-flag">--global</span> user.email <span class="cmd-string">"andersson.sanchez-m@mail.escuelaing.edu.co"</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">--global</span> Aplica para todos tus proyectos en este PC</div>
+</div>
+</div>
+</div>
+
+<div class="command-section">
+<div class="section-icon icon-init">
+<i class="fas fa-folder-plus"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">2. Iniciar Repositorio (Local)</span>
+<span class="section-tag">Opción A</span>
+</div>
+<p class="section-desc">
+                        Úsalo cuando empiezas un proyecto <strong>desde cero</strong> en tu computador y quieres activar el control de versiones en esa carpeta. Crea la carpeta oculta <code>.git</code>.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Transforma la carpeta actual en un repositorio Git</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> init</span>
+</div>
+<div class="param-box">
+<div class="param-item">Nota: Ejecutar dentro de la carpeta del proyecto</div>
+</div>
+</div>
+</div>
+
+<div class="command-section">
+<div class="section-icon icon-clone">
+<i class="fas fa-clone"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">3. Clonar Repositorio (Remoto)</span>
+<span class="section-tag">Opción B</span>
+</div>
+<p class="section-desc">
+                        Úsalo para descargar un proyecto que <strong>ya existe en GitHub</strong>. Copia todo el historial y configura automáticamente la conexión remota (origin).
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Descarga una copia completa desde GitHub</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> clone <span class="cmd-string">https://github.com/usuario/proyecto.git</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">&lt;url&gt;</span> Dirección HTTPS del repositorio en GitHub</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(-1.81729px, 5.45188px);"></div>
+<span style="position: relative; transform: translate(0px, 5.45188px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>

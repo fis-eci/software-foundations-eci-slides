@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Referencias y Recursos</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(163, 113, 247, 0.15); /* Purple */
+            color: #A371F7;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(163, 113, 247, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 30px 40px;
+            z-index: 10;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Left Column: Resources Grid */
+        .resources-grid {
+            flex: 1.3;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-color);
+            opacity: 0.8;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            background-color: rgba(255,255,255,0.05);
+            color: var(--accent-color);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #8B949E;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+
+        /* Right Column: Gitignore Block */
+        .technical-col {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tech-box {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tech-header {
+            background-color: #161B22;
+            padding: 12px 15px;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tech-title {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #C9D1D9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-title i { color: #D29922; }
+
+        .tech-badge {
+            font-size: 10px;
+            background-color: rgba(210, 153, 34, 0.15);
+            color: #D29922;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(210, 153, 34, 0.3);
+        }
+
+        .tech-content {
+            padding: 20px;
+            flex: 1;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #C9D1D9;
+            line-height: 1.6;
+        }
+
+        .code-comment { color: #8B949E; font-style: italic; }
+        .code-pattern { color: #A5D6FF; }
+        .code-wildcard { color: #F85149; }
+        .code-folder { color: #D29922; }
+
+        .explanation-box {
+            background-color: rgba(56, 139, 253, 0.1);
+            border-top: 1px solid rgba(56, 139, 253, 0.2);
+            padding: 15px;
+        }
+
+        .exp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: #8B949E;
+            margin-bottom: 8px;
+        }
+        
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-icon { color: #58A6FF; margin-top: 2px; }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 771px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-659459" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">RECURSOS</span>
+<h1 class="header-title">Referencias y Material de Estudio</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="resources-grid">
+
+<a class="resource-card" href="https://learngitbranching.js.org/" style="--accent-color: #A371F7;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-gamepad"></i>
+</div>
+<div class="card-title">Learn Git Branching</div>
+</div>
+<div class="card-desc">
+<p>La mejor herramienta interactiva y visual para entender el árbol de commits, ramas, merge y rebase. ¡Aprende jugando!</p>
+</div>
+<div class="card-link">
+                        Visitar Sitio <i class="fas fa-external-link-alt"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://www.youtube.com/results?search_query=midudev+pull+request" style="--accent-color: #F85149;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fab fa-youtube"></i>
+</div>
+<div class="card-title">Midudev: Pull Request</div>
+</div>
+<div class="card-desc">
+<p>Video tutorial dinámico que explica cómo hacer tu primera contribución y Pull Request de manera clara y rápida.</p>
+</div>
+<div class="card-link">
+                        Ver en YouTube <i class="fas fa-play"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://www.youtube.com/watch?v=HiXLkL42tMU" style="--accent-color: #2EA44F;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-graduation-cap"></i>
+</div>
+<div class="card-title">Curso freeCodeCamp</div>
+</div>
+<div class="card-desc">
+<p>Curso completo en español. Recomendado revisar los capítulos sobre "Resolución de Conflictos" y "Ramas".</p>
+</div>
+<div class="card-link">
+                        Ver Curso <i class="fas fa-video"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://git-scm.com/doc" style="--accent-color: #58A6FF;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-book"></i>
+</div>
+<div class="card-title">Documentación Oficial</div>
+</div>
+<div class="card-desc">
+<p>La referencia técnica definitiva. Acceso al libro "Pro Git" gratuito y manuales detallados de todos los comandos.</p>
+</div>
+<div class="card-link">
+                        Leer Docs <i class="fas fa-external-link-alt"></i>
+</div>
+</a>
+</div>
+
+<div class="technical-col">
+<div class="tech-box">
+<div class="tech-header">
+<div class="tech-title">
+<i class="fas fa-file-code"></i>
+                            .gitignore
+                        </div>
+<div class="tech-badge">BUENA PRÁCTICA</div>
+</div>
+<div class="tech-content">
+<div>
+<p><span class="code-comment"># Ignorar binarios compilados (Java)</span><br>
+<span class="code-wildcard">*</span><span class="code-pattern">.class</span><br>
+<span class="code-wildcard">*</span><span class="code-pattern">.jar</span></p>
+<br>
+<p><span class="code-comment"># Ignorar configuraciones de IDE</span><br>
+<span class="code-folder">.vscode/</span><br>
+<span class="code-folder">.idea/</span><br>
+<span class="code-folder">*.swp</span></p>
+<br>
+<p><span class="code-comment"># Ignorar dependencias descargadas</span><br>
+<span class="code-folder">node_modules/</span><br>
+<span class="code-folder">target/</span></p>
+<br>
+<p><span class="code-comment"># Ignorar archivos del sistema</span><br>
+<span class="code-pattern">.DS_Store</span></p>
+</div>
+</div>
+<div class="explanation-box">
+<div class="exp-item">
+<i class="fas fa-info-circle exp-icon"></i>
+<p><strong>¿Por qué usarlo?</strong> Evita subir archivos basura, binarios pesados o configuraciones locales que no sirven a tus compañeros.</p>
+</div>
+<div class="exp-item">
+<i class="fas fa-asterisk exp-icon"></i>
+<p><strong>Patrones:</strong> El asterisco (*) selecciona cualquier nombre. La barra (/) indica directorios.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(0.908647px, 7.26917px);"></div>
+<span style="position: relative; transform: translate(0px, 4.54323px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>

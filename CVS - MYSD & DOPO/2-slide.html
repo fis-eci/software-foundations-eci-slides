@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>Propósito y Objetivos de Aprendizaje</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+        
+        /* Grid background effect (Using PNG pattern instead of gradient to avoid export issues if possible, but keeping simple solid lines for now) */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 0;
+            opacity: 0.2;
+            /* Simple border trick for grid */
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #30363D 1px, transparent 1px),
+                linear-gradient(to bottom, #30363D 1px, transparent 1px);
+        }
+
+        /* Header styling */
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 20;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            color: #2EA44F;
+        }
+
+        /* Main content layout */
+        .main-container {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: 640px;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        /* Left column: Purpose & Context */
+        .left-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Right column: Learning Outcomes */
+        .right-col {
+            flex: 1.2;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #58A6FF;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .purpose-box {
+            background-color: rgba(46, 164, 79, 0.1);
+            border-left: 4px solid #2EA44F;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .purpose-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #FFFFFF;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .context-card {
+            background-color: #21262D;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .context-icon {
+            font-size: 24px;
+            color: #A371F7;
+            margin-bottom: 4px;
+        }
+
+        .context-title {
+            font-size: 14px;
+            color: #8B949E;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .context-value {
+            font-size: 16px;
+            color: #C9D1D9;
+            font-weight: 500;
+        }
+
+        /* Learning outcomes list */
+        .outcome-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .outcome-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            background-color: rgba(13, 17, 23, 0.5);
+            border: 1px solid transparent;
+        }
+        
+        /* Removed hover to avoid export issues */
+        .outcome-item {
+            border-color: #30363D;
+        }
+
+        .outcome-number {
+            background-color: #1F6FEB;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-family: 'Roboto Mono', monospace;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .outcome-content h4 {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .outcome-content p {
+            color: #8B949E;
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Decoration */
+        .decoration-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: rgba(88, 166, 255, 0.05);
+            bottom: -50px;
+            right: -50px;
+            z-index: 0;
+        }
+
+        .methodology-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(210, 153, 34, 0.15);
+            color: #D29922;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            margin-top: 12px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Background Grid -->
+<div class="grid-lines"></div>
+<!-- Header -->
+<div class="header-bar">
+<div class="header-title">
+<i class="fas fa-bullseye header-icon"></i>
+<span>Propósito y Objetivos</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-container">
+<!-- Left Column -->
+<div class="left-col">
+<!-- Purpose Section -->
+<div>
+<div class="section-title">
+<i class="fas fa-compass"></i> Propósito Educativo
+                </div>
+<div class="purpose-box">
+<p class="purpose-text">
+                        Introducir los fundamentos teóricos y prácticos del control de versiones para que los estudiantes de MYSD y DOPO puedan colaborar eficientemente en proyectos de programación por pares.
+                    </p>
+</div>
+</div>
+<!-- Context Section -->
+<div style="margin-top: 20px;">
+<div class="section-title">
+<i class="fas fa-layer-group"></i> Contexto
+                </div>
+<div class="context-grid">
+<!-- Pedagogical Context -->
+<div class="context-card">
+<i class="fas fa-university context-icon"></i>
+<p class="context-title">Pedagógico</p>
+<p class="context-value">Cursos MYSD y DOPO</p>
+<div class="methodology-tag">
+<i class="fas fa-bolt"></i> Aprendizaje Activo
+                        </div>
+</div>
+<!-- Technological Context -->
+<div class="context-card">
+<i class="fas fa-laptop-code context-icon" style="color: #2EA44F;"></i>
+<p class="context-title">Tecnológico</p>
+<p class="context-value">Git (Local) <br/> GitHub (Remoto)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="right-col">
+<div class="decoration-circle"></div>
+<div class="section-title" style="margin-bottom: 30px; border-bottom: 1px solid #30363D; padding-bottom: 15px;">
+<i class="fas fa-tasks"></i> Resultados de Aprendizaje
+            </div>
+<div class="outcome-list">
+<!-- Outcome 1 -->
+<div class="outcome-item">
+<div class="outcome-number">1</div>
+<div class="outcome-content">
+<h4>Comprende Conceptos (S1)</h4>
+<p>Identifica los problemas que resuelve un CVS, su estructura de grafo y los componentes principales (local vs remoto).</p>
+</div>
+</div>
+<!-- Outcome 2 -->
+<div class="outcome-item">
+<div class="outcome-number">2</div>
+<div class="outcome-content">
+<h4>Aplica Buenas Prácticas (S2)</h4>
+<p>Implementa estrategias de colaboración efectiva en proyectos por pares, manteniendo un historial limpio y ordenado.</p>
+</div>
+</div>
+<!-- Outcome 3 -->
+<div class="outcome-item">
+<div class="outcome-number">3</div>
+<div class="outcome-content">
+<h4>Utiliza Herramientas (S3)</h4>
+<p>Ejecuta comandos de Git para gestionar versiones, ramas y sincronización con repositorios remotos.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,6104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Versiones — MYSD & DOPO</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Stage: the area above the nav bar where the slide lives */
+    #stage {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 52px;
+      overflow: hidden;
+    }
+
+    /* The iframe is positioned absolutely and scaled via JS transform */
+    #slide-frame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1280px;
+      height: 720px;
+      border: none;
+      display: block;
+      transform-origin: top left;
+      /* transform is set dynamically by scaleSlide() */
+    }
+
+    /* Progress bar sits just above the nav bar */
+    #progress-wrap {
+      position: fixed;
+      bottom: 52px; left: 0; right: 0;
+      height: 3px;
+      background: #21262d;
+      z-index: 9998;
+    }
+    #progress-bar {
+      height: 100%;
+      background: #58a6ff;
+      transition: width 0.2s ease;
+    }
+
+    /* Navigation bar */
+    #nav-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13, 17, 23, 0.97);
+      border-top: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      z-index: 9999;
+    }
+
+    .nbtn {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 5px 13px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .nbtn:hover  { background: #30363d; }
+    .nbtn:disabled { opacity: 0.3; cursor: default; }
+
+    #counter {
+      color: #8b949e;
+      font-size: 13px;
+      flex-shrink: 0;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    #slide-title {
+      color: #c9d1d9;
+      font-size: 13px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #jump-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    #jump-label { color: #8b949e; font-size: 12px; }
+    #jump-input {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 13px;
+      width: 48px;
+      text-align: center;
+    }
+    #jump-input:focus { outline: none; border-color: #58a6ff; }
+
+    #btn-fs {
+      background: transparent;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #btn-fs:hover { color: #c9d1d9; background: #21262d; }
+
+    .hint { color: #484f58; font-size: 11px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <iframe id="slide-frame" srcdoc=""></iframe>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <div id="nav-bar">
+    <button class="nbtn" id="btn-prev">&#9664; Anterior</button>
+    <span id="counter">1 / 16</span>
+    <span id="slide-title">Control de Versiones — MYSD & DOPO</span>
+    <div id="jump-wrap">
+      <span id="jump-label">Ir a:</span>
+      <input id="jump-input" type="number" min="1" max="16" value="1">
+    </div>
+    <button class="nbtn" id="btn-next">Siguiente &#9654;</button>
+    <button id="btn-fs" title="Pantalla completa (F)">&#x26F6;</button>
+    <span class="hint">&#8592; &#8594; &nbsp;Espacio</span>
+  </div>
+
+  <script>
+    var SLIDES = [
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Control de Versiones para Proyectos Colaborativos</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+        
+        /* Grid background effect */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Tech glow effects - using box-shadow instead of gradients */
+        .glow-green {
+            box-shadow: 0 0 60px 20px rgba(46, 164, 79, 0.15);
+            border-radius: 50%;
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -50px;
+            z-index: 0;
+        }
+        
+        .glow-blue {
+            box-shadow: 0 0 80px 30px rgba(0, 102, 255, 0.15);
+            border-radius: 50%;
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            left: -100px;
+            z-index: 0;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 80px;
+        }
+
+        .badge {
+            background-color: rgba(56, 139, 253, 0.15);
+            color: #58A6FF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #8B949E;
+            margin-bottom: 40px;
+            max-width: 900px;
+            line-height: 1.5;
+        }
+
+        .highlight-green {
+            color: #2EA44F;
+            font-weight: 700;
+        }
+        
+        .highlight-blue {
+            color: #58A6FF;
+            font-weight: 700;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .info-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 320px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        /* Removed hover transform to avoid animation issues in export */
+        .info-card {
+            border-color: #58A6FF;
+        }
+
+        .info-card i {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #FFFFFF;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: #8B949E;
+            margin: 0;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #238636;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .author-info {
+            text-align: left;
+        }
+
+        .author-name {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .author-role {
+            color: #8B949E;
+            font-size: 12px;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        /* Bottom decorative bar */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            display: flex;
+        }
+        
+        .bar-green { flex: 1; background-color: #2EA44F; }
+        .bar-blue { flex: 1; background-color: #58A6FF; }
+        .bar-purple { flex: 1; background-color: #A371F7; }
+
+        .tech-icons {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 120px;
+            z-index: 1;
+        }
+        
+        .icon-git { top: 100px; left: 100px; transform: rotate(-15deg); }
+        .icon-code { bottom: 120px; right: 100px; transform: rotate(15deg); }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1330px !important; height: 870px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-857754" spellcheck="false" data-gramm="false">
+<div class="grid-bg"></div>
+<div class="glow-green"></div>
+<div class="glow-blue"></div>
+<i class="fab fa-git-alt tech-icons icon-git"></i>
+<i class="fas fa-code-branch tech-icons icon-code"></i>
+<div class="content-container">
+<div class="badge">
+<p><i class="fas fa-cube mr-2"></i>&nbsp;UNIDAD DE APRENDIZAJE • NIVEL INTRODUCTORIO</p>
+</div>
+<h1>Control de Versiones para<br><span class="highlight-blue">Proyectos Colaborativos</span></h1>
+<div class="subtitle">
+<p>Guía fundamental para estudiantes de <span class="highlight-green">MYSD</span> (Modelos y Servicios de Datos) &amp; <span class="highlight-blue">DOPO</span> (Desarrollo Orientado por Objetos)</p>
+</div>
+<div class="card-container">
+<div class="info-card" style="border-top: 4px solid #2EA44F;">
+<i class="fas fa-book-reader" style="color: #2EA44F;"></i>
+<h3>S1: Teoría</h3>
+<p>Conceptos y Estructura</p>
+</div>
+<div class="info-card" style="border-top: 4px solid #A371F7;">
+<i class="fas fa-check-circle" style="color: #A371F7;"></i>
+<h3>S2: Buenas Prácticas</h3>
+<p>Colaboración por Pares</p>
+</div>
+<div class="info-card" style="border-top: 4px solid #58A6FF;">
+<i class="fab fa-git-alt" style="color: #58A6FF;"></i>
+<h3>S3: Herramienta</h3>
+<p>Git &amp; GitHub</p>
+</div>
+</div>
+<div class="author-box" style="position: relative; transform: translate(3.63459px, -29.9854px);">
+<div class="author-avatar">A</div>
+<div class="author-info">
+<p class="author-name">Andersson David Sánchez Méndez</p>
+<p class="author-role">Autor • Monitor MYSD &amp; DOPO</p>
+</div>
+</div>
+</div>
+<div class="bottom-bar">
+<div class="bar-green"></div>
+<div class="bar-purple"></div>
+<div class="bar-blue"></div>
+</div>
+
+</body></html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>Propósito y Objetivos de Aprendizaje</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+        
+        /* Grid background effect (Using PNG pattern instead of gradient to avoid export issues if possible, but keeping simple solid lines for now) */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 0;
+            opacity: 0.2;
+            /* Simple border trick for grid */
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #30363D 1px, transparent 1px),
+                linear-gradient(to bottom, #30363D 1px, transparent 1px);
+        }
+
+        /* Header styling */
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 20;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            color: #2EA44F;
+        }
+
+        /* Main content layout */
+        .main-container {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: 640px;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        /* Left column: Purpose & Context */
+        .left-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Right column: Learning Outcomes */
+        .right-col {
+            flex: 1.2;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #58A6FF;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .purpose-box {
+            background-color: rgba(46, 164, 79, 0.1);
+            border-left: 4px solid #2EA44F;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .purpose-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #FFFFFF;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .context-card {
+            background-color: #21262D;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .context-icon {
+            font-size: 24px;
+            color: #A371F7;
+            margin-bottom: 4px;
+        }
+
+        .context-title {
+            font-size: 14px;
+            color: #8B949E;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .context-value {
+            font-size: 16px;
+            color: #C9D1D9;
+            font-weight: 500;
+        }
+
+        /* Learning outcomes list */
+        .outcome-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .outcome-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            background-color: rgba(13, 17, 23, 0.5);
+            border: 1px solid transparent;
+        }
+        
+        /* Removed hover to avoid export issues */
+        .outcome-item {
+            border-color: #30363D;
+        }
+
+        .outcome-number {
+            background-color: #1F6FEB;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-family: 'Roboto Mono', monospace;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .outcome-content h4 {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .outcome-content p {
+            color: #8B949E;
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Decoration */
+        .decoration-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: rgba(88, 166, 255, 0.05);
+            bottom: -50px;
+            right: -50px;
+            z-index: 0;
+        }
+
+        .methodology-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(210, 153, 34, 0.15);
+            color: #D29922;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            margin-top: 12px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Background Grid -->
+<div class="grid-lines"></div>
+<!-- Header -->
+<div class="header-bar">
+<div class="header-title">
+<i class="fas fa-bullseye header-icon"></i>
+<span>Propósito y Objetivos</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-container">
+<!-- Left Column -->
+<div class="left-col">
+<!-- Purpose Section -->
+<div>
+<div class="section-title">
+<i class="fas fa-compass"></i> Propósito Educativo
+                </div>
+<div class="purpose-box">
+<p class="purpose-text">
+                        Introducir los fundamentos teóricos y prácticos del control de versiones para que los estudiantes de MYSD y DOPO puedan colaborar eficientemente en proyectos de programación por pares.
+                    </p>
+</div>
+</div>
+<!-- Context Section -->
+<div style="margin-top: 20px;">
+<div class="section-title">
+<i class="fas fa-layer-group"></i> Contexto
+                </div>
+<div class="context-grid">
+<!-- Pedagogical Context -->
+<div class="context-card">
+<i class="fas fa-university context-icon"></i>
+<p class="context-title">Pedagógico</p>
+<p class="context-value">Cursos MYSD y DOPO</p>
+<div class="methodology-tag">
+<i class="fas fa-bolt"></i> Aprendizaje Activo
+                        </div>
+</div>
+<!-- Technological Context -->
+<div class="context-card">
+<i class="fas fa-laptop-code context-icon" style="color: #2EA44F;"></i>
+<p class="context-title">Tecnológico</p>
+<p class="context-value">Git (Local) <br/> GitHub (Remoto)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="right-col">
+<div class="decoration-circle"></div>
+<div class="section-title" style="margin-bottom: 30px; border-bottom: 1px solid #30363D; padding-bottom: 15px;">
+<i class="fas fa-tasks"></i> Resultados de Aprendizaje
+            </div>
+<div class="outcome-list">
+<!-- Outcome 1 -->
+<div class="outcome-item">
+<div class="outcome-number">1</div>
+<div class="outcome-content">
+<h4>Comprende Conceptos (S1)</h4>
+<p>Identifica los problemas que resuelve un CVS, su estructura de grafo y los componentes principales (local vs remoto).</p>
+</div>
+</div>
+<!-- Outcome 2 -->
+<div class="outcome-item">
+<div class="outcome-number">2</div>
+<div class="outcome-content">
+<h4>Aplica Buenas Prácticas (S2)</h4>
+<p>Implementa estrategias de colaboración efectiva en proyectos por pares, manteniendo un historial limpio y ordenado.</p>
+</div>
+</div>
+<!-- Outcome 3 -->
+<div class="outcome-item">
+<div class="outcome-number">3</div>
+<div class="outcome-content">
+<h4>Utiliza Herramientas (S3)</h4>
+<p>Ejecuta comandos de Git para gestionar versiones, ramas y sincronización con repositorios remotos.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Teoría - Problemas que Resuelve un CVS</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Container setup */
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Header styling */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main content layout */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#30363D 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Left Column: Problems */
+        .col-left {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            color: #FF7B72; /* GitHub Red for problems */
+        }
+
+        .section-header i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .problem-card {
+            display: flex;
+            align-items: flex-start;
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid #FF7B72;
+            transition: transform 0.2s;
+        }
+
+        .problem-icon {
+            color: #FF7B72;
+            font-size: 20px;
+            margin-right: 16px;
+            margin-top: 2px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .problem-content h3 {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .problem-content p {
+            color: #8B949E;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Definition */
+        .col-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .definition-box {
+            background-color: #161B22;
+            border: 1px solid #58A6FF;
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .definition-label {
+            position: absolute;
+            top: -14px;
+            left: 40px;
+            background-color: #58A6FF;
+            color: #0D1117;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .definition-title {
+            color: #FFFFFF;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 24px 0;
+            line-height: 1.2;
+        }
+
+        .definition-text {
+            color: #C9D1D9;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 0 30px 0;
+        }
+
+        .key-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .action-tag {
+            background-color: rgba(56, 139, 253, 0.1);
+            color: #58A6FF;
+            border: 1px solid rgba(56, 139, 253, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Arrow connector */
+        .connector-arrow {
+            position: absolute;
+            top: 50%;
+            left: 48%;
+            transform: translate(-50%, -50%);
+            color: #58A6FF;
+            font-size: 40px;
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">¿Qué problema resuelve un CVS?</h1>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<div class="bg-pattern"></div>
+<!-- Left Column: Problems -->
+<div class="col-left">
+<div class="section-header">
+<i class="fas fa-exclamation-triangle"></i>
+<h2>Problemas Comunes sin CVS</h2>
+</div>
+<div class="problems-list">
+<!-- Problem 1 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-history"></i></div>
+<div class="problem-content">
+<h3>Pérdida del Historial</h3>
+<p>Sin registro estructurado, no se sabe qué cambió, quién lo hizo ni cuándo ocurrió.</p>
+</div>
+</div>
+<!-- Problem 2 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-file-signature"></i></div>
+<div class="problem-content">
+<h3>Sobrescritura de Trabajo</h3>
+<p>Los cambios de una persona pueden borrar accidentalmente el trabajo de otra.</p>
+</div>
+</div>
+<!-- Problem 3 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-undo-alt"></i></div>
+<div class="problem-content">
+<h3>Imposibilidad de Deshacer</h3>
+<p>No existe una forma segura y rápida de volver a un estado anterior tras un error.</p>
+</div>
+</div>
+<!-- Problem 4 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-users-slash"></i></div>
+<div class="problem-content">
+<h3>Desorden en la Colaboración</h3>
+<p>No existe una "versión oficial" clara para coordinarse (final_v1.zip, final_final.zip).</p>
+</div>
+</div>
+<!-- Problem 5 -->
+<div class="problem-card">
+<div class="problem-icon"><i class="fas fa-random"></i></div>
+<div class="problem-content">
+<h3>Falta de Trabajo Paralelo</h3>
+<p>No se pueden probar ideas nuevas sin afectar el código estable del proyecto.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector Arrow -->
+<div class="connector-arrow">
+<i class="fas fa-chevron-right"></i>
+</div>
+<!-- Right Column: Definition -->
+<div class="col-right">
+<div class="definition-box">
+<div class="definition-label">DEFINICIÓN</div>
+<h2 class="definition-title">Sistema de Control de Versiones (CVS)</h2>
+<p class="definition-text">
+                        Es un conjunto de principios y métodos que permiten <strong style="color: #FFFFFF;">registrar</strong>, <strong style="color: #FFFFFF;">organizar</strong> y <strong style="color: #FFFFFF;">recuperar</strong> los cambios realizados sobre uno o varios archivos a lo largo del tiempo.
+                    </p>
+<div class="key-actions">
+<div class="action-tag"><i class="fas fa-save"></i> Registrar</div>
+<div class="action-tag"><i class="fas fa-folder-tree"></i> Organizar</div>
+<div class="action-tag"><i class="fas fa-clock"></i> Recuperar</div>
+</div>
+</div>
+<div style="margin-top: 24px; background: rgba(35, 134, 54, 0.1); border: 1px solid #238636; border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+<i class="fas fa-lightbulb" style="color: #2EA44F; font-size: 20px;"></i>
+<p style="margin: 0; font-size: 14px; color: #C9D1D9;">
+<strong>Analogía:</strong> Imagina un "punto de guardado" en un videojuego al que puedes volver en cualquier momento si algo sale mal.
+                    </p>
+</div>
+</div>
+<!-- Footer info -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S1: Estructura de Control - DAG</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px;
+            gap: 40px;
+            z-index: 10;
+            height: calc(720px - 80px);
+        }
+
+        /* Left Column: Theory & Definitions */
+        .theory-col {
+            flex: 0 0 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .concept-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #58A6FF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #8B949E;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .term-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .term-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(13, 17, 23, 0.6);
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 12px 15px;
+        }
+
+        .term-name {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: #A371F7; /* Purple for terms */
+            font-size: 14px;
+            width: 130px;
+            flex-shrink: 0;
+        }
+
+        .term-desc {
+            font-size: 13px;
+            color: #C9D1D9;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Visual Diagram */
+        .visual-col {
+            flex: 1;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .diagram-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161B22;
+        }
+
+        .diagram-label {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #8B949E;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-family: 'Roboto Mono', monospace;
+            color: #8B949E;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* SVG Graph Container */
+        .svg-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG Styles */
+        svg {
+            width: 100%;
+            height: 100%;
+            max-height: 480px;
+        }
+        
+        .path-main {
+            fill: none;
+            stroke: #2EA44F;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .path-branch {
+            fill: none;
+            stroke: #58A6FF;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 8, 4; /* Solid looks better, but let's try solid */
+            stroke-dasharray: 0; 
+        }
+
+        .commit-circle {
+            fill: #0D1117;
+            stroke-width: 3;
+            r: 10;
+            transition: r 0.3s ease;
+        }
+
+        .commit-circle:hover {
+            r: 14;
+            cursor: pointer;
+        }
+
+        .commit-main { stroke: #2EA44F; }
+        .commit-branch { stroke: #58A6FF; }
+        .commit-merge { stroke: #A371F7; }
+
+        /* Annotations/Tooltips positioned absolutely over SVG */
+        .annotation {
+            position: absolute;
+            background-color: rgba(22, 27, 34, 0.95);
+            border: 1px solid #30363D;
+            border-left: 3px solid;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #C9D1D9;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            pointer-events: none;
+            max-width: 180px;
+            z-index: 20;
+        }
+
+        .annotation strong {
+            display: block;
+            margin-bottom: 2px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+        }
+
+        .line-connector {
+            position: absolute;
+            background-color: #30363D;
+            width: 1px;
+            z-index: 5;
+        }
+
+        .dag-note {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(13, 17, 23, 0.8);
+            border-top: 1px solid #30363D;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .dag-note i {
+            color: #E3B341; /* Warning yellow */
+            margin-top: 3px;
+        }
+
+        .dag-note p {
+            margin: 0;
+            font-size: 12px;
+            color: #8B949E;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 720px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-891540" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Estructura de Control</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="theory-col">
+<div class="concept-card">
+<div class="card-title">
+<i class="fas fa-project-diagram"></i>
+<p style="margin:0;">Grafo Dirigido Acíclico (DAG)</p>
+</div>
+<p class="card-text">
+                        El historial de Git no es una línea recta simple, sino un árbol que crece en una sola dirección (el tiempo).
+                    </p>
+<div style="margin-top: 15px; padding-left: 15px; border-left: 2px solid #30363D;">
+<p class="card-text" style="font-size: 13px; margin-bottom: 5px;">• <strong>Vértices:</strong> Son las versiones (puntos en la historia).</p>
+<p class="card-text" style="font-size: 13px;">• <strong>Arcos:</strong> Indican evolución (quién es el padre de quién).</p>
+</div>
+</div>
+<div class="concept-card" style="border-left-color: #2EA44F;">
+<div class="card-title">
+<i class="fas fa-code-branch" style="color: #2EA44F;"></i>
+<p style="margin:0;">Tronco y Ramas</p>
+</div>
+<p class="card-text" style="margin-bottom: 8px;">
+<strong style="color: #2EA44F;">Tronco (Main):</strong> Eje central y estable del proyecto. Es la "verdad oficial".
+                    </p>
+<p class="card-text">
+<strong style="color: #58A6FF;">Ramas:</strong> Líneas paralelas para experimentar sin romper lo estable.
+                    </p>
+</div>
+
+<div class="term-box">
+<div class="term-item">
+<span class="term-name">Versión (Commit)</span>
+<p class="term-desc">Estado completo del proyecto en un momento dado (inmutable).</p>
+</div>
+<div class="term-item">
+<span class="term-name">Rama (Branch)</span>
+<p class="term-desc">Línea de desarrollo independiente (puntero móvil).</p>
+</div>
+</div>
+</div>
+
+<div class="visual-col">
+<div class="diagram-header">
+<span class="diagram-label">Modelo Visual del Historial</span>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background:#2EA44F;"></div>main</div>
+<div class="legend-item"><div class="legend-dot" style="background:#58A6FF;"></div>rama</div>
+<div class="legend-item"><div class="legend-dot" style="background:#A371F7;"></div>merge</div>
+</div>
+</div>
+<div class="svg-container">
+
+<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 400">
+
+<defs>
+<marker id="arrow-green" markerHeight="6" markerWidth="6" orient="auto" refX="18" refY="3">
+<path d="M0,0 L6,3 L0,6 L0,0" fill="#2EA44F"></path>
+</marker>
+<marker id="arrow-blue" markerHeight="6" markerWidth="6" orient="auto" refX="18" refY="3">
+<path d="M0,0 L6,3 L0,6 L0,0" fill="#58A6FF"></path>
+</marker>
+</defs>
+
+
+<path class="path-main" d="M 50 300 L 750 300" marker-end="url(#arrow-green)"></path>
+
+
+<path class="path-branch" d="M 250 300 C 290 300, 290 150, 330 150 L 470 150 C 510 150, 510 300, 550 300" marker-mid="url(#arrow-blue)"></path>
+
+
+<circle class="commit-circle commit-main" cx="50" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="150" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="250" cy="300"></circle> 
+<circle class="commit-circle commit-main" cx="650" cy="300"></circle>
+<circle class="commit-circle commit-main" cx="750" cy="300"></circle>
+
+<circle class="commit-circle commit-branch" cx="350" cy="150"></circle>
+<circle class="commit-circle commit-branch" cx="450" cy="150"></circle>
+
+<circle class="commit-circle commit-merge" cx="550" cy="300"></circle>
+
+<text fill="#2EA44F" font-family="Roboto Mono" font-size="14" font-weight="bold" x="660" y="330">main</text>
+<text fill="#58A6FF" font-family="Roboto Mono" font-size="14" font-weight="bold" x="360" y="130">rama-experimento</text>
+</svg>
+
+
+<div class="annotation" style="left: 30px; top: 330px; border-left-color: #2EA44F;">
+<strong>Versión Inicial</strong>
+                    Punto de partida
+                </div>
+
+<div class="line-connector" style="left: 50px; top: 310px; height: 20px;"></div>
+
+<div class="annotation" style="left: 200px; top: 330px; border-left-color: #58A6FF;">
+<strong>Crear Rama</strong>
+                    Nace línea paralela
+                </div>
+<div class="line-connector" style="left: 250px; top: 310px; height: 20px;"></div>
+
+<div class="annotation" style="left: 380px; top: 180px; border-left-color: #58A6FF;">
+<strong>Desarrollo</strong>
+                    Commits aislados
+                </div>
+<div class="line-connector" style="left: 450px; top: 160px; height: 20px;"></div>
+
+<div class="annotation" style="left: 500px; top: 330px; border-left-color: #A371F7;">
+<strong>Fusión (Merge)</strong>
+                    Unir historias
+                </div>
+<div class="line-connector" style="left: 550px; top: 310px; height: 20px;"></div>
+</div>
+
+<div class="dag-note">
+<i class="fas fa-lightbulb"></i>
+<p><strong>Nota Pedagógica:</strong> Una versión creada NUNCA se modifica. El historial siempre avanza. Cuando "borras" algo en Git, en realidad estás creando una <em>nueva</em> versión donde eso ya no existe, pero el pasado permanece intacto.</p>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(0px, 7.26917px);"></div>
+<span style="position: relative; transform: translate(2.72594px, 7.26917px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Componentes de CVS</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px 100px 40px; /* Added bottom padding to make space for footer note */
+            gap: 40px;
+            z-index: 10;
+            align-items: stretch;
+            position: relative;
+        }
+
+        /* Component Cards */
+        .component-card {
+            flex: 1;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .component-card.local {
+            border-top: 6px solid #2EA44F; /* GitHub Green */
+        }
+
+        .component-card.remote {
+            border-top: 6px solid #58A6FF; /* GitHub Blue */
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            background-color: #0D1117;
+            border: 2px solid #30363D;
+        }
+
+        .local .icon-wrapper {
+            box-shadow: 0 0 30px rgba(46, 164, 79, 0.2);
+            border-color: #2EA44F;
+        }
+
+        .remote .icon-wrapper {
+            box-shadow: 0 0 30px rgba(88, 166, 255, 0.2);
+            border-color: #58A6FF;
+        }
+
+        .card-icon {
+            font-size: 40px;
+        }
+
+        .local .card-icon { color: #2EA44F; }
+        .remote .card-icon { color: #58A6FF; }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .card-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            background-color: rgba(13, 17, 23, 0.5);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .feature-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: rgba(13, 17, 23, 0.3);
+        }
+
+        .feature-icon {
+            margin-top: 3px;
+            font-size: 14px;
+            min-width: 16px;
+        }
+
+        .local .feature-icon { color: #2EA44F; }
+        .remote .feature-icon { color: #58A6FF; }
+
+        .feature-text {
+            font-size: 14px;
+            color: #C9D1D9;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Pedagogical Note */
+        .pedagogical-note {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(31, 111, 235, 0.1);
+            border: 1px solid #1F6FEB;
+            border-radius: 50px;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: auto;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 20;
+            white-space: nowrap;
+        }
+
+        .note-icon {
+            background-color: #1F6FEB;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .note-content p {
+            margin: 0;
+            color: #C9D1D9;
+            font-size: 14px;
+        }
+
+        .highlight-text {
+            color: #58A6FF;
+            font-weight: 700;
+        }
+
+        /* Connector Arrow */
+        .connector {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #8B949E;
+            font-size: 32px;
+            gap: 8px;
+            opacity: 0.6;
+            margin-bottom: 40px;
+        }
+
+        .connector-label {
+            font-size: 11px;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Componentes de un CVS</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Local Repository Card -->
+<div class="component-card local">
+<div class="icon-wrapper">
+<i class="fas fa-laptop-code card-icon"></i>
+</div>
+<h2 class="card-title">Repositorio Local</h2>
+<div class="card-subtitle">Tu Computador</div>
+<div class="feature-list">
+<div class="feature-item">
+<i class="fas fa-user-lock feature-icon"></i>
+<p class="feature-text"><strong>Espacio Privado:</strong> Solo tú puedes ver y modificar los archivos aquí.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-vial feature-icon"></i>
+<p class="feature-text"><strong>Experimentación:</strong> Puedes probar cambios sin miedo a romper el proyecto de los demás.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-history feature-icon"></i>
+<p class="feature-text"><strong>Historial Completo:</strong> Tienes una copia de todas las versiones en tu máquina.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-bolt feature-icon"></i>
+<p class="feature-text"><strong>Velocidad:</strong> Todo ocurre instantáneamente sin necesitar internet.</p>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="connector">
+<span class="connector-label">Sincronización</span>
+<i class="fas fa-exchange-alt"></i>
+</div>
+<!-- Remote Repository Card -->
+<div class="component-card remote">
+<div class="icon-wrapper">
+<i class="fas fa-cloud card-icon"></i>
+</div>
+<h2 class="card-title">Repositorio Remoto</h2>
+<div class="card-subtitle">La Nube (GitHub)</div>
+<div class="feature-list">
+<div class="feature-item">
+<i class="fas fa-users feature-icon"></i>
+<p class="feature-text"><strong>Espacio Compartido:</strong> Punto de encuentro para todo el equipo.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-shield-alt feature-icon"></i>
+<p class="feature-text"><strong>Verdad Oficial:</strong> Contiene la versión "estable" y consolidada del proyecto.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-server feature-icon"></i>
+<p class="feature-text"><strong>Respaldo:</strong> Protege el código si tu computador se daña.</p>
+</div>
+<div class="feature-item">
+<i class="fas fa-code-branch feature-icon"></i>
+<p class="feature-text"><strong>Colaboración:</strong> Permite revisar (Pull Request) y fusionar el trabajo de otros.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Pedagogical Note -->
+<div class="pedagogical-note">
+<div class="note-icon">
+<i class="fas fa-graduation-cap"></i>
+</div>
+<div class="note-content">
+<p><strong>Ruta de Aprendizaje:</strong> Primero domina el <span class="highlight-text" style="color: #2EA44F;">Repositorio Local</span> antes de sincronizar con el <span class="highlight-text">Repositorio Remoto</span>.</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Acciones Básicas en el Repositorio Local</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 30px 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Actions Grid */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            height: 420px;
+        }
+
+        .action-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .action-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .action-title {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .action-desc {
+            color: #8B949E;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* Color variants for actions */
+        .variant-green .action-icon { background-color: rgba(46, 164, 79, 0.15); color: #2EA44F; border: 1px solid rgba(46, 164, 79, 0.3); }
+        .variant-green { border-left: 4px solid #2EA44F; }
+
+        .variant-blue .action-icon { background-color: rgba(88, 166, 255, 0.15); color: #58A6FF; border: 1px solid rgba(88, 166, 255, 0.3); }
+        .variant-blue { border-left: 4px solid #58A6FF; }
+
+        .variant-purple .action-icon { background-color: rgba(163, 113, 247, 0.15); color: #A371F7; border: 1px solid rgba(163, 113, 247, 0.3); }
+        .variant-purple { border-left: 4px solid #A371F7; }
+
+        .variant-red .action-icon { background-color: rgba(248, 81, 73, 0.15); color: #F85149; border: 1px solid rgba(248, 81, 73, 0.3); }
+        .variant-red { border-left: 4px solid #F85149; }
+
+        .variant-yellow .action-icon { background-color: rgba(210, 153, 34, 0.15); color: #D29922; border: 1px solid rgba(210, 153, 34, 0.3); }
+        .variant-yellow { border-left: 4px solid #D29922; }
+
+        .command-preview {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #C9D1D9;
+            background-color: #0D1117;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 12px;
+            border: 1px solid #30363D;
+            display: flex;
+            align-items: center;
+        }
+
+        .command-preview::before {
+            content: "$";
+            color: #8B949E;
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
+        /* Conflict Section */
+        .conflict-box {
+            background-color: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            border-radius: 8px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .conflict-icon {
+            font-size: 32px;
+            color: #F85149;
+        }
+
+        .conflict-content h3 {
+            color: #F85149;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .conflict-content p {
+            color: #C9D1D9;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .conflict-marker {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #F85149;
+            background-color: #0D1117;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #30363D;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Acciones Básicas en el Repositorio Local</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Actions Grid -->
+<div class="actions-grid">
+<!-- Action 1: Crear Repositorio -->
+<div class="action-card variant-green">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-folder-plus"></i></div>
+<div class="action-title">Crear Repositorio</div>
+</div>
+<p class="action-desc">
+                    Establece el historial inicial. Transforma una carpeta común en un proyecto con control de versiones.
+                </p>
+<div class="command-preview">git init</div>
+</div>
+<!-- Action 2: Crear Versiones -->
+<div class="action-card variant-blue">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-save"></i></div>
+<div class="action-title">Crear Versiones (Commit)</div>
+</div>
+<p class="action-desc">
+                    Guarda una foto exacta del proyecto en ese instante. Agrega un nuevo vértice al historial.
+                </p>
+<div class="command-preview">git commit -m "mensaje"</div>
+</div>
+<!-- Action 3: Crear Ramas -->
+<div class="action-card variant-purple">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-code-branch"></i></div>
+<div class="action-title">Crear Ramas</div>
+</div>
+<p class="action-desc">
+                    Abre una línea de desarrollo paralela para trabajar sin afectar el código principal.
+                </p>
+<div class="command-preview">git branch nombre-rama</div>
+</div>
+<!-- Action 4: Ubicar Versión -->
+<div class="action-card variant-yellow">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-map-marker-alt"></i></div>
+<div class="action-title">Ubicar Versión (Checkout)</div>
+</div>
+<p class="action-desc">
+                    Te mueve a través del historial. Puedes saltar entre ramas o volver a versiones pasadas.
+                </p>
+<div class="command-preview">git checkout nombre-rama</div>
+</div>
+<!-- Action 5: Fusionar Líneas -->
+<div class="action-card variant-purple">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-compress-arrows-alt"></i></div>
+<div class="action-title">Fusionar Líneas (Merge)</div>
+</div>
+<p class="action-desc">
+                    Combina dos historias paralelas. Une los cambios de una rama secundaria hacia la principal.
+                </p>
+<div class="command-preview">git merge rama-a-unir</div>
+</div>
+<!-- Action 6: Revertir Estado -->
+<div class="action-card variant-red">
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-undo"></i></div>
+<div class="action-title">Revertir Estado</div>
+</div>
+<p class="action-desc">
+                    Deshace cambios o elimina versiones erróneas. Útil para corregir errores graves.
+                </p>
+<div class="command-preview">git reset / git revert</div>
+</div>
+</div>
+<!-- Conflict Section -->
+<div class="conflict-box">
+<div class="conflict-icon">
+<i class="fas fa-exclamation-triangle"></i>
+</div>
+<div class="conflict-content">
+<h3>Manejo de Conflictos</h3>
+<p>
+                    Ocurre cuando dos personas modifican <strong>la misma línea del mismo archivo</strong> de forma diferente. El sistema no sabe con cuál quedarse y pide ayuda manual.
+                </p>
+</div>
+<div class="conflict-marker">
+                &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+            </div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S1: Acciones Locales y Remotas</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(88, 166, 255, 0.15); /* Blue for Remote */
+            color: #58A6FF;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(88, 166, 255, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 30px 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Actions Grid */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            height: 420px;
+        }
+
+        .action-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .section-label {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            text-transform: uppercase;
+        }
+
+        .action-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            margin-top: 5px;
+            gap: 12px;
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .action-title {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .action-desc {
+            color: #8B949E;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* Color variants for actions */
+        .variant-green .action-icon { background-color: rgba(46, 164, 79, 0.15); color: #2EA44F; border: 1px solid rgba(46, 164, 79, 0.3); }
+        .variant-green { border-left: 4px solid #2EA44F; }
+
+        .variant-blue .action-icon { background-color: rgba(88, 166, 255, 0.15); color: #58A6FF; border: 1px solid rgba(88, 166, 255, 0.3); }
+        .variant-blue { border-left: 4px solid #58A6FF; }
+
+        .variant-purple .action-icon { background-color: rgba(163, 113, 247, 0.15); color: #A371F7; border: 1px solid rgba(163, 113, 247, 0.3); }
+        .variant-purple { border-left: 4px solid #A371F7; }
+        
+        .variant-orange .action-icon { background-color: rgba(210, 153, 34, 0.15); color: #D29922; border: 1px solid rgba(210, 153, 34, 0.3); }
+        .variant-orange { border-left: 4px solid #D29922; }
+
+        .command-preview {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #C9D1D9;
+            background-color: #0D1117;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 12px;
+            border: 1px solid #30363D;
+            display: flex;
+            align-items: center;
+        }
+
+        .command-preview::before {
+            content: "$";
+            color: #8B949E;
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
+        /* Conflict Section */
+        .conflict-box {
+            background-color: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            border-radius: 8px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .conflict-icon {
+            font-size: 32px;
+            color: #F85149;
+        }
+
+        .conflict-content h3 {
+            color: #F85149;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .conflict-content p {
+            color: #C9D1D9;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .conflict-marker {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #F85149;
+            background-color: #0D1117;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #30363D;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S1: TEORÍA</span>
+<h1 class="header-title">Acciones Locales ⇄ Remotas</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Actions Grid -->
+<div class="actions-grid">
+<!-- Action 1: De Local a Remoto - Publicar -->
+<div class="action-card variant-green">
+<span class="section-label">Local → Remoto</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+<div class="action-title">Publicar (Push)</div>
+</div>
+<p class="action-desc">
+                    Envía tus versiones y ramas al servidor. Hace visible tu trabajo para los demás.
+                </p>
+<div class="command-preview">git push origin rama</div>
+</div>
+<!-- Action 2: De Local a Remoto - Proponer -->
+<div class="action-card variant-green">
+<span class="section-label">Local → Remoto</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-code-pull-request"></i></div>
+<div class="action-title">Proponer (Pull Request)</div>
+</div>
+<p class="action-desc">
+                    Solicitas que tus cambios se unan al tronco principal. Permite la revisión por pares.
+                </p>
+<div class="command-preview">Interfaz Web (GitHub)</div>
+</div>
+<!-- Action 3: De Remoto a Local - Transmitir -->
+<div class="action-card variant-blue">
+<span class="section-label">Remoto → Local</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-cloud-download-alt"></i></div>
+<div class="action-title">Transmitir (Fetch/Pull)</div>
+</div>
+<p class="action-desc">
+                    Descarga la evolución oficial del proyecto. Actualiza tu entorno con el trabajo de otros.
+                </p>
+<div class="command-preview">git pull origin main</div>
+</div>
+<!-- Action 4: En Remoto - Combinar -->
+<div class="action-card variant-purple">
+<span class="section-label">En Remoto</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-network-wired"></i></div>
+<div class="action-title">Combinar (Merge)</div>
+</div>
+<p class="action-desc">
+                    Une las contribuciones aprobadas al proyecto unificado. Cierra el ciclo de colaboración.
+                </p>
+<div class="command-preview">Botón "Merge Pull Request"</div>
+</div>
+<!-- Action 5: Sincronización - Fetch -->
+<div class="action-card variant-blue">
+<span class="section-label">Remoto → Local</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-sync-alt"></i></div>
+<div class="action-title">Consultar (Fetch)</div>
+</div>
+<p class="action-desc">
+                    Solo verifica si hay cambios nuevos en el servidor sin descargarlos ni mezclarlos aún.
+                </p>
+<div class="command-preview">git fetch origin</div>
+</div>
+<!-- Action 6: Clonar - Inicio -->
+<div class="action-card variant-orange">
+<span class="section-label">Remoto → Local</span>
+<div class="action-header">
+<div class="action-icon"><i class="fas fa-clone"></i></div>
+<div class="action-title">Clonar (Clone)</div>
+</div>
+<p class="action-desc">
+                    Descarga una copia completa del repositorio remoto por primera vez a tu máquina.
+                </p>
+<div class="command-preview">git clone url-repositorio</div>
+</div>
+</div>
+<!-- Conflict Section -->
+<div class="conflict-box">
+<div class="conflict-icon">
+<i class="fas fa-exclamation-triangle"></i>
+</div>
+<div class="conflict-content">
+<h3>Conflictos de Fusión (Merge Conflicts)</h3>
+<p>
+                    Si Git encuentra cambios contradictorios al traer actualizaciones, marcará el archivo con:
+                </p>
+</div>
+<div class="conflict-marker">
+                &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Mis cambios) vs ======= (Los otros) &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+            </div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S2: Buenas Prácticas para Proyectos por Pares</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(210, 153, 34, 0.15); /* Yellow for Best Practices */
+            color: #D29922;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: flex;
+            height: 640px; /* 720 - 80 */
+            padding: 30px 40px;
+            gap: 30px;
+        }
+
+        /* Left Panel - The Rules Grid */
+        .rules-panel {
+            flex: 1.8;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8B949E;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #30363D;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .practice-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .practice-card:hover {
+            border-color: #58A6FF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .icon-structure { background-color: rgba(56, 139, 253, 0.15); color: #58A6FF; }
+        .icon-rule { background-color: rgba(235, 172, 38, 0.15); color: #D29922; }
+        .icon-sync { background-color: rgba(163, 113, 247, 0.15); color: #A371F7; }
+        .icon-quality { background-color: rgba(35, 134, 54, 0.15); color: #2EA44F; }
+        .icon-history { background-color: rgba(247, 129, 102, 0.15); color: #F78166; }
+
+        .card-tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            background-color: #0D1117;
+        }
+
+        .card-title {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #8B949E;
+            line-height: 1.5;
+        }
+
+        .card-full {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .card-full .card-header {
+            margin-bottom: 0;
+        }
+
+        /* Right Panel - Technical Details */
+        .tech-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #0D1117;
+            border-left: 1px solid #30363D;
+            padding-left: 30px;
+            margin: -30px -40px -30px 0;
+            padding: 30px 40px;
+            background: linear-gradient(90deg, rgba(13,17,23,0) 0%, rgba(22,27,34,0.5) 100%);
+        }
+
+        /* Code Block */
+        .terminal-window {
+            background-color: #090C10;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background-color: #161B22;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background-color: #FF5F56; }
+        .yellow { background-color: #FFBD2E; }
+        .green { background-color: #27C93F; }
+
+        .terminal-body {
+            padding: 16px;
+            color: #C9D1D9;
+        }
+
+        .cmd-line { margin-bottom: 12px; display: block; }
+        .cmd-comment { color: #8B949E; display: block; margin-bottom: 4px; }
+        .cmd-prompt::before { content: "$ "; color: #58A6FF; }
+        
+        .bad-practice { color: #F85149; opacity: 0.8; text-decoration: line-through; }
+        .good-practice { color: #2EA44F; font-weight: 700; }
+
+        /* Anti-Patterns Box */
+        .warning-box {
+            margin-top: auto;
+            background-color: rgba(248, 81, 73, 0.05);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #F85149;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .warning-list p {
+            font-size: 13px;
+            color: #C9D1D9;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .warning-list p::before {
+            content: "\\f05e"; /* fa-ban */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #F85149;
+            font-size: 12px;
+        }
+
+        .gitignore-tip {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #8B949E;
+            background-color: #161B22;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px dashed #30363D;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+        
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 733px !important;"></lt-div></lt-div></lt-highlighter><body style="">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S2: BUENAS PRÁCTICAS</span>
+<h1 class="header-title">Buenas Prácticas para Proyectos por Pares</h1>
+</div>
+
+<div class="content-layout">
+
+<div class="rules-panel">
+<div class="section-title">Reglas de Juego</div>
+<div class="cards-grid">
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-structure"><i class="fas fa-code-branch"></i></div>
+<span class="card-tag">ESTRUCTURA</span>
+</div>
+<h3 class="card-title">Rama por Integrante</h3>
+<p class="card-desc">Crea una rama con tu <strong>Apellido</strong> para aislar tus cambios. Nunca trabajes directo en <code>main</code>.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-rule"><i class="fas fa-shield-alt"></i></div>
+<span class="card-tag">REGLA DE ORO</span>
+</div>
+<h3 class="card-title">Main es Sagrada</h3>
+<p class="card-desc">La rama principal debe tener siempre código estable. Solo se actualiza vía <strong>Pull Request</strong>.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-sync"><i class="fas fa-sync-alt"></i></div>
+<span class="card-tag">SINCRONIZACIÓN</span>
+</div>
+<h3 class="card-title">Pull Frecuente</h3>
+<p class="card-desc">Antes de empezar, haz <code>git pull origin main</code> para evitar conflictos grandes después.</p>
+</div>
+
+<div class="practice-card">
+<div class="card-header">
+<div class="card-icon icon-quality"><i class="fas fa-user-check"></i></div>
+<span class="card-tag">CALIDAD</span>
+</div>
+<h3 class="card-title">Revisión por Pares</h3>
+<p class="card-desc">Todo cambio requiere la aprobación de tu compañero (Reviewer) antes de fusionarse.</p>
+</div>
+
+<div class="practice-card card-full">
+<div style="flex: 1;">
+<div class="card-header">
+<div class="card-icon icon-history"><i class="fas fa-history"></i></div>
+<span class="card-tag">HISTORIAL</span>
+</div>
+<h3 class="card-title">Commits Descriptivos</h3>
+<p class="card-desc">Usa verbos imperativos. Ej: "feat: crear login" en vez de "cambios".</p>
+</div>
+<div style="flex: 1; border-left: 1px solid #30363D; padding-left: 15px;">
+<span style="font-size: 11px; color: #8B949E; display: block; margin-bottom: 5px;">Ejemplo:</span>
+<code style="display: block; font-family: 'Roboto Mono'; font-size: 11px; color: #F85149; margin-bottom: 2px;">❌ "arreglando cosas"</code>
+<code style="display: block; font-family: 'Roboto Mono'; font-size: 11px; color: #2EA44F;">✅ "fix: corregir error en conexión DB"</code>
+</div>
+</div>
+</div>
+</div>
+
+<div class="tech-panel">
+<div class="section-title">En la Práctica</div>
+
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+<span style="margin-left: 8px; color: #8B949E;">bash — flujo ideal</span>
+</div>
+<div class="terminal-body">
+<span class="cmd-comment"># 1. Crear rama personal</span>
+<span class="cmd-line cmd-prompt">git checkout -b <span style="color: #58A6FF;">sanchez-feature</span></span>
+<span class="cmd-comment"># 2. Guardar cambios (semántico)</span>
+<span class="cmd-line cmd-prompt">git add .</span>
+<span class="cmd-line cmd-prompt">git commit -m "<span class="good-practice">feat: implementar login</span>"</span>
+<span class="cmd-comment"># 3. Subir a la nube</span>
+<span class="cmd-line cmd-prompt">git push origin sanchez-feature</span>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="warning-header">
+<i class="fas fa-exclamation-triangle"></i>
+<span>LO QUE NO DEBES SUBIR</span>
+</div>
+<div class="warning-list">
+<p>Archivos compilados (.class, .exe)</p>
+<p>Carpetas IDE (.vscode, .idea)</p>
+<p>Contraseñas o credenciales</p>
+</div>
+<div class="gitignore-tip">
+<i class="fas fa-file-code" style="margin-right: 5px;"></i>
+<span>Usa <strong>.gitignore</strong> para excluir esto automáticamente.</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer" style="transform: translate(-3.63459px, 14.5383px);">
+<div class="footer-dot"></div>
+<span style="position: relative; transform: translate(0.908643px, 0.908651px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: ¿Qué es Git?</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 70px; /* Reduced height */
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(248, 81, 73, 0.15); /* Git Red */
+            color: #F85149;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px 40px 35px 40px; /* Adjusted padding */
+            z-index: 10;
+            display: flex;
+            flex-direction: column; /* Changed to column to stack cards and integration box */
+            gap: 20px;
+        }
+
+        .cards-row {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: center;
+            gap: 40px;
+            flex: 1; /* Allow cards to take available space */
+        }
+
+        /* Comparison Cards */
+        .compare-card {
+            flex: 1;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 24px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            max-width: 480px;
+        }
+
+        .compare-card.concept {
+            border-top: 6px solid #A371F7; /* Purple for Concept */
+        }
+
+        .compare-card.tool {
+            border-top: 6px solid #F05032; /* Git Orange/Red */
+        }
+
+        .icon-wrapper {
+            width: 80px; /* Reduced size */
+            height: 80px; /* Reduced size */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px; /* Reduced margin */
+            background-color: #0D1117;
+            border: 2px solid #30363D;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .concept .icon-wrapper {
+            box-shadow: 0 0 20px rgba(163, 113, 247, 0.2);
+            border-color: #A371F7;
+        }
+
+        .tool .icon-wrapper {
+            box-shadow: 0 0 20px rgba(240, 80, 50, 0.2);
+            border-color: #F05032;
+        }
+
+        .card-icon {
+            font-size: 36px; /* Reduced font size */
+        }
+
+        .concept .card-icon { color: #A371F7; }
+        .tool .card-icon { color: #F05032; }
+
+        .card-title {
+            font-size: 24px; /* Reduced font size */
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .card-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            margin-bottom: 16px; /* Reduced margin */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            background-color: rgba(13, 17, 23, 0.5);
+            padding: 4px 12px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .card-desc-box {
+            background-color: rgba(13, 17, 23, 0.5);
+            border-radius: 8px;
+            padding: 16px; /* Reduced padding */
+            margin-bottom: 16px;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-desc {
+            font-size: 15px; /* Slightly reduced */
+            color: #C9D1D9;
+            margin: 0;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: #8B949E;
+        }
+
+        .concept .tag { border-color: rgba(163, 113, 247, 0.3); color: #A371F7; }
+        .tool .tag { border-color: rgba(240, 80, 50, 0.3); color: #F05032; }
+
+        /* VS Divider */
+        .vs-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            z-index: 20;
+            width: 60px;
+            flex-shrink: 0;
+        }
+
+        .vs-circle {
+            width: 44px;
+            height: 44px;
+            background-color: #161B22;
+            border: 2px solid #30363D;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: #8B949E;
+            font-size: 16px;
+        }
+
+        .arrow-line {
+            width: 2px;
+            height: 100%;
+            background-color: #30363D;
+            position: absolute;
+            z-index: -1;
+        }
+
+        /* Integration Note */
+        .integration-box {
+            /* Removed absolute positioning to prevent overlap */
+            width: 90%;
+            max-width: 960px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 30;
+            align-self: center; /* Center horizontally in column layout */
+            margin-top: auto; /* Push to bottom of flex container */
+        }
+
+        .integration-icon {
+            font-size: 28px;
+            color: #58A6FF; /* Blue accent */
+            background: rgba(88, 166, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .integration-text {
+            flex: 1;
+        }
+
+        .integration-text p {
+            margin: 0;
+            font-size: 14px;
+            color: #C9D1D9;
+            line-height: 1.5;
+        }
+
+        .integration-text strong {
+            color: #FFFFFF;
+        }
+
+        .integration-visuals {
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
+            align-items: center;
+        }
+        
+        .integration-visuals i {
+            transition: transform 0.3s;
+        }
+        
+        .integration-visuals i:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: HERRAMIENTA</span>
+<h1 class="header-title">¿Qué es Git?</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<div class="cards-row">
+<!-- Concept Card -->
+<div class="compare-card concept">
+<div class="icon-wrapper">
+<i class="fas fa-lightbulb card-icon"></i>
+</div>
+<h2 class="card-title">CVS</h2>
+<div class="card-subtitle">El Concepto (Teoría)</div>
+<div class="card-desc-box">
+<p class="card-desc">
+                        Es la <strong>idea abstracta</strong> de registrar cambios, crear versiones y gestionar ramas. Es el "qué" queremos lograr (organización, historial).
+                    </p>
+</div>
+<div class="feature-tags">
+<span class="tag">Filosofía</span>
+<span class="tag">Metodología</span>
+<span class="tag">Estrategia</span>
+</div>
+</div>
+<!-- VS Divider -->
+<div class="vs-divider">
+<div class="arrow-line"></div>
+<div class="vs-circle">VS</div>
+</div>
+<!-- Tool Card -->
+<div class="compare-card tool">
+<div class="icon-wrapper">
+<i class="fab fa-git-alt card-icon"></i>
+</div>
+<h2 class="card-title">Git</h2>
+<div class="card-subtitle">La Herramienta (Práctica)</div>
+<div class="card-desc-box">
+<p class="card-desc">
+                        Es el <strong>software concreto</strong> que instalas en tu computador para implementar CVS. Es el "cómo" lo logramos mediante comandos en terminal.
+                    </p>
+</div>
+<div class="feature-tags">
+<span class="tag">Software</span>
+<span class="tag">Comandos</span>
+<span class="tag">Terminal</span>
+</div>
+</div>
+</div>
+<!-- Integration Note - Now inside the flow -->
+<div class="integration-box">
+<div class="integration-icon">
+<i class="fas fa-network-wired"></i>
+</div>
+<div class="integration-text">
+<p>
+<strong>¿Cómo funciona?</strong> Git trabaja <em>localmente</em> en tu máquina (sin internet) para gestionar tus versiones privadas. Para colaborar, se conecta a <em>plataformas remotas</em> como <strong>GitHub</strong>, que alojan tu código en la nube.
+                </p>
+</div>
+<div class="integration-visuals">
+<i class="fas fa-laptop fa-lg" style="color: #58A6FF;"></i>
+<i class="fas fa-arrow-right" style="color: #30363D;"></i>
+<i class="fab fa-github fa-2x" style="color: #FFFFFF;"></i>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: Esquema Git</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(248, 81, 73, 0.15); /* Git Red */
+            color: #F85149;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 40px 60px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Workflow Diagram Container */
+        .workflow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        /* Connecting Lines */
+        .flow-line {
+            position: absolute;
+            height: 4px;
+            background-color: #30363D;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .line-1 { left: 20%; width: 25%; }
+        .line-2 { left: 55%; width: 25%; }
+
+        /* Areas */
+        .area-card {
+            width: 220px;
+            height: 280px;
+            background-color: #161B22;
+            border: 2px solid #30363D;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            z-index: 5;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .area-card.workspace { border-color: #F05032; } /* Git Orange */
+        .area-card.staging { border-color: #A371F7; } /* Purple */
+        .area-card.local { border-color: #2EA44F; } /* Green */
+        .area-card.remote { border-color: #58A6FF; } /* Blue */
+
+        .area-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #0D1117;
+            border: 2px solid;
+            font-size: 32px;
+        }
+
+        .workspace .area-icon { border-color: #F05032; color: #F05032; box-shadow: 0 0 20px rgba(240, 80, 50, 0.2); }
+        .local .area-icon { border-color: #2EA44F; color: #2EA44F; box-shadow: 0 0 20px rgba(46, 164, 79, 0.2); }
+        .remote .area-icon { border-color: #58A6FF; color: #58A6FF; box-shadow: 0 0 20px rgba(88, 166, 255, 0.2); }
+
+        .area-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .area-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #8B949E;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .file-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .file-item {
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        .workspace .file-item { background-color: #F05032; }
+        .local .file-item { background-color: #2EA44F; }
+        .remote .file-item { background-color: #58A6FF; }
+
+        /* Action Arrows */
+        .action-arrow {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: default;
+            transition: transform 0.2s;
+        }
+        
+        .action-arrow:hover {
+            transform: scale(1.1);
+        }
+
+        .arrow-top { top: 25%; }
+        .arrow-bottom { bottom: 25%; }
+
+        .arrow-1 { left: 28%; }
+        .arrow-2 { left: 63%; }
+
+        .action-label {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            margin-bottom: 5px;
+            white-space: nowrap;
+        }
+        
+        .action-add { color: #F05032; border-color: rgba(240, 80, 50, 0.5); }
+        .action-commit { color: #A371F7; border-color: rgba(163, 113, 247, 0.5); }
+        .action-push { color: #2EA44F; border-color: rgba(46, 164, 79, 0.5); }
+        .action-pull { color: #58A6FF; border-color: rgba(88, 166, 255, 0.5); }
+
+        .arrow-svg {
+            width: 100px;
+            height: 30px;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        /* Command Box (Bottom) */
+        .command-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #161B22;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #30363D;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #C9D1D9;
+        }
+        
+        /* Custom arrow styles */
+        .arrow-right { stroke: #C9D1D9; marker-end: url(#arrowhead); }
+        .arrow-left { stroke: #C9D1D9; marker-end: url(#arrowhead); transform: rotate(180deg); }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: ESQUEMA</span>
+<h1 class="header-title">Flujo de Trabajo en Git</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Workflow Diagram -->
+<div class="workflow-container">
+<!-- Connecting Lines Background -->
+<div class="flow-line line-1"></div>
+<div class="flow-line line-2"></div>
+<!-- Area 1: Workspace -->
+<div class="area-card workspace">
+<div class="area-icon">
+<i class="fas fa-laptop-code"></i>
+</div>
+<h2 class="area-title">Workspace</h2>
+<div class="area-subtitle">Archivos en carpeta</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13px; color: #8B949E; padding: 0 10px;">
+<p>Donde escribes y modificas tu código</p>
+</div>
+<div class="file-stack">
+<div class="file-item"></div>
+<div class="file-item" style="width: 80%"></div>
+<div class="file-item" style="width: 60%"></div>
+</div>
+</div>
+<!-- Arrow 1: Add/Commit -->
+<div class="action-arrow arrow-top arrow-1" style="top: 35%;">
+<div class="action-label action-add">git add .</div>
+<div class="action-label action-commit">git commit</div>
+<svg class="arrow-svg" viewbox="0 0 100 30">
+<defs>
+<marker id="arrowhead-right" markerheight="7" markerunits="strokeWidth" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#C9D1D9" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<line class="arrow-right" marker-end="url(#arrowhead-right)" x1="0" x2="100" y1="15" y2="15"></line>
+</svg>
+</div>
+<!-- Arrow 1 Reverse: Status -->
+<div class="action-arrow arrow-bottom arrow-1" style="bottom: 35%;">
+<svg class="arrow-svg" style="transform: rotate(180deg);" viewbox="0 0 100 30">
+<line class="arrow-right" marker-end="url(#arrowhead-right)" x1="0" x2="100" y1="15" y2="15"></line>
+</svg>
+<div class="action-label" style="color: #8B949E; border-color: #30363D; margin-top: 5px;">git status</div>
+</div>
+<!-- Area 2: Local Repo -->
+<div class="area-card local">
+<div class="area-icon">
+<i class="fas fa-database"></i>
+</div>
+<h2 class="area-title">Repo Local</h2>
+<div class="area-subtitle">.git (Historial)</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13px; color: #8B949E; padding: 0 10px;">
+<p>Donde se guardan tus versiones (commits)</p>
+</div>
+<div class="file-stack">
+<div class="file-item"></div>
+<div class="file-item"></div>
+<div class="file-item"></div>
+</div>
+</div>
+<!-- Arrow 2: Push -->
+<div class="action-arrow arrow-top arrow-2" style="top: 35%;">
+<div class="action-label action-push">git push</div>
+<svg class="arrow-svg" viewbox="0 0 100 30">
+<line class="arrow-right" marker-end="url(#arrowhead-right)" x1="0" x2="100" y1="15" y2="15"></line>
+</svg>
+</div>
+<!-- Arrow 2 Reverse: Pull -->
+<div class="action-arrow arrow-bottom arrow-2" style="bottom: 35%;">
+<svg class="arrow-svg" style="transform: rotate(180deg);" viewbox="0 0 100 30">
+<line class="arrow-right" marker-end="url(#arrowhead-right)" x1="0" x2="100" y1="15" y2="15"></line>
+</svg>
+<div class="action-label action-pull" style="margin-top: 5px;">git pull / fetch</div>
+</div>
+<!-- Area 3: Remote Repo -->
+<div class="area-card remote">
+<div class="area-icon">
+<i class="fab fa-github"></i>
+</div>
+<h2 class="area-title">Repo Remoto</h2>
+<div class="area-subtitle">GitHub / GitLab</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13px; color: #8B949E; padding: 0 10px;">
+<p>Nube compartida con el equipo</p>
+</div>
+<div class="file-stack">
+<div class="file-item"></div>
+<div class="file-item"></div>
+<div class="file-item"></div>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="command-legend">
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #F05032;"></div>
+<div class="legend-text">git add (Preparar)</div>
+</div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #A371F7;"></div>
+<div class="legend-text">git commit (Guardar)</div>
+</div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #2EA44F;"></div>
+<div class="legend-text">git push (Subir)</div>
+</div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: #58A6FF;"></div>
+<div class="legend-text">git pull (Bajar)</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>S3: Comandos Básicos (Parte 1)</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 70px; /* Reduced from 80px */
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15); /* Green */
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 22px; /* Slightly reduced */
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px 40px; /* Reduced padding */
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Reduced gap from 25px */
+            justify-content: center; /* Center vertically */
+        }
+
+        /* Command Blocks */
+        .command-section {
+            display: flex;
+            gap: 15px; /* Reduced gap */
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 15px 20px; /* Compact padding */
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .command-section:hover {
+            border-color: #58A6FF;
+            transform: translateX(5px);
+        }
+
+        .section-icon {
+            width: 42px; /* Reduced from 50px */
+            height: 42px; /* Reduced from 50px */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px; /* Reduced from 24px */
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .icon-config { background-color: rgba(210, 153, 34, 0.15); color: #D29922; border: 1px solid rgba(210, 153, 34, 0.3); }
+        .icon-init { background-color: rgba(46, 164, 79, 0.15); color: #2EA44F; border: 1px solid rgba(46, 164, 79, 0.3); }
+        .icon-clone { background-color: rgba(88, 166, 255, 0.15); color: #58A6FF; border: 1px solid rgba(88, 166, 255, 0.3); }
+
+        .section-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px; /* Reduced margin */
+        }
+
+        .section-title {
+            color: #FFFFFF;
+            font-size: 16px; /* Reduced from 18px */
+            font-weight: 700;
+        }
+
+        .section-tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            text-transform: uppercase;
+        }
+
+        .section-desc {
+            color: #8B949E;
+            font-size: 13px; /* Reduced from 14px */
+            line-height: 1.4;
+            margin: 0 0 8px 0; /* Reduced margin */
+        }
+
+        .code-block {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 8px 12px; /* Compact padding */
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px; /* Reduced from 13px */
+            color: #C9D1D9;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: block;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        
+        .code-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .code-comment {
+            color: #8B949E;
+            display: block;
+            margin-bottom: 2px;
+            font-style: italic;
+            font-size: 11px;
+        }
+
+        .cmd-prompt { color: #8B949E; margin-right: 8px; user-select: none; }
+        .cmd-command { color: #58A6FF; font-weight: 700; }
+        .cmd-param { color: #79C0FF; }
+        .cmd-string { color: #A5D6FF; }
+        .cmd-flag { color: #D29922; }
+
+        /* Parameter Explanation Box */
+        .param-box {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(48, 54, 61, 0.5);
+            display: flex;
+            gap: 12px;
+        }
+
+        .param-item {
+            font-size: 11px; /* Reduced size */
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .param-key {
+            font-family: 'Roboto Mono', monospace;
+            color: #D29922;
+            background-color: rgba(210, 153, 34, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 12px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 720px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-96731" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">S3: COMANDOS BÁSICOS (1/2)</span>
+<h1 class="header-title">Configuración e Inicio</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="command-section">
+<div class="section-icon icon-config">
+<i class="fas fa-user-cog"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">1. Configurar Identidad</span>
+<span class="section-tag">Obligatorio</span>
+</div>
+<p class="section-desc">
+                        Antes de empezar, debes decirle a Git quién eres. Esto es vital para que tus cambios en GitHub aparezcan con tu nombre y foto correctos. Se hace <strong>una sola vez</strong> por computador.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Configura tu nombre completo real</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> config <span class="cmd-flag">--global</span> user.name <span class="cmd-string">"Andersson David Sánchez Méndez"</span></span>
+<span class="code-comment"># Configura tu correo institucional</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> config <span class="cmd-flag">--global</span> user.email <span class="cmd-string">"andersson.sanchez-m@mail.escuelaing.edu.co"</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">--global</span> Aplica para todos tus proyectos en este PC</div>
+</div>
+</div>
+</div>
+
+<div class="command-section">
+<div class="section-icon icon-init">
+<i class="fas fa-folder-plus"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">2. Iniciar Repositorio (Local)</span>
+<span class="section-tag">Opción A</span>
+</div>
+<p class="section-desc">
+                        Úsalo cuando empiezas un proyecto <strong>desde cero</strong> en tu computador y quieres activar el control de versiones en esa carpeta. Crea la carpeta oculta <code>.git</code>.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Transforma la carpeta actual en un repositorio Git</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> init</span>
+</div>
+<div class="param-box">
+<div class="param-item">Nota: Ejecutar dentro de la carpeta del proyecto</div>
+</div>
+</div>
+</div>
+
+<div class="command-section">
+<div class="section-icon icon-clone">
+<i class="fas fa-clone"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">3. Clonar Repositorio (Remoto)</span>
+<span class="section-tag">Opción B</span>
+</div>
+<p class="section-desc">
+                        Úsalo para descargar un proyecto que <strong>ya existe en GitHub</strong>. Copia todo el historial y configura automáticamente la conexión remota (origin).
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Descarga una copia completa desde GitHub</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> clone <span class="cmd-string">https://github.com/usuario/proyecto.git</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">&lt;url&gt;</span> Dirección HTTPS del repositorio en GitHub</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(-1.81729px, 5.45188px);"></div>
+<span style="position: relative; transform: translate(0px, 5.45188px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: Comandos Básicos (Parte 2)</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 70px; /* Reduced header height */
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(46, 164, 79, 0.15); /* Green */
+            color: #2EA44F;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-right: 16px;
+            border: 1px solid rgba(46, 164, 79, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* Main Content - Using Grid for 4 blocks */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px 40px; /* Reduced padding */
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px; /* Reduced gap */
+            /* Ensure content fits within the remaining height */
+            height: calc(720px - 70px - 40px); 
+        }
+
+        /* Command Blocks */
+        .command-section {
+            display: flex;
+            gap: 12px; /* Reduced gap */
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 12px; /* Reduced padding */
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+            overflow: hidden;
+        }
+
+        .command-section:hover {
+            border-color: #58A6FF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .section-icon {
+            width: 40px; /* Reduced size */
+            height: 40px; /* Reduced size */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px; /* Reduced font size */
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .icon-prep { background-color: rgba(88, 166, 255, 0.15); color: #58A6FF; border: 1px solid rgba(88, 166, 255, 0.3); }
+        .icon-save { background-color: rgba(46, 164, 79, 0.15); color: #2EA44F; border: 1px solid rgba(46, 164, 79, 0.3); }
+        .icon-branch { background-color: rgba(163, 113, 247, 0.15); color: #A371F7; border: 1px solid rgba(163, 113, 247, 0.3); } /* Purple */
+        .icon-sync { background-color: rgba(210, 153, 34, 0.15); color: #D29922; border: 1px solid rgba(210, 153, 34, 0.3); } /* Orange */
+
+        .section-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Prevent flex items from overflowing */
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px; /* Reduced margin */
+        }
+
+        .section-title {
+            color: #FFFFFF;
+            font-size: 15px; /* Reduced font size */
+            font-weight: 700;
+        }
+
+        .section-tag {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 9px; /* Reduced font size */
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: #8B949E;
+            text-transform: uppercase;
+        }
+
+        .section-desc {
+            color: #8B949E;
+            font-size: 12px; /* Reduced font size */
+            line-height: 1.3; /* Adjusted line height */
+            margin: 0 0 6px 0; /* Reduced margin */
+            flex-grow: 0;
+        }
+
+        .code-block {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 8px 10px; /* Compact padding */
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px; /* Reduced font size */
+            color: #C9D1D9;
+            position: relative;
+            overflow-x: auto;
+            flex-grow: 1; /* Expand to fill space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .code-line {
+            display: block;
+            margin-bottom: 2px; /* Reduced margin */
+            white-space: nowrap;
+        }
+        
+        .code-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .code-comment {
+            color: #8B949E;
+            display: block;
+            margin-bottom: 1px; /* Reduced margin */
+            font-style: italic;
+            font-size: 10px; /* Reduced font size */
+        }
+
+        .cmd-prompt { color: #8B949E; margin-right: 6px; user-select: none; }
+        .cmd-command { color: #58A6FF; font-weight: 700; }
+        .cmd-param { color: #79C0FF; }
+        .cmd-string { color: #A5D6FF; }
+        .cmd-flag { color: #D29922; }
+
+        /* Parameter Explanation Box */
+        .param-box {
+            margin-top: 6px; /* Reduced margin */
+            padding-top: 4px; /* Reduced padding */
+            border-top: 1px solid rgba(48, 54, 61, 0.5);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px; /* Reduced gap */
+        }
+
+        .param-item {
+            font-size: 10px; /* Reduced font size */
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .param-key {
+            font-family: 'Roboto Mono', monospace;
+            color: #D29922;
+            background-color: rgba(210, 153, 34, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 9px; /* Reduced font size */
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 10px; /* Adjusted bottom position */
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px; /* Reduced size */
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 6px; /* Reduced size */
+            height: 6px; /* Reduced size */
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: COMANDOS BÁSICOS (2/2)</span>
+<h1 class="header-title">Flujo Diario y Ramas</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Block 1: Prepare Changes (Status & Add) -->
+<div class="command-section">
+<div class="section-icon icon-prep">
+<i class="fas fa-list-check"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">1. Preparar Cambios</span>
+<span class="section-tag">Paso 1</span>
+</div>
+<p class="section-desc">
+                        Consulta archivos modificados y agrégalos al "staging" antes de guardarlos.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Ver estado (archivos rojos = sin preparar)</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> status</span>
+<span class="code-comment"># Preparar TODOS los cambios (pasan a verde)</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> add <span class="cmd-param">.</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">.</span> Todo el directorio actual</div>
+</div>
+</div>
+</div>
+<!-- Block 2: Save Version (Commit) -->
+<div class="command-section">
+<div class="section-icon icon-save">
+<i class="fas fa-save"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">2. Guardar Versión</span>
+<span class="section-tag">Paso 2</span>
+</div>
+<p class="section-desc">
+                        Empaqueta lo preparado en una nueva versión. Usa mensajes descriptivos.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Guardar con mensaje explicativo</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> commit <span class="cmd-flag">-m</span> <span class="cmd-string">"feat: crear clase Estudiante"</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">-m</span> Mensaje</div>
+<div class="param-item"><span class="param-key">feat:</span> Funcionalidad</div>
+<div class="param-item"><span class="param-key">fix:</span> Corrección</div>
+</div>
+</div>
+</div>
+<!-- Block 3: Branches -->
+<div class="command-section">
+<div class="section-icon icon-branch">
+<i class="fas fa-code-branch"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">3. Gestión de Ramas</span>
+<span class="section-tag">Aislamiento</span>
+</div>
+<p class="section-desc">
+                        Crea una línea paralela para trabajar sin dañar el código principal.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Crear rama y moverse a ella inmediatamente</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> checkout <span class="cmd-flag">-b</span> <span class="cmd-string">feature/sanchez</span></span>
+<span class="code-comment"># Listar ramas (asterisco * indica la actual)</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> branch</span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">-b</span> Crear + Mover</div>
+<div class="param-item"><span class="param-key">feature/</span> Prefijo recomendado</div>
+</div>
+</div>
+</div>
+<!-- Block 4: Sync (Push & Pull) -->
+<div class="command-section">
+<div class="section-icon icon-sync">
+<i class="fas fa-sync-alt"></i>
+</div>
+<div class="section-content">
+<div class="section-header">
+<span class="section-title">4. Sincronización</span>
+<span class="section-tag">Nube</span>
+</div>
+<p class="section-desc">
+                        Sube tu trabajo a GitHub o descarga lo nuevo frecuentemente.
+                    </p>
+<div class="code-block">
+<span class="code-comment"># Subir tu rama a la nube (GitHub)</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> push <span class="cmd-param">origin</span> <span class="cmd-string">feature/sanchez</span></span>
+<span class="code-comment"># Bajar cambios del equipo (actualizar local)</span>
+<span class="code-line"><span class="cmd-prompt">$</span> <span class="cmd-command">git</span> pull <span class="cmd-param">origin</span> <span class="cmd-string">main</span></span>
+</div>
+<div class="param-box">
+<div class="param-item"><span class="param-key">origin</span> Remoto</div>
+<div class="param-item"><span class="param-key">main</span> Rama estable</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: Demostración - Flujo MYSD</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(56, 139, 253, 0.15); /* Blue */
+            color: #58A6FF;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 25px 40px 30px 40px; /* Reduced bottom padding */
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            height: calc(720px - 80px); /* Explicit height for calculation */
+        }
+
+        /* Left Column: Info & Context */
+        .info-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            justify-content: space-between; /* Distribute space */
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #FFFFFF;
+            font-weight: 700;
+            border-left: 4px solid #58A6FF;
+            padding-left: 12px;
+            margin-bottom: 5px;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background-color: rgba(22, 27, 34, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #30363D;
+        }
+
+        .step-number {
+            background-color: #1F6FEB;
+            color: #FFFFFF;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #E6EDF3;
+            margin-bottom: 2px;
+        }
+
+        .step-content span {
+            font-size: 13px;
+            color: #8B949E;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .code-tag {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #58A6FF;
+        }
+
+        /* Context Box */
+        .context-box {
+            background-color: rgba(46, 164, 79, 0.1);
+            border: 1px solid rgba(46, 164, 79, 0.3);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 20px; /* Space for footer */
+        }
+
+        .context-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: #3FB950;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .context-text {
+            font-size: 13px;
+            color: #C9D1D9;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Right Column: Video Thumbnail */
+        .video-col {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding-bottom: 20px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #30363D;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            display: block;
+            text-decoration: none;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border-color: #58A6FF;
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .video-container:hover .thumbnail-img {
+            opacity: 0.6;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255,0,0,0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(255,0,0,0.4);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .video-container:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: #FF0000;
+        }
+
+        .video-caption {
+            margin-top: 15px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-caption i {
+            color: #FF0000;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: DEMOSTRACIÓN</span>
+<h1 class="header-title">Flujo MYSD: Clone, Init y Conflictos</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Info Column -->
+<div class="info-col">
+<div>
+<h2 class="section-title">En este video verás:</h2>
+<div class="steps-list">
+<div class="step-item">
+<div class="step-number">1</div>
+<div class="step-content">
+<p>Inicio Diferenciado</p>
+<span>Perez usa <span class="code-tag">git clone</span>. Gomez usa <span class="code-tag">git init</span> + <span class="code-tag">git remote add</span>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">2</div>
+<div class="step-content">
+<p>Conflicto en BD (SQL)</p>
+<span>Edición simultánea de <span class="code-tag">esquema.sql</span>. Uno añade tabla <em>Estudiante</em> y otro <em>Profesor</em>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">3</div>
+<div class="step-content">
+<p>Resolución Manual</p>
+<span>Fusión de tablas borrando marcadores <span class="code-tag">&lt;&lt;&lt; HEAD</span> en el editor.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MYSD Context -->
+<div class="context-box">
+<div class="context-header">
+<i class="fas fa-database"></i>
+                        Contexto MYSD
+                    </div>
+<p class="context-text">
+                        Ejemplo práctico con proyecto-clase de Bases de Datos. Uso de terminales <strong>PowerShell</strong> y <strong>CMD</strong> para demostrar flexibilidad en Windows.
+                    </p>
+</div>
+</div>
+<!-- Video Column -->
+<div class="video-col">
+<a class="video-container" href="https://youtu.be/t5W_g_uRRAE" target="_blank">
+<!-- Using YouTube Thumbnail for new video ID t5W_g_uRRAE -->
+<img alt="Video Thumbnail" class="thumbnail-img" src="https://page.gensparksite.com/slides_images/c8c910649bf56ad15d4feca00cc81016.jpg"/>
+<div class="play-button">
+<i class="fas fa-play" style="margin-left: 5px;"></i>
+</div>
+</a>
+<div class="video-caption">
+<i class="fab fa-youtube"></i>
+                    Clic para ver demostración en YouTube (4 min)
+                </div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: Demostración - Flujo DOPO</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(56, 139, 253, 0.15); /* Blue */
+            color: #58A6FF;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 25px 40px 30px 40px; /* Reduced bottom padding */
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            height: calc(720px - 80px); /* Explicit height for calculation */
+        }
+
+        /* Left Column: Info & Context */
+        .info-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            justify-content: space-between; /* Distribute space */
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #FFFFFF;
+            font-weight: 700;
+            border-left: 4px solid #A371F7; /* Purple for DOPO */
+            padding-left: 12px;
+            margin-bottom: 5px;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background-color: rgba(22, 27, 34, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #30363D;
+        }
+
+        .step-number {
+            background-color: #A371F7; /* Purple for DOPO */
+            color: #FFFFFF;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #E6EDF3;
+            margin-bottom: 2px;
+        }
+
+        .step-content span {
+            font-size: 13px;
+            color: #8B949E;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .code-tag {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #A371F7; /* Purple accent */
+        }
+
+        /* Context Box */
+        .context-box {
+            background-color: rgba(163, 113, 247, 0.1); /* Purple tint */
+            border: 1px solid rgba(163, 113, 247, 0.3);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 20px; /* Space for footer */
+        }
+
+        .context-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: #A371F7; /* Purple */
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .context-text {
+            font-size: 13px;
+            color: #C9D1D9;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Right Column: Video Thumbnail */
+        .video-col {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding-bottom: 20px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #30363D;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            display: block;
+            text-decoration: none;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border-color: #A371F7;
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .video-container:hover .thumbnail-img {
+            opacity: 0.6;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255,0,0,0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(255,0,0,0.4);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .video-container:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: #FF0000;
+        }
+
+        .video-caption {
+            margin-top: 15px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-caption i {
+            color: #FF0000;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: DEMOSTRACIÓN</span>
+<h1 class="header-title">Flujo DOPO: Clone, Init y Conflictos Java</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Info Column -->
+<div class="info-col">
+<div>
+<h2 class="section-title">En este video verás:</h2>
+<div class="steps-list">
+<div class="step-item">
+<div class="step-number">1</div>
+<div class="step-content">
+<p>Inicio Diferenciado</p>
+<span>Perez usa <span class="code-tag">git clone</span>. Gomez usa <span class="code-tag">git init</span> + <span class="code-tag">git remote add</span>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">2</div>
+<div class="step-content">
+<p>Conflicto en Java</p>
+<span>Edición simultánea de <span class="code-tag">Sistema.java</span>. Uno añade instancia <em>Vehiculo</em> y otro <em>Usuario</em>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">3</div>
+<div class="step-content">
+<p>Resolución Manual</p>
+<span>Fusión de instancias borrando marcadores <span class="code-tag">&lt;&lt;&lt; HEAD</span> en el editor.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- DOPO Context -->
+<div class="context-box">
+<div class="context-header">
+<i class="fas fa-code-branch"></i>
+                        Contexto DOPO
+                    </div>
+<p class="context-text">
+                        Ejemplo práctico con proyecto-clase de Programación Orientada a Objetos. Uso de terminal <strong>Git Bash</strong> para simular entorno Unix en Windows.
+                    </p>
+</div>
+</div>
+<!-- Video Column -->
+<div class="video-col">
+<a class="video-container" href="https://youtu.be/turysdDQJRI" target="_blank">
+<!-- Using YouTube Thumbnail for new video ID turysdDQJRI -->
+<img alt="Video Thumbnail" class="thumbnail-img" src="https://www.genspark.ai/image_placeholder.png"/>
+<div class="play-button">
+<i class="fas fa-play" style="margin-left: 5px;"></i>
+</div>
+</a>
+<div class="video-caption">
+<i class="fab fa-youtube"></i>
+                    Clic para ver demostración en YouTube (Git Bash)
+                </div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Referencias y Recursos</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(163, 113, 247, 0.15); /* Purple */
+            color: #A371F7;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(163, 113, 247, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 30px 40px;
+            z-index: 10;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Left Column: Resources Grid */
+        .resources-grid {
+            flex: 1.3;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-color);
+            opacity: 0.8;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            background-color: rgba(255,255,255,0.05);
+            color: var(--accent-color);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #8B949E;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+
+        /* Right Column: Gitignore Block */
+        .technical-col {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tech-box {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            border-radius: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tech-header {
+            background-color: #161B22;
+            padding: 12px 15px;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tech-title {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #C9D1D9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-title i { color: #D29922; }
+
+        .tech-badge {
+            font-size: 10px;
+            background-color: rgba(210, 153, 34, 0.15);
+            color: #D29922;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(210, 153, 34, 0.3);
+        }
+
+        .tech-content {
+            padding: 20px;
+            flex: 1;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #C9D1D9;
+            line-height: 1.6;
+        }
+
+        .code-comment { color: #8B949E; font-style: italic; }
+        .code-pattern { color: #A5D6FF; }
+        .code-wildcard { color: #F85149; }
+        .code-folder { color: #D29922; }
+
+        .explanation-box {
+            background-color: rgba(56, 139, 253, 0.1);
+            border-top: 1px solid rgba(56, 139, 253, 0.2);
+            padding: 15px;
+        }
+
+        .exp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: #8B949E;
+            margin-bottom: 8px;
+        }
+        
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-icon { color: #58A6FF; margin-top: 2px; }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 771px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-659459" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">RECURSOS</span>
+<h1 class="header-title">Referencias y Material de Estudio</h1>
+</div>
+
+<div class="content-wrapper">
+
+<div class="resources-grid">
+
+<a class="resource-card" href="https://learngitbranching.js.org/" style="--accent-color: #A371F7;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-gamepad"></i>
+</div>
+<div class="card-title">Learn Git Branching</div>
+</div>
+<div class="card-desc">
+<p>La mejor herramienta interactiva y visual para entender el árbol de commits, ramas, merge y rebase. ¡Aprende jugando!</p>
+</div>
+<div class="card-link">
+                        Visitar Sitio <i class="fas fa-external-link-alt"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://www.youtube.com/results?search_query=midudev+pull+request" style="--accent-color: #F85149;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fab fa-youtube"></i>
+</div>
+<div class="card-title">Midudev: Pull Request</div>
+</div>
+<div class="card-desc">
+<p>Video tutorial dinámico que explica cómo hacer tu primera contribución y Pull Request de manera clara y rápida.</p>
+</div>
+<div class="card-link">
+                        Ver en YouTube <i class="fas fa-play"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://www.youtube.com/watch?v=HiXLkL42tMU" style="--accent-color: #2EA44F;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-graduation-cap"></i>
+</div>
+<div class="card-title">Curso freeCodeCamp</div>
+</div>
+<div class="card-desc">
+<p>Curso completo en español. Recomendado revisar los capítulos sobre "Resolución de Conflictos" y "Ramas".</p>
+</div>
+<div class="card-link">
+                        Ver Curso <i class="fas fa-video"></i>
+</div>
+</a>
+
+<a class="resource-card" href="https://git-scm.com/doc" style="--accent-color: #58A6FF;" target="_blank">
+<div class="card-header">
+<div class="card-icon">
+<i class="fas fa-book"></i>
+</div>
+<div class="card-title">Documentación Oficial</div>
+</div>
+<div class="card-desc">
+<p>La referencia técnica definitiva. Acceso al libro "Pro Git" gratuito y manuales detallados de todos los comandos.</p>
+</div>
+<div class="card-link">
+                        Leer Docs <i class="fas fa-external-link-alt"></i>
+</div>
+</a>
+</div>
+
+<div class="technical-col">
+<div class="tech-box">
+<div class="tech-header">
+<div class="tech-title">
+<i class="fas fa-file-code"></i>
+                            .gitignore
+                        </div>
+<div class="tech-badge">BUENA PRÁCTICA</div>
+</div>
+<div class="tech-content">
+<div>
+<p><span class="code-comment"># Ignorar binarios compilados (Java)</span><br>
+<span class="code-wildcard">*</span><span class="code-pattern">.class</span><br>
+<span class="code-wildcard">*</span><span class="code-pattern">.jar</span></p>
+<br>
+<p><span class="code-comment"># Ignorar configuraciones de IDE</span><br>
+<span class="code-folder">.vscode/</span><br>
+<span class="code-folder">.idea/</span><br>
+<span class="code-folder">*.swp</span></p>
+<br>
+<p><span class="code-comment"># Ignorar dependencias descargadas</span><br>
+<span class="code-folder">node_modules/</span><br>
+<span class="code-folder">target/</span></p>
+<br>
+<p><span class="code-comment"># Ignorar archivos del sistema</span><br>
+<span class="code-pattern">.DS_Store</span></p>
+</div>
+</div>
+<div class="explanation-box">
+<div class="exp-item">
+<i class="fas fa-info-circle exp-icon"></i>
+<p><strong>¿Por qué usarlo?</strong> Evita subir archivos basura, binarios pesados o configuraciones locales que no sirven a tus compañeros.</p>
+</div>
+<div class="exp-item">
+<i class="fas fa-asterisk exp-icon"></i>
+<p><strong>Patrones:</strong> El asterisco (*) selecciona cualquier nombre. La barra (/) indica directorios.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot" style="position: relative; transform: translate(0.908647px, 7.26917px);"></div>
+<span style="position: relative; transform: translate(0px, 4.54323px);">MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>
+`,
+      `<!DOCTYPE html>
+<html lang="es" data-theme="light" style="" data-lt-installed="true"><head><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet" data-editor-preserved="true"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" data-editor-preserved="true">
+
+
+<title>Contacto y Soporte</title>
+
+
+
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(210, 153, 34, 0.15); /* Orange for support */
+            color: #D29922;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(210, 153, 34, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .intro-text {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .intro-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+        }
+
+        .intro-desc {
+            font-size: 18px;
+            color: #8B949E;
+            line-height: 1.5;
+        }
+
+        /* Contact Cards Container */
+        .cards-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            flex: 1;
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .contact-card:hover.github-card {
+            border-color: #C9D1D9;
+        }
+
+        .contact-card:hover.email-card {
+            border-color: #58A6FF;
+        }
+
+        .card-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 36px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .github-icon {
+            background-color: rgba(240, 246, 252, 0.1);
+            color: #F0F6FC;
+            border: 1px solid rgba(240, 246, 252, 0.2);
+        }
+
+        .email-icon {
+            background-color: rgba(88, 166, 255, 0.15);
+            color: #58A6FF;
+            border: 1px solid rgba(88, 166, 255, 0.3);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #8B949E;
+            margin-bottom: 20px;
+            background-color: #0D1117;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #30363D;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-action {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .action-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-size: 15px;
+        }
+
+        .github-btn {
+            background-color: #238636;
+            color: #FFFFFF;
+        }
+        
+        .github-btn:hover {
+            background-color: #2EA44F;
+        }
+
+        .email-btn {
+            background-color: #1F6FEB;
+            color: #FFFFFF;
+        }
+
+        .email-btn:hover {
+            background-color: #388BFD;
+        }
+
+        .card-tip {
+            font-size: 13px;
+            color: #8B949E;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Monitor Badge */
+        .monitor-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(46, 164, 79, 0.15);
+            color: #2EA44F;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: 1px solid rgba(46, 164, 79, 0.3);
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="overflow: hidden !important; width: 1280px !important; height: 720px !important; transform: none !important; transform-origin: 640px 360px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1280px !important; height: 735px !important;"></lt-div></lt-div></lt-highlighter><body style="" data-lt-tmp-id="lt-962901" spellcheck="false" data-gramm="false">
+<div class="slide-container">
+
+<div class="bg-grid"></div>
+
+<div class="header">
+<span class="header-badge">SOPORTE</span>
+<h1 class="header-title">¿Tienes dudas o problemas?</h1>
+</div>
+
+<div class="content-wrapper">
+<div class="intro-text">
+<p class="intro-title">Estamos aquí para ayudarte</p>
+<p class="intro-desc">Si tienes bloqueos con Git, problemas de configuración o dudas sobre el flujo de trabajo, utiliza cualquiera de estos canales oficiales de monitoría.</p>
+</div>
+<div class="cards-container">
+
+<div class="contact-card github-card">
+<div class="monitor-badge">Recomendado</div>
+<div class="card-icon-wrapper github-icon">
+<i class="fab fa-github"></i>
+</div>
+<p class="card-title">GitHub Issues</p>
+<p class="card-subtitle">@fis-eci</p>
+<p class="card-tip">Ideal para reportar errores técnicos. Puedes crear un issue en <strong>cualquier repositorio</strong> del monitor para realizar tus preguntas.</p>
+<div class="card-action">
+<a class="action-btn github-btn" href="https://github.com/AnderssonProgramming" target="_blank">
+<i class="fas fa-code-branch"></i>
+<span>Crear Issue / Revisar Repo</span>
+</a>
+</div>
+</div>
+
+<div class="contact-card email-card">
+<div class="monitor-badge">Oficial</div>
+<div class="card-icon-wrapper email-icon">
+<i class="fas fa-envelope"></i>
+</div>
+<p class="card-title">Correo Institucional</p>
+<p class="card-subtitle" style="font-size: 11px;">fis@escuelaing.edu.co</p>
+<p class="card-tip">Úsalo para dudas administrativas, agendar tutorías o problemas que requieran privacidad.</p>
+<div class="card-action">
+<a class="action-btn email-btn" href="mailto:andersson.sanchez-m@mail.escuelaing.edu.co">
+<i class="fas fa-paper-plane"></i>
+<span>Enviar Correo</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+
+</body></html>
+`
+    ];
+    var TITLES = ["Control de Versiones para Proyectos Colaborativos", "Propósito y Objetivos de Aprendizaje", "S1: Teoría - Problemas que Resuelve un CVS", "S1: Estructura de Control - DAG", "S1: Componentes de CVS", "S1: Acciones Básicas en el Repositorio Local", "S1: Acciones Locales y Remotas", "S2: Buenas Prácticas para Proyectos por Pares", "S3: ¿Qué es Git?", "S3: Esquema Git", "S3: Comandos Básicos (Parte 1)", "S3: Comandos Básicos (Parte 2)", "S3: Demostración - Flujo MYSD", "S3: Demostración - Flujo DOPO", "Referencias y Recursos", "Contacto y Soporte"];
+    var TOTAL  = SLIDES.length;
+    var NAV_H  = 52 + 3; /* nav bar + progress bar */
+
+    var frame    = document.getElementById('slide-frame');
+    var counterEl = document.getElementById('counter');
+    var titleEl  = document.getElementById('slide-title');
+    var progEl   = document.getElementById('progress-bar');
+    var btnPrev  = document.getElementById('btn-prev');
+    var btnNext  = document.getElementById('btn-next');
+    var jumpIn   = document.getElementById('jump-input');
+
+    var cur = 0;
+
+    function scaleSlide() {
+      var stageW = window.innerWidth;
+      var stageH = window.innerHeight - NAV_H;
+      var s      = Math.min(stageW / 1280, stageH / 720);
+      var offX   = (stageW - 1280 * s) / 2;
+      var offY   = (stageH - 720  * s) / 2;
+      frame.style.transform = 'translate(' + offX + 'px, ' + offY + 'px) scale(' + s + ')';
+    }
+
+    function goTo(n) {
+      cur = Math.max(0, Math.min(n, TOTAL - 1));
+      frame.srcdoc    = SLIDES[cur];
+      counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+      titleEl.textContent   = TITLES[cur] || '';
+      progEl.style.width    = ((cur + 1) / TOTAL * 100) + '%';
+      btnPrev.disabled = cur === 0;
+      btnNext.disabled = cur === TOTAL - 1;
+      jumpIn.value     = cur + 1;
+      history.replaceState(null, '', '#' + (cur + 1));
+    }
+
+    btnNext.addEventListener('click', function() { goTo(cur + 1); });
+    btnPrev.addEventListener('click', function() { goTo(cur - 1); });
+
+    jumpIn.addEventListener('change', function() {
+      var n = parseInt(this.value, 10);
+      if (!isNaN(n)) goTo(n - 1);
+    });
+    jumpIn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var n = parseInt(this.value, 10);
+        if (!isNaN(n)) goTo(n - 1);
+        frame.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (document.activeElement === jumpIn) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(cur + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(cur - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault(); goTo(TOTAL - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFs();
+      }
+    });
+
+    document.getElementById('btn-fs').addEventListener('click', toggleFs);
+
+    function toggleFs() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', scaleSlide);
+    window.addEventListener('fullscreenchange', scaleSlide);
+
+    /* Restore slide from URL hash, default to slide 1 */
+    var h = parseInt(location.hash.slice(1), 10);
+    scaleSlide();
+    goTo(isNaN(h) ? 0 : h - 1);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,3071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oracle SQL Developer — MYSD</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Stage: the area above the nav bar where the slide lives */
+    #stage {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 52px;
+      overflow: hidden;
+    }
+
+    /* The iframe is positioned absolutely and scaled via JS transform */
+    #slide-frame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1280px;
+      height: 720px;
+      border: none;
+      display: block;
+      transform-origin: top left;
+      /* transform is set dynamically by scaleSlide() */
+    }
+
+    /* Progress bar sits just above the nav bar */
+    #progress-wrap {
+      position: fixed;
+      bottom: 52px; left: 0; right: 0;
+      height: 3px;
+      background: #21262d;
+      z-index: 9998;
+    }
+    #progress-bar {
+      height: 100%;
+      background: #58a6ff;
+      transition: width 0.2s ease;
+    }
+
+    /* Navigation bar */
+    #nav-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13, 17, 23, 0.97);
+      border-top: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      z-index: 9999;
+    }
+
+    .nbtn {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 5px 13px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .nbtn:hover  { background: #30363d; }
+    .nbtn:disabled { opacity: 0.3; cursor: default; }
+
+    #counter {
+      color: #8b949e;
+      font-size: 13px;
+      flex-shrink: 0;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    #slide-title {
+      color: #c9d1d9;
+      font-size: 13px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #jump-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    #jump-label { color: #8b949e; font-size: 12px; }
+    #jump-input {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 13px;
+      width: 48px;
+      text-align: center;
+    }
+    #jump-input:focus { outline: none; border-color: #58a6ff; }
+
+    #btn-fs {
+      background: transparent;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #btn-fs:hover { color: #c9d1d9; background: #21262d; }
+
+    .hint { color: #484f58; font-size: 11px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <iframe id="slide-frame" srcdoc=""></iframe>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <div id="nav-bar">
+    <button class="nbtn" id="btn-prev">&#9664; Anterior</button>
+    <span id="counter">1 / 9</span>
+    <span id="slide-title">Oracle SQL Developer — MYSD</span>
+    <div id="jump-wrap">
+      <span id="jump-label">Ir a:</span>
+      <input id="jump-input" type="number" min="1" max="9" value="1">
+    </div>
+    <button class="nbtn" id="btn-next">Siguiente &#9654;</button>
+    <button id="btn-fs" title="Pantalla completa (F)">&#x26F6;</button>
+    <span class="hint">&#8592; &#8594; &nbsp;Espacio</span>
+  </div>
+
+  <script>
+    var SLIDES = [
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pruebas Unitarias en Java</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&amp;family=Roboto:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #003366; /* Deep Blue base */
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            position: relative;
+            background-color: #003366; /* Main Background */
+            color: white;
+            overflow: hidden;
+        }
+        
+        /* Left Accent Bar */
+        .left-bar {
+            width: 180px;
+            height: 100%;
+            background-color: #1565c0; /* Lighter Blue */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            box-sizing: border-box;
+            z-index: 10;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+        }
+
+        /* Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 80px;
+            padding-right: 60px;
+            z-index: 5;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 4.8rem;
+            line-height: 1.1;
+            margin: 0 0 20px 0;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .highlight-orange {
+            color: #f89820; /* Java Orange */
+        }
+
+        .subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #e3f2fd;
+            margin: 0 0 40px 0;
+        }
+
+        /* Decorative Elements */
+        .deco-line {
+            width: 150px;
+            height: 8px;
+            background-color: #f89820;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            background-color: #f89820;
+            color: #003366;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        /* Author Section */
+        .author-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: #1565c0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #f89820;
+        }
+
+        .author-info p {
+            margin: 0;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .author-role {
+            font-weight: 300;
+            font-size: 1rem;
+            color: #bbdefb;
+        }
+
+        /* Background Shapes (No Gradients) */
+        .circle-bg {
+            position: absolute;
+            right: -150px;
+            top: -100px;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            border: 60px solid #0d47a1;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .square-bg {
+            position: absolute;
+            bottom: 50px;
+            right: 100px;
+            width: 200px;
+            height: 200px;
+            border: 4px solid #f89820;
+            opacity: 0.1;
+            transform: rotate(15deg);
+            z-index: 1;
+        }
+
+        /* Tech Icons in Sidebar */
+        .icon-box {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            color: white;
+            font-size: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .java-icon { color: #f89820; }
+        .test-icon { color: #81c784; } /* Green for passing tests */
+        .bluej-icon { color: #4fc3f7; }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Sidebar Navigation/Icons -->
+<div class="left-bar">
+<div style="font-size: 2rem; font-weight: bold; color: white;">
+<i class="fas fa-university"></i>
+</div>
+<div class="icon-box">
+<i class="fab fa-java java-icon"></i>
+<i class="fas fa-vial test-icon"></i>
+<i class="fas fa-cube bluej-icon"></i>
+</div>
+<div style="font-size: 1rem; opacity: 0.5;">
+                2026
+            </div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Badge -->
+<div>
+<p class="badge">DOPO</p>
+</div>
+<!-- Title -->
+<h1>
+                Pruebas Unitarias<br/>
+                en <span class="highlight-orange">Java</span> con<br/>
+                JUnit y BlueJ
+            </h1>
+<!-- Decorative Line -->
+<div class="deco-line"></div>
+<!-- Subtitle -->
+<p class="subtitle">Asegurando la calidad en DOPO</p>
+<!-- Author -->
+<div class="author-container">
+<div class="author-avatar">
+<i class="fas fa-user text-white text-xl"></i>
+</div>
+<div class="author-info">
+<p class="author-name">Andersson David Sánchez Méndez</p>
+<p class="author-role">Monitor MYSD &amp; DOPO</p>
+</div>
+</div>
+</div>
+<!-- Background Abstract Elements -->
+<div class="circle-bg"></div>
+<div class="square-bg"></div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>¿Qué y Por Qué?</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&amp;family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: 'Roboto', sans-serif; 
+            background-color: #f0f0f0;
+        }
+        
+        .slide-container { 
+            width: 1280px; 
+            height: 720px; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: white; 
+            position: relative;
+        }
+        
+        /* Header Section */
+        .header {
+            height: 90px; /* Reduced from 110px */
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            border-bottom: 6px solid #f89820; /* Java Orange Accent */
+            z-index: 10;
+        }
+        
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.4rem; /* Reduced from 2.8rem */
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            flex: 1;
+            display: flex;
+            height: calc(720px - 90px - 35px); /* Height minus header and footer */
+        }
+        
+        /* Left Column: What is it? */
+        .col-left {
+            flex: 1;
+            background-color: #1565c0; /* Medium Blue */
+            color: white;
+            padding: 30px 45px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Right Column: Why do it? */
+        .col-right {
+            flex: 1;
+            background-color: #fff3e0; /* Very Light Orange for readability */
+            color: #003366;
+            padding: 30px 45px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Icon Circles */
+        .icon-circle {
+            width: 80px; /* Reduced from 110px */
+            height: 80px; /* Reduced from 110px */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Reduced margin */
+            font-size: 2.5rem; /* Reduced font size */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .icon-left {
+            background-color: white;
+            color: #1565c0;
+            border: 3px solid #90caf9;
+        }
+
+        .icon-right {
+            background-color: #f89820;
+            color: white;
+            border: 3px solid #ffe0b2;
+        }
+
+        /* Titles */
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem; /* Reduced from 2.4rem */
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 25px; /* Reduced from 40px */
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+        }
+
+        .left-title::after { background-color: #90caf9; }
+        .right-title::after { background-color: #f89820; }
+
+        /* Bullet Points */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .bullet-list li {
+            margin-bottom: 20px; /* Reduced from 30px */
+            display: flex;
+            align-items: flex-start;
+            font-size: 1.3rem; /* Reduced from 1.5rem */
+            line-height: 1.3;
+        }
+
+        .bullet-list li i {
+            margin-top: 5px;
+            margin-right: 15px;
+            font-size: 1.1rem;
+            min-width: 25px;
+            text-align: center;
+        }
+        
+        .bullet-list li p {
+            margin: 0;
+        }
+
+        .left-list li i { color: #f89820; } /* Orange bullets on blue */
+        .right-list li i { color: #d84315; } /* Dark orange/red bullets on light orange */
+
+        .highlight {
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            height: 35px; /* Reduced from 40px */
+            background-color: #002244; /* Darker than header */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.85rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<h2>Fundamentos: Pruebas Unitarias</h2>
+</div>
+<!-- Two Column Content -->
+<div class="content-grid">
+<!-- Left Side: Definition -->
+<div class="col-left">
+<div class="icon-circle icon-left">
+<i class="fas fa-search"></i>
+</div>
+<div class="section-title left-title">¿QUÉ ES?</div>
+<ul class="bullet-list left-list">
+<li>
+<i class="fas fa-cube"></i>
+<p><strong>Unidad Mínima:</strong> Evalúa el fragmento más pequeño de código (generalmente un método) de forma aislada.</p>
+</li>
+<li>
+<i class="fas fa-cut"></i>
+<p><strong>Aislamiento Total:</strong> Sin dependencias externas reales (BD, Red, Sistema de archivos).</p>
+</li>
+<li>
+<i class="fas fa-bullseye"></i>
+<p><strong>Foco Específico:</strong> Valida una única lógica o comportamiento concreto.</p>
+</li>
+</ul>
+</div>
+<!-- Right Side: Benefits -->
+<div class="col-right">
+<div class="icon-circle icon-right">
+<i class="fas fa-shield-alt"></i>
+</div>
+<div class="section-title right-title">¿POR QUÉ?</div>
+<ul class="bullet-list right-list">
+<li>
+<i class="fas fa-history"></i>
+<p><strong>Previene Regresiones:</strong> Detecta si cambios recientes rompieron código que ya funcionaba.</p>
+</li>
+<li>
+<i class="fas fa-book-open"></i>
+<p><strong>Documentación Viva:</strong> Los tests explican el comportamiento esperado mejor que un manual.</p>
+</li>
+<li>
+<i class="fas fa-hard-hat"></i>
+<p><strong>Confianza (Refactor):</strong> Permite mejorar la estructura interna sin miedo a romper la funcionalidad.</p>
+</li>
+</ul>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>Monitor MYSD &amp; DOPO</p>
+<p>Java + JUnit + BlueJ</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Introducción a BDD</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f89820; /* Java Orange */
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+            margin-right: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 900px;
+            background-color: #e3f2fd;
+            padding: 20px 30px;
+            border-radius: 12px;
+            border-left: 6px solid #1565c0;
+        }
+
+        .intro-text {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: #003366;
+            margin: 0;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: #d84315;
+        }
+
+        /* BDD Cards Container */
+        .bdd-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            width: 100%;
+            gap: 30px;
+        }
+
+        /* Individual Card */
+        .bdd-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+        }
+
+        .bdd-card-header {
+            padding: 25px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        /* Card Header Colors */
+        .card-given .bdd-card-header { background-color: #1565c0; } /* Blue */
+        .card-when .bdd-card-header { background-color: #f89820; } /* Orange */
+        .card-then .bdd-card-header { background-color: #2e7d32; } /* Green */
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px auto;
+            font-size: 2rem;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+
+        .step-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .step-subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .bdd-card-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .concept-text {
+            font-size: 1.2rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .example-box {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #ccc;
+        }
+
+        .card-given .example-box { border-left-color: #1565c0; background-color: #e3f2fd; }
+        .card-when .example-box { border-left-color: #f89820; background-color: #fff3e0; }
+        .card-then .example-box { border-left-color: #2e7d32; background-color: #e8f5e9; }
+
+        .example-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #777;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .example-code {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Connector Arrows */
+        .arrow-connector {
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            font-size: 2rem;
+            margin-top: -60px; /* Align with headers somewhat */
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<i class="fas fa-users-cog header-icon"></i>
+<h2>Introducción a BDD</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Explanation -->
+<div class="intro-section">
+<p class="intro-text">
+                Behavior-Driven Development (BDD) se enfoca en el <span class="highlight">comportamiento</span> esperado del usuario, no en la implementación técnica. Escribimos pruebas como <span class="highlight">historias</span>.
+            </p>
+</div>
+<!-- 3 Steps Grid -->
+<div class="bdd-container">
+<!-- Step 1: GIVEN -->
+<div class="bdd-card card-given">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-database"></i>
+</div>
+<h3 class="step-title">GIVEN</h3>
+<p class="step-subtitle">(DADO)</p>
+</div>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Define el <strong>contexto inicial</strong> o las precondiciones del sistema antes de la acción.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo Cuenta Bancaria:</span>
+<div class="example-code">Dado una cuenta con saldo $100</div>
+</div>
+</div>
+</div>
+<!-- Arrow -->
+<div class="arrow-connector">
+<i class="fas fa-chevron-right"></i>
+</div>
+<!-- Step 2: WHEN -->
+<div class="bdd-card card-when">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-hand-pointer"></i>
+</div>
+<h3 class="step-title">WHEN</h3>
+<p class="step-subtitle">(CUANDO)</p>
+</div>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Describe la <strong>acción</strong> específica o el evento que dispara el comportamiento.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo:</span>
+<div class="example-code">Cuando deposito $50</div>
+</div>
+</div>
+</div>
+<!-- Arrow -->
+<div class="arrow-connector">
+<i class="fas fa-chevron-right"></i>
+</div>
+<!-- Step 3: THEN -->
+<div class="bdd-card card-then">
+<div class="bdd-card-header">
+<div class="icon-wrapper">
+<i class="fas fa-check-circle"></i>
+</div>
+<h3 class="step-title">THEN</h3>
+<p class="step-subtitle">(ENTONCES)</p>
+</div>
+<div class="bdd-card-body">
+<p class="concept-text">
+                        Verifica el <strong>resultado observable</strong> y asegura que se cumple la expectativa.
+                    </p>
+<div class="example-box">
+<span class="example-label">Ejemplo:</span>
+<div class="example-code">Entonces el saldo debe ser $150</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Modelo Mental: Given / When / Then</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nomenclatura de Métodos</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 6px solid #f89820; /* Java Orange */
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+        }
+
+        .header-subtitle {
+            font-family: 'Fira Code', monospace;
+            color: #bbdefb;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 4px;
+        }
+
+        /* Main Layout */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Top Section: The Pattern */
+        .pattern-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 8px solid #1565c0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .pattern-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #003366;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pattern-part {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .p-should { background-color: #003366; color: white; }
+        .p-var { background-color: #fff; color: #d84315; border: 2px dashed #d84315; }
+        .p-when { background-color: #003366; color: white; }
+        .p-context { background-color: #fff; color: #2e7d32; border: 2px dashed #2e7d32; }
+
+        /* Code Examples Area */
+        .examples-grid {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .code-card {
+            flex: 1;
+            background-color: #1e1e1e; /* VS Code Dark */
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .code-header {
+            background-color: #2d2d2d;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+        }
+
+        .file-tab {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .java-icon-small { color: #f89820; }
+
+        .code-body {
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+            overflow-y: hidden;
+        }
+
+        /* Syntax Highlighting */
+        .kwd { color: #569cd6; } /* Keywords: public, void */
+        .anno { color: #dcdcaa; } /* Annotations: @Test */
+        .cls { color: #4ec9b0; } /* Classes */
+        .func { color: #dcdcaa; } /* Methods */
+        .str { color: #ce9178; } /* Strings */
+        .num { color: #b5cea8; } /* Numbers */
+        .com { color: #6a9955; font-style: italic; } /* Comments */
+        .op { color: #d4d4d4; } /* Operators */
+
+        /* Labels for code blocks */
+        .case-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom-left-radius: 12px;
+            color: white;
+            z-index: 5;
+        }
+
+        .label-nominal { background-color: #2e7d32; }
+        .label-error { background-color: #c62828; }
+
+        /* Bottom Note */
+        .note-box {
+            background-color: #fff3e0;
+            border-left: 6px solid #f89820;
+            padding: 15px 25px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .note-icon {
+            font-size: 2rem;
+            color: #ef6c00;
+        }
+
+        .note-content h4 {
+            margin: 0 0 5px 0;
+            color: #ef6c00;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .note-content p {
+            margin: 0;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div class="header-title-container">
+<i class="fas fa-tag header-icon"></i>
+<h2>Nomenclatura Estricta</h2>
+</div>
+<div class="header-subtitle">
+            Convention: shouldXWhenY
+        </div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Pattern Explanation -->
+<div class="pattern-container">
+<p class="pattern-text">
+<span class="pattern-part p-should">should</span>
+<span class="pattern-part p-var">ComportamientoEsperado</span>
+<span class="pattern-part p-when">When</span>
+<span class="pattern-part p-context">CondiciónOEstado</span>
+</p>
+</div>
+<!-- Code Examples -->
+<div class="examples-grid">
+<!-- Example 1: Nominal Case -->
+<div class="code-card">
+<div class="case-label label-nominal">Caso Nominal</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> CalculatorTest.java</div>
+</div>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldCalculateTotalWhenItemsAreValid</span>() {<br/>
+                      <span class="com">// Given (Dado)</span><br/>
+                      <span class="cls">Cart</span> cart <span class="op">=</span> <span class="kwd">new</span> <span class="cls">Cart</span>();<br/>
+                      cart.add(<span class="kwd">new</span> <span class="cls">Item</span>(<span class="num">100</span>));<br/><br/>
+                      <span class="com">// When (Cuando)</span><br/>
+                      <span class="kwd">int</span> total <span class="op">=</span> cart.calculateTotal();<br/><br/>
+                      <span class="com">// Then (Entonces)</span><br/>
+                      <span class="func">assertEquals</span>(<span class="num">100</span>, total);<br/>
+                    }
+                </div>
+</div>
+<!-- Example 2: Error Case -->
+<div class="code-card">
+<div class="case-label label-error">Caso de Error</div>
+<div class="code-header">
+<div class="file-tab"><i class="fab fa-java java-icon-small"></i> UserServiceTest.java</div>
+</div>
+<div class="code-body">
+<span class="anno">@Test</span><br/>
+<span class="kwd">public void</span> <span class="func">shouldThrowExceptionWhenUserIsNull</span>() {<br/>
+                      <span class="com">// Given</span><br/>
+                      <span class="cls">User</span> user <span class="op">=</span> <span class="kwd">null</span>;<br/><br/>
+                      <span class="com">// When / Then</span><br/>
+                      <span class="func">assertThrows</span>(<span class="cls">IllegalArgumentException</span>.<span class="kwd">class</span>, () <span class="op">-&gt;</span> {<br/>
+                        service.register(user);<br/>
+                      });<br/>
+                    }
+                </div>
+</div>
+</div>
+<!-- Pedagogical Note -->
+<div class="note-box">
+<div class="note-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div class="note-content">
+<h4>Regla de Oro de DOPO:</h4>
+<p>El nombre de la prueba es su mejor documentación. Si una prueba falla en el servidor, debes poder entender <strong>qué se rompió</strong> y <strong>bajo qué circunstancias</strong> solo leyendo el nombre del método, sin mirar el código.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Pruebas Unitarias: Claridad y Mantenibilidad</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tipos de Pruebas Unitarias</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f89820; /* Java Orange */
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icon {
+            color: #f89820;
+            font-size: 2.2rem;
+            margin-right: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: stretch;
+            background-color: #f8f9fa;
+        }
+
+        /* Cards */
+        .card {
+            flex: 1;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .card-top-border {
+            height: 12px;
+            width: 100%;
+        }
+
+        .card-content {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Specific Card Styles */
+        /* Nominal */
+        .card-nominal .card-top-border { background-color: #2e7d32; }
+        .card-nominal .icon-circle { color: #2e7d32; background-color: #e8f5e9; border: 2px solid #c8e6c9; }
+        .card-nominal h3 { color: #1b5e20; }
+        
+        /* Edge */
+        .card-edge .card-top-border { background-color: #ef6c00; }
+        .card-edge .icon-circle { color: #ef6c00; background-color: #fff3e0; border: 2px solid #ffe0b2; }
+        .card-edge h3 { color: #e65100; }
+
+        /* Error */
+        .card-error .card-top-border { background-color: #c62828; }
+        .card-error .icon-circle { color: #c62828; background-color: #ffebee; border: 2px solid #ffcdd2; }
+        .card-error h3 { color: #b71c1c; }
+
+        /* Icon */
+        .icon-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            margin-bottom: 25px;
+        }
+
+        /* Typography */
+        .card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .card-desc {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        /* Code Block in Card */
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .code-label {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background-color: #444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .highlight-code { color: #e5c07b; } /* Yellowish for method names */
+        .highlight-val { color: #98c379; } /* Green for values */
+        .highlight-err { color: #e06c75; } /* Red for errors */
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<i class="fas fa-layer-group header-icon"></i>
+<h2>Tipos de Pruebas en DOPO</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Card 1: Nominal Case -->
+<div class="card card-nominal">
+<div class="card-top-border"></div>
+<div class="card-content">
+<div class="icon-circle">
+<i class="fas fa-smile-beam"></i>
+</div>
+<h3>Caso Nominal</h3>
+<p class="card-desc">
+                    El "Camino Feliz" (Happy Path). Entradas válidas donde todo funciona según lo esperado y devuelve un resultado correcto.
+                </p>
+<div class="code-block">
+<span class="code-label">Ejemplo</span>
+<p>
+                        // Factorial de 5 es 120<br/>
+<span class="highlight-code">factorial</span>(<span class="highlight-val">5</span>) → <span class="highlight-val">120</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Card 2: Edge Case -->
+<div class="card card-edge">
+<div class="card-top-border"></div>
+<div class="card-content">
+<div class="icon-circle">
+<i class="fas fa-ruler-combined"></i>
+</div>
+<h3>Caso de Borde</h3>
+<p class="card-desc">
+                    Valores límite o extremos donde la lógica suele fallar. Puntos de inflexión (0, null, vacíos, máximos).
+                </p>
+<div class="code-block">
+<span class="code-label">Ejemplo</span>
+<p>
+                        // Factorial de 0 es 1<br/>
+<span class="highlight-code">factorial</span>(<span class="highlight-val">0</span>) → <span class="highlight-val">1</span>
+</p>
+<p class="mt-2 text-xs text-gray-400">// Lista vacía size = 0</p>
+</div>
+</div>
+</div>
+<!-- Card 3: Error Case -->
+<div class="card card-error">
+<div class="card-top-border"></div>
+<div class="card-content">
+<div class="icon-circle">
+<i class="fas fa-bug"></i>
+</div>
+<h3>Caso de Error</h3>
+<p class="card-desc">
+                    Entradas inválidas que el sistema debe <strong>rechazar</strong> explícitamente, generalmente lanzando una Excepción.
+                </p>
+<div class="code-block">
+<span class="code-label">Ejemplo</span>
+<p>
+                        // No existe factorial negativo<br/>
+<span class="highlight-code">factorial</span>(<span class="highlight-err">-1</span>) <br/>
+                        throws <span class="highlight-err">IllegalArgumentEx</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Cobertura: Feliz + Borde + Error = Calidad</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Las 3 Reglas de Oro</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #001e3c;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #002244; /* Deepest Blue */
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Background texture - Gradients removed for export compatibility */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            /* background-image: url("https://page.gensparksite.com/slides_images/020c795e10a55e0d2410d5451b759c4d.png"); Optional texture if needed, currently just using base color */
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            height: 110px;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-icon {
+            color: #ffc107; /* Gold */
+            font-size: 2.5rem;
+            margin-right: 25px;
+            filter: drop-shadow(0 0 5px rgba(255, 193, 7, 0.4));
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 35px;
+            z-index: 10;
+        }
+
+        /* Rule Card */
+        .rule-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rule-card:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(10px);
+            border-color: rgba(248, 152, 32, 0.3);
+        }
+
+        /* Number Circle */
+        .number-circle {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            border-radius: 50%;
+            background-color: #003366;
+            border: 4px solid #f89820;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(248, 152, 32, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Text Content */
+        .rule-text {
+            flex: 1;
+        }
+
+        .rule-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rule-desc {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: #b0bec5;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Badges */
+        .badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .badge-red {
+            background-color: #c62828;
+            color: white;
+            border: 1px solid #ef5350;
+        }
+
+        .badge-green {
+            background-color: #2e7d32;
+            color: white;
+            border: 1px solid #66bb6a;
+        }
+
+        .badge-purple {
+            background-color: #6a1b9a;
+            color: white;
+            border: 1px solid #ab47bc;
+        }
+
+        /* Icons in title */
+        .title-icon {
+            font-size: 1.4rem;
+            opacity: 0.8;
+        }
+        
+        /* Progress arrows decoration */
+        .tdd-arrow {
+            color: #81c784;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        /* Footer */
+        .footer {
+            height: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
+            color: #90caf9;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10;
+        }
+
+        /* Accents */
+        .accent-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background-color: #f89820;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Pattern -->
+<div class="bg-pattern"></div>
+<!-- Header -->
+<div class="header">
+<i class="fas fa-crown header-icon"></i>
+<h2>Las 3 Reglas de Oro</h2>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Rule 1 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #f44336;"></div>
+<div class="number-circle">1</div>
+<div class="rule-text">
+<div class="rule-title">
+                        Code the Unit Test First
+                        <span class="badge badge-red">TDD</span>
+</div>
+<p class="rule-desc">
+                        Antes de escribir código funcional, escribe la prueba. <br/>
+                        Ciclo: <strong>Rojo</strong> (Falla) <span class="tdd-arrow">→</span> <strong>Verde</strong> (Pasa) <span class="tdd-arrow">→</span> <strong>Refactor</strong> (Mejora).
+                    </p>
+</div>
+<i class="fas fa-traffic-light text-4xl text-gray-500 opacity-30"></i>
+</div>
+<!-- Rule 2 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #4caf50;"></div>
+<div class="number-circle">2</div>
+<div class="rule-text">
+<div class="rule-title">
+                        All Code Must Have Tests
+                        <span class="badge badge-green">Zero Tolerance</span>
+</div>
+<p class="rule-desc">
+                        No se entrega ni se hace commit de código sin pruebas asociadas.<br/>
+                        La cobertura debe ser total para la lógica de negocio crítica.
+                    </p>
+</div>
+<i class="fas fa-check-double text-4xl text-gray-500 opacity-30"></i>
+</div>
+<!-- Rule 3 -->
+<div class="rule-card">
+<div class="accent-bar" style="background-color: #9c27b0;"></div>
+<div class="number-circle">3</div>
+<div class="rule-text">
+<div class="rule-title">
+                        Found a Bug? Create a Test!
+                        <span class="badge badge-purple">Regression Shield</span>
+</div>
+<p class="rule-desc">
+                        Si reportan un error, primero crea una prueba que replique el fallo (rojo).<br/>
+                        Solo entonces arregla el código. Esto evita que el error vuelva a ocurrir.
+                    </p>
+</div>
+<i class="fas fa-bug-slash text-4xl text-gray-500 opacity-30"></i>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Disciplina = Calidad de Software</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>El Entorno: JUnit + BlueJ</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 6px solid #f89820; /* Java Orange */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            color: #bbdefb;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* Main Content Grid */
+        .main-content {
+            flex: 1;
+            display: flex;
+            height: calc(720px - 140px); /* Adjusting for header/footer */
+        }
+
+        /* Left Section: JUnit */
+        .section-junit {
+            width: 60%;
+            padding: 50px 60px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .junit-logo-area {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .junit-icon {
+            font-size: 3.5rem;
+            color: #c62828; /* JUnit Red-ish */
+        }
+
+        .junit-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #333;
+            margin: 0;
+        }
+        
+        .junit-badge {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-left: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .feature-icon {
+            color: #2e7d32;
+            margin-right: 15px;
+            margin-top: 5px;
+            font-size: 1.2rem;
+        }
+
+        /* Code Snippet */
+        .code-snippet {
+            background-color: #282c34;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #abb2bf;
+            border-left: 5px solid #c62828;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .kwd { color: #c678dd; }
+        .func { color: #61afef; }
+        .str { color: #98c379; }
+        .anno { color: #e5c07b; }
+        .cls { color: #e06c75; }
+
+        /* Right Section: BlueJ */
+        .section-bluej {
+            width: 40%;
+            background-color: #f0f4f8; /* Light UI bg */
+            border-left: 1px solid #ddd;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Diagonal pattern for right section background - using SVG pattern instead of gradient */
+        .section-bluej {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0z' fill='%23f0f4f8'/%3E%3Cpath d='M0 0l20 20' stroke='rgba(0,0,0,0.02)' stroke-width='2'/%3E%3C/svg%3E");
+        }
+
+        .bluej-header {
+            z-index: 1;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .bluej-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #003366;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Mockup of BlueJ Interface */
+        .bluej-mockup {
+            z-index: 1;
+            background-color: white; /* The "bench" */
+            width: 100%;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            border: 1px solid #ccc;
+        }
+
+        .class-diagram-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .class-box {
+            width: 100px;
+            height: 70px;
+            background-color: #ffe0b2; /* Standard class color in BlueJ */
+            border: 1px solid #fb8c00;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #333;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .class-box::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px dashed rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        .test-arrow {
+            color: #999;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .test-class-box {
+            width: 100px;
+            height: 70px;
+            background-color: #c8e6c9; /* Green test class color */
+            border: 1px solid #43a047;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #1b5e20;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            text-align: center;
+        }
+        
+        .test-class-box::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px dashed rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        /* Result Bar Mockup */
+        .result-bar-container {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 4px;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .result-bar {
+            height: 12px;
+            width: 100%;
+            background-color: #4caf50; /* Green bar */
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Removed gradient, using solid color for export consistency */
+        
+        .result-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #f89820;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #5d4037;
+            border-radius: 0 4px 4px 0;
+            margin-top: 20px;
+            z-index: 1;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div class="flex items-center gap-4">
+<i class="fas fa-tools text-3xl text-orange-400"></i>
+<h2>El Entorno: JUnit + BlueJ</h2>
+</div>
+<div class="header-subtitle">Standard Framework &amp; Visual Tool</div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Left Section: JUnit -->
+<div class="section-junit">
+<div class="junit-logo-area">
+<i class="fas fa-flask junit-icon"></i>
+<div>
+<h3 class="junit-title">JUnit 5 Framework</h3>
+<p class="text-gray-500 font-medium">El estándar de facto para pruebas en Java</p>
+</div>
+<span class="junit-badge">v5.x</span>
+</div>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-check-circle feature-icon"></i>
+<p><strong>Anotaciones Simples:</strong> Uso de <code>@Test</code> para identificar métodos de prueba.</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check-circle feature-icon"></i>
+<p><strong>Aserciones Precisas:</strong> Métodos estáticos para validar resultados (<code>assertEquals</code>, <code>assertTrue</code>).</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-check-circle feature-icon"></i>
+<p><strong>Ciclo de Vida:</strong> Control total con <code>@BeforeEach</code> y <code>@AfterEach</code>.</p>
+</li>
+</ul>
+<div class="code-snippet">
+<p><span class="anno">@Test</span></p>
+<p><span class="kwd">public void</span> <span class="func">shouldCalculateTotal</span>() {</p>
+<p>  <span class="cls">Calculator</span> calc = <span class="kwd">new</span> <span class="cls">Calculator</span>();</p>
+<p>  <span class="kwd">int</span> result = calc.add(<span class="str">2</span>, <span class="str">3</span>);</p>
+<p>  <span class="cls">Assertions</span>.<span class="func">assertEquals</span>(<span class="str">5</span>, result);</p>
+<p>}</p>
+</div>
+</div>
+<!-- Right Section: BlueJ -->
+<div class="section-bluej">
+<div class="bluej-header">
+<h3 class="bluej-title">
+<i class="fas fa-cube"></i> Integración BlueJ
+            </h3>
+<p class="text-sm text-gray-500 mt-1">Feedback visual inmediato</p>
+</div>
+<div class="bluej-mockup">
+<!-- Diagram Mockup -->
+<div class="class-diagram-container">
+<div class="class-box">
+                    Calculator
+                </div>
+<div class="test-arrow">
+<i class="fas fa-long-arrow-alt-right"></i>
+</div>
+<div class="test-class-box">
+                    Calculator<br/>Test
+                </div>
+</div>
+<!-- Status Bar Mockup -->
+<div class="w-full">
+<p class="text-xs font-bold text-gray-500 uppercase mb-1">Test Results</p>
+<div class="result-bar-container">
+<div class="result-bar"></div>
+<div class="result-text">
+<span>Runs: 5/5</span>
+<span>Errors: 0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Info Box -->
+<div class="info-box">
+<p><strong><i class="fas fa-lightbulb text-orange-600 mr-2"></i>Flujo Visual:</strong></p>
+<p class="mt-2 text-sm">En BlueJ, las clases de prueba se distinguen por su color <span class="text-green-700 font-bold">verde</span>. Usa el menú contextual para crear nuevas pruebas y ejecutarlas con un clic.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Herramientas: Potencia (JUnit) + Simplicidad (BlueJ)</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Práctica Completa en BlueJ - Ejemplo CuentaBancaria</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 85px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 4px solid #f89820; /* Java Orange */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background-color: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 40px;
+            display: flex;
+            gap: 25px;
+            height: calc(100% - 125px);
+            overflow: hidden;
+        }
+
+        /* Left Panel: 4 Practice Steps */
+        .steps-panel {
+            width: 42%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .step-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px 12px;
+            border-left: 4px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        
+        .step-card:hover {
+            transform: translateX(3px);
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .step-card.step-tdd { border-left-color: #1565c0; }
+        .step-card.step-nominal { border-left-color: #2e7d32; }
+        .step-card.step-edge { border-left-color: #f89820; }
+        .step-card.step-bug { border-left-color: #c62828; }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .step-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-number {
+            background-color: #eee;
+            color: #555;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .step-desc {
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        /* Code Snippet Compact */
+        .code-mini {
+            background-color: #282c34;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            padding: 6px 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border-left: 2px solid #5c6370;
+        }
+
+        .kwd { color: #c678dd; }
+        .func { color: #61afef; }
+        .str { color: #98c379; }
+        .num { color: #d19a66; }
+
+        /* Badges */
+        .badge {
+            font-size: 0.6rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-red { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .badge-green { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .badge-blue { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+
+        /* Right Panel: Video Area */
+        .video-panel {
+            width: 58%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .video-container {
+            flex: 1;
+            background-color: #0f172a; /* Dark background for video placeholder */
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border: 1px solid #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .yt-icon {
+            font-size: 5rem;
+            color: #FF0000;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+            transition: transform 0.3s;
+        }
+
+        .video-title {
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .video-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0 0 25px 0;
+            max-width: 80%;
+        }
+
+        .yt-button {
+            background-color: #FF0000;
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+            font-size: 1rem;
+        }
+
+        .yt-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(255, 0, 0, 0.4);
+            background-color: #cc0000;
+        }
+
+        .video-meta {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Status Info Box below video */
+        .status-info {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0d47a1;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.85rem;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<h2>
+<i class="fas fa-laptop-code text-orange-400"></i>
+            Práctica Completa en BlueJ - Ejemplo CuentaBancaria
+        </h2>
+<div class="header-subtitle">TDD + Edge Cases + Debugging</div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Steps Panel -->
+<div class="steps-panel">
+<!-- Step 1: TDD -->
+<div class="step-card step-tdd">
+<div class="step-header">
+<div class="step-title">
+<div class="step-number">1</div>
+<span>TDD First Test</span>
+</div>
+<div class="flex gap-1">
+<span class="badge badge-red">RED</span>
+<i class="fas fa-arrow-right text-gray-400 text-xs self-center"></i>
+<span class="badge badge-green">GREEN</span>
+</div>
+</div>
+<p class="step-desc">Testear comportamiento antes de implementar. <code>shouldAumentarSaldo...</code></p>
+<div class="code-mini">
+<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldAumentarSaldoWhenConsignarValido</span>() {</p>
+<p>  cuenta.consignar(<span class="num">100.0</span>); <span class="kwd">assert</span>(<span class="num">100.0</span>, cuenta.getSaldo());</p>
+<p>}</p>
+</div>
+</div>
+<!-- Step 2: Nominal -->
+<div class="step-card step-nominal">
+<div class="step-header">
+<div class="step-title">
+<div class="step-number">2</div>
+<span>Casos Nominales</span>
+</div>
+<span class="badge badge-green">HAPPY PATH</span>
+</div>
+<p class="step-desc">El escenario ideal: consignar un monto válido aumenta el saldo correctamente.</p>
+<div class="code-mini">
+<p><span class="kwd">public void</span> <span class="func">consignar</span>(<span class="kwd">double</span> m) {</p>
+<p>  <span class="kwd">this</span>.saldo += m; <span class="str">// Implementación inicial</span></p>
+<p>}</p>
+</div>
+</div>
+<!-- Step 3: Edge Case -->
+<div class="step-card step-edge">
+<div class="step-header">
+<div class="step-title">
+<div class="step-number">3</div>
+<span>Caso de Borde</span>
+</div>
+<span class="badge badge-blue">EDGE CASE</span>
+</div>
+<p class="step-desc">¿Qué pasa si consigno 0? El saldo no debería cambiar. <code>shouldNotAlterar...</code></p>
+<div class="code-mini">
+<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldNotAlterarSaldoWhenConsignarCero</span>() {</p>
+<p>  cuenta.consignar(<span class="num">0.0</span>); <span class="kwd">assert</span>(<span class="num">50.0</span>, cuenta.getSaldo());</p>
+<p>}</p>
+</div>
+</div>
+<!-- Step 4: Bug Fixing -->
+<div class="step-card step-bug">
+<div class="step-header">
+<div class="step-title">
+<div class="step-number">4</div>
+<span>Bug Fixing</span>
+</div>
+<span class="badge badge-red">BUG FOUND</span>
+</div>
+<p class="step-desc">Bug: Consignar negativo resta saldo. Solución: <code>if (m &gt; 0)</code></p>
+<div class="code-mini">
+<p><span class="kwd">@Test</span> <span class="kwd">void</span> <span class="func">shouldNotPermitirMontoNegativo</span>() {</p>
+<p>  cuenta.consignar(<span class="num">-20.0</span>); <span class="kwd">assert</span>(<span class="num">100.0</span>, cuenta.getSaldo());</p>
+<p>}</p>
+</div>
+</div>
+</div>
+<!-- Video Panel -->
+<div class="video-panel">
+<div class="video-container">
+<!-- YouTube External Link Placeholder -->
+<i class="fab fa-youtube yt-icon"></i>
+<h3 class="video-title">
+                    Demo: TDD en BlueJ - CuentaBancaria
+                </h3>
+<p class="video-desc">
+                    La visualización embebida está restringida. Haz clic abajo para ver la práctica completa en YouTube.
+                </p>
+<a class="yt-button" href="https://youtu.be/UAhh8al2eo8" target="_blank">
+<i class="fas fa-external-link-alt"></i>
+                    VER VIDEO EN YOUTUBE
+                </a>
+<p class="video-meta">
+                    Duración: 05:30 min • 1080p HD
+                </p>
+</div>
+<!-- Status Info Bar -->
+<div class="status-info">
+<div class="status-item text-green-700">
+<i class="fas fa-check-circle"></i>
+<span>All Tests Passed</span>
+</div>
+<div class="status-item text-blue-700">
+<i class="fas fa-cube"></i>
+<span>BlueJ Environment</span>
+</div>
+<div class="status-item text-orange-700">
+<i class="fas fa-bug"></i>
+<span>Bug Fixed</span>
+</div>
+</div>
+<div class="text-right text-xs text-gray-400 mt-1 font-mono">
+<p>YouTube ID: UAhh8al2eo8</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>Monitor MYSD &amp; DOPO</p>
+<p>Evidencia Completa: TDD en Acción</p>
+</div>
+</div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cierre y Verificación</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Roboto:wght@300;400;500;700&amp;family=Fira+Code:wght@500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #ffffff;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 100px;
+            background-color: #003366; /* Deep Blue */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 6px solid #f89820; /* Java Orange */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            color: #bbdefb;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px 80px; /* Reduced top/bottom padding slightly */
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            height: calc(100% - 140px);
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px 40px;
+            border-left: 6px solid #2e7d32;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: #003366;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 40px;
+            row-gap: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.05rem;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .check-icon {
+            color: #2e7d32;
+            font-size: 1.2rem;
+            margin-right: 12px;
+            min-width: 20px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            display: flex;
+            gap: 30px;
+            height: 190px; /* Slightly increased height for content */
+        }
+
+        .contact-card {
+            flex: 1;
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* GitHub Card */
+        .card-github {
+            background-color: #24292e;
+            color: white;
+            border: 1px solid #1b1f23;
+        }
+        
+        /* GitHub accent line */
+        .card-github::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background-color: #f89820; /* Orange accent */
+        }
+
+        .github-icon {
+            font-size: 3rem;
+            color: #f0f6fc;
+            flex-shrink: 0;
+        }
+
+        /* Email Card */
+        .card-email {
+            background-color: #fff3e0; /* Soft Orange */
+            color: #333;
+            border: 1px solid #ffe0b2;
+        }
+        
+        /* Email accent line */
+        .card-email::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background-color: #ef6c00; /* Darker Orange */
+        }
+
+        .email-icon {
+            font-size: 3rem;
+            color: #e65100;
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .card-title-gh { color: white; }
+        .card-title-em { color: #bf360c; }
+
+        .card-subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-action {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 600;
+            white-space: normal; /* Allow wrap for long university name */
+            line-height: 1.3;
+        }
+
+        .action-github {
+            background-color: rgba(255,255,255,0.1);
+            color: #58a6ff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .action-email {
+            background-color: white;
+            color: #ef6c00;
+            border: 1px solid #ffcc80;
+        }
+
+        /* Footer */
+        .footer {
+            height: 40px;
+            background-color: #002244;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            color: #bbdefb;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div class="flex items-center gap-4">
+<i class="fas fa-clipboard-check text-3xl text-orange-400"></i>
+<h2>Cierre y Verificación</h2>
+</div>
+<div class="header-subtitle">Resumen Final &amp; Contacto</div>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<!-- Summary Section -->
+<div class="summary-section">
+<div class="section-title">
+<i class="fas fa-graduation-cap text-green-700"></i>
+<h3>Lo que hemos aprendido hoy</h3>
+</div>
+<div class="checklist-grid">
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Fundamentos:</strong> Pruebas unitarias aisladas.</p>
+</div>
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Metodología:</strong> BDD (Given / When / Then).</p>
+</div>
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Nomenclatura:</strong> Convención <code>shouldXWhenY</code>.</p>
+</div>
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Tipos:</strong> Nominal, Borde y Error.</p>
+</div>
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Reglas de Oro:</strong> TDD y Cobertura Total.</p>
+</div>
+<div class="checklist-item">
+<i class="fas fa-check-circle check-icon"></i>
+<p><strong>Herramientas:</strong> JUnit 5 + Entorno visual BlueJ.</p>
+</div>
+</div>
+</div>
+<!-- Contact Section -->
+<div class="contact-section">
+<!-- GitHub Card -->
+<div class="contact-card card-github">
+<i class="fab fa-github github-icon"></i>
+<div class="card-content">
+<h4 class="card-title card-title-gh">AnderssonProgramming</h4>
+<p class="card-subtitle">Ideal para reportar errores técnicos. Puedes crear un issue en cualquier repositorio del monitor para realizar tus preguntas.</p>
+<div>
+<span class="card-action action-github">
+<i class="fas fa-code-branch mr-1"></i> New Issue: Questions
+                            </span>
+</div>
+</div>
+</div>
+<!-- Email Card -->
+<div class="contact-card card-email">
+<i class="fas fa-envelope email-icon"></i>
+<div class="card-content">
+<!-- Name removed as requested -->
+<p class="card-subtitle text-sm break-all font-mono" style="font-size: 1rem; color: #bf360c; font-weight: 600; margin-bottom: 12px;">andersson.sanchez-m@mail.escuelaing.edu.co</p>
+<div>
+<span class="card-action action-email">
+<i class="fas fa-university mr-1"></i> Escuela Colombiana de Ingeniería Julio Garavito
+                            </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<p>DOPO - Desarrollo Orientado por Objetos</p>
+<p>Monitor MYSD &amp; DOPO • 2026</p>
+</div>
+</div>
+</body>
+</html>
+`
+    ];
+    var TITLES = ["Pruebas Unitarias en Java", "¿Qué y Por Qué?", "Introducción a BDD", "Nomenclatura de Métodos", "Tipos de Pruebas Unitarias", "Las 3 Reglas de Oro", "El Entorno: JUnit + BlueJ", "Práctica Completa en BlueJ - Ejemplo CuentaBancaria", "Cierre y Verificación"];
+    var TOTAL  = SLIDES.length;
+    var NAV_H  = 52 + 3; /* nav bar + progress bar */
+
+    var frame    = document.getElementById('slide-frame');
+    var counterEl = document.getElementById('counter');
+    var titleEl  = document.getElementById('slide-title');
+    var progEl   = document.getElementById('progress-bar');
+    var btnPrev  = document.getElementById('btn-prev');
+    var btnNext  = document.getElementById('btn-next');
+    var jumpIn   = document.getElementById('jump-input');
+
+    var cur = 0;
+
+    function scaleSlide() {
+      var stageW = window.innerWidth;
+      var stageH = window.innerHeight - NAV_H;
+      var s      = Math.min(stageW / 1280, stageH / 720);
+      var offX   = (stageW - 1280 * s) / 2;
+      var offY   = (stageH - 720  * s) / 2;
+      frame.style.transform = 'translate(' + offX + 'px, ' + offY + 'px) scale(' + s + ')';
+    }
+
+    function goTo(n) {
+      cur = Math.max(0, Math.min(n, TOTAL - 1));
+      frame.srcdoc    = SLIDES[cur];
+      counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+      titleEl.textContent   = TITLES[cur] || '';
+      progEl.style.width    = ((cur + 1) / TOTAL * 100) + '%';
+      btnPrev.disabled = cur === 0;
+      btnNext.disabled = cur === TOTAL - 1;
+      jumpIn.value     = cur + 1;
+      history.replaceState(null, '', '#' + (cur + 1));
+    }
+
+    btnNext.addEventListener('click', function() { goTo(cur + 1); });
+    btnPrev.addEventListener('click', function() { goTo(cur - 1); });
+
+    jumpIn.addEventListener('change', function() {
+      var n = parseInt(this.value, 10);
+      if (!isNaN(n)) goTo(n - 1);
+    });
+    jumpIn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var n = parseInt(this.value, 10);
+        if (!isNaN(n)) goTo(n - 1);
+        frame.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (document.activeElement === jumpIn) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(cur + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(cur - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault(); goTo(TOTAL - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFs();
+      }
+    });
+
+    document.getElementById('btn-fs').addEventListener('click', toggleFs);
+
+    function toggleFs() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', scaleSlide);
+    window.addEventListener('fullscreenchange', scaleSlide);
+
+    /* Restore slide from URL hash, default to slide 1 */
+    var h = parseInt(location.hash.slice(1), 10);
+    scaleSlide();
+    goTo(isNaN(h) ? 0 : h - 1);
+  </script>
+
+</body>
+</html>

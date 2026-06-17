@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=1280, height=720, initial-scale=1.0" name="viewport"/>
+<title>S3: Demostración - Flujo MYSD</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            background-color: #0D1117; /* GitHub Dark Background */
+            color: #C9D1D9; /* GitHub Text Color */
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* Grid background pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9D1D9' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 40px;
+            border-bottom: 1px solid #30363D;
+            background-color: #161B22;
+            z-index: 10;
+        }
+
+        .header-badge {
+            background-color: rgba(56, 139, 253, 0.15); /* Blue */
+            color: #58A6FF;
+            font-family: 'Roboto Mono', monospace;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 16px;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            font-weight: 700;
+        }
+
+        .header-title {
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 25px 40px 30px 40px; /* Reduced bottom padding */
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            height: calc(720px - 80px); /* Explicit height for calculation */
+        }
+
+        /* Left Column: Info & Context */
+        .info-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            justify-content: space-between; /* Distribute space */
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #FFFFFF;
+            font-weight: 700;
+            border-left: 4px solid #58A6FF;
+            padding-left: 12px;
+            margin-bottom: 5px;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background-color: rgba(22, 27, 34, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #30363D;
+        }
+
+        .step-number {
+            background-color: #1F6FEB;
+            color: #FFFFFF;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #E6EDF3;
+            margin-bottom: 2px;
+        }
+
+        .step-content span {
+            font-size: 13px;
+            color: #8B949E;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .code-tag {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #58A6FF;
+        }
+
+        /* Context Box */
+        .context-box {
+            background-color: rgba(46, 164, 79, 0.1);
+            border: 1px solid rgba(46, 164, 79, 0.3);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 20px; /* Space for footer */
+        }
+
+        .context-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: #3FB950;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .context-text {
+            font-size: 13px;
+            color: #C9D1D9;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Right Column: Video Thumbnail */
+        .video-col {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding-bottom: 20px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 640px;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #30363D;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            display: block;
+            text-decoration: none;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border-color: #58A6FF;
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .video-container:hover .thumbnail-img {
+            opacity: 0.6;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255,0,0,0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(255,0,0,0.4);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .video-container:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: #FF0000;
+        }
+
+        .video-caption {
+            margin-top: 15px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #8B949E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-caption i {
+            color: #FF0000;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: #484F58;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #238636;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="bg-grid"></div>
+<!-- Header -->
+<div class="header">
+<span class="header-badge">S3: DEMOSTRACIÓN</span>
+<h1 class="header-title">Flujo MYSD: Clone, Init y Conflictos</h1>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Info Column -->
+<div class="info-col">
+<div>
+<h2 class="section-title">En este video verás:</h2>
+<div class="steps-list">
+<div class="step-item">
+<div class="step-number">1</div>
+<div class="step-content">
+<p>Inicio Diferenciado</p>
+<span>Perez usa <span class="code-tag">git clone</span>. Gomez usa <span class="code-tag">git init</span> + <span class="code-tag">git remote add</span>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">2</div>
+<div class="step-content">
+<p>Conflicto en BD (SQL)</p>
+<span>Edición simultánea de <span class="code-tag">esquema.sql</span>. Uno añade tabla <em>Estudiante</em> y otro <em>Profesor</em>.</span>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number">3</div>
+<div class="step-content">
+<p>Resolución Manual</p>
+<span>Fusión de tablas borrando marcadores <span class="code-tag">&lt;&lt;&lt; HEAD</span> en el editor.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MYSD Context -->
+<div class="context-box">
+<div class="context-header">
+<i class="fas fa-database"></i>
+                        Contexto MYSD
+                    </div>
+<p class="context-text">
+                        Ejemplo práctico con proyecto-clase de Bases de Datos. Uso de terminales <strong>PowerShell</strong> y <strong>CMD</strong> para demostrar flexibilidad en Windows.
+                    </p>
+</div>
+</div>
+<!-- Video Column -->
+<div class="video-col">
+<a class="video-container" href="https://youtu.be/t5W_g_uRRAE" target="_blank">
+<!-- Using YouTube Thumbnail for new video ID t5W_g_uRRAE -->
+<img alt="Video Thumbnail" class="thumbnail-img" src="https://page.gensparksite.com/slides_images/c8c910649bf56ad15d4feca00cc81016.jpg"/>
+<div class="play-button">
+<i class="fas fa-play" style="margin-left: 5px;"></i>
+</div>
+</a>
+<div class="video-caption">
+<i class="fab fa-youtube"></i>
+                    Clic para ver demostración en YouTube (4 min)
+                </div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer">
+<div class="footer-dot"></div>
+<span>MYSD &amp; DOPO • Control de Versiones</span>
+</div>
+</div>
+</body>
+</html>
