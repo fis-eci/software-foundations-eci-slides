@@ -289,6 +289,9 @@ def escape_js_template(html: str) -> str:
     html = html.replace('\\', '\\\\')   # must be first
     html = html.replace('`',  '\\`')
     html = html.replace('${', '\\${')
+    # Prevent the HTML parser from closing the outer <script> block when it
+    # encounters </script> inside a slide's embedded HTML string.
+    html = re.sub(r'<(/script)', r'<\\/\1', html, flags=re.IGNORECASE)
     return html
 
 
