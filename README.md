@@ -19,13 +19,12 @@
 
 ## 📌 Repositorio Principal
 
-> [!IMPORTANT]
 > Este repositorio contiene **únicamente las presentaciones en HTML** generadas para los temas del curso.
 > El material completo del objeto de aprendizaje — ejercicios, guías, laboratorios y recursos — se encuentra en el repositorio principal:
 >
 > ### 👉 [fis-eci/software-foundations-eci](https://github.com/fis-eci/software-foundations-eci)
 >
-> 📚 *Interactive Learning Object (LO) para Fundamentos de Ingeniería de Software. Guía integral para los cursos DOPO (Programación Orientada a Objetos) y MYSD (Modelos y Sistemas de Datos) en la Escuela Colombiana de Ingeniería. Cubre distintos temas de ambas asignaturas y buenas prácticas de calidad de software.*
+> 📚 *Unidad de aprendizaje (UA) para Fundamentos de Ingeniería de Software. Guía integral para los cursos DOPO (Desarrollo Orientado por Objetos) y MYSD (Modelos y Servicios de Datos) en la Escuela Colombiana de Ingeniería. Cubre distintos temas de ambas asignaturas y buenas prácticas de calidad de software.*
 
 ---
 
@@ -132,8 +131,10 @@ Las presentaciones resultantes son archivos únicos, sin dependencias externas e
 Monitor Académico — MYSD &amp; DOPO<br/>
 Escuela Colombiana de Ingeniería Julio Garavito<br/>
 <br/>
-<a href="mailto:anderssondavidsanchez@gmail.com">📧 anderssondavidsanchez@gmail.com</a><br/>
+<a href="mailto:andersson.sanchez-m@mail.escuelaing.edu.co">📧 andersson.sanchez-m@mail.escuelaing.edu.co</a><br/>
 <a href="https://github.com/fis-eci">🐙 github.com/fis-eci</a>
+
+<a href="https://github.com/AnderssonProgramming">🐙 github.com/AnderssonProgramming</a>
 </td>
 </tr>
 </table>
@@ -144,7 +145,7 @@ Escuela Colombiana de Ingeniería Julio Garavito<br/>
 
 ¿Tienes dudas sobre el contenido, encuentras un error o quieres proponer una mejora?
 
-- **GitHub Issues** *(recomendado)*: abre un issue en [fis-eci/software-foundations-eci](https://github.com/fis-eci/software-foundations-eci/issues)
+- **GitHub Issues** *(recomendado)*: abre un issue en [fis-eci/software-foundations-eci](https://github.com/fis-eci/software-foundations-eci/issues) o en este mismo repositorio
 - **Correo institucional**: [fis@escuelaing.edu.co](mailto:fis@escuelaing.edu.co)
 
 ---
@@ -160,8 +161,6 @@ Este proyecto está distribuido bajo la [Licencia Apache 2.0](./LICENSE). Puedes
 ---
 
 <div align="center">
-
-**[⬆ Volver arriba](#-software-foundations-eci--presentaciones)**
 
 *Hecho con ❤️ para los estudiantes de Fundamentos de Ingeniería de Software · ECI 2026*
 
