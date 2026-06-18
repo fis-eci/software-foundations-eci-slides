@@ -50,13 +50,24 @@ Este repositorio genera **3 presentaciones de una sola página** (archivos `.htm
 
 ## 🎬 Cómo Ver las Presentaciones
 
-### Opción A — Abrir directamente en el navegador
+### Opción A — En línea (sin descargar nada)
+
+Accede directamente desde el navegador mediante **GitHub Pages**:
+
+| Presentación | Enlace directo |
+|---|---|
+| Página principal | 🔗 [fis-eci.github.io/software-foundations-eci-slides](https://fis-eci.github.io/software-foundations-eci-slides/) |
+| Control de Versiones (CVS) | 🔗 [CVS-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/CVS-presentation.html) |
+| Oracle SQL Developer | 🔗 [OracleSQL-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/OracleSQL-presentation.html) |
+| Pruebas Unitarias | 🔗 [PruebasUnitarias-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/PruebasUnitarias-presentation.html) |
+
+### Opción B — Abrir localmente
 
 1. Clona o descarga este repositorio.
 2. Abre cualquier archivo `*-presentation.html` con tu navegador (doble clic o arrastrar).
 3. Usa los controles de navegación en la barra inferior.
 
-### Opción B — Reconstruir desde las fuentes
+### Opción C — Reconstruir desde las fuentes
 
 Si modificas alguna diapositiva individual, ejecuta el script de construcción para regenerar las presentaciones:
 
@@ -100,6 +111,7 @@ software-foundations-eci-slides/
 ├── 📄 OracleSQL-presentation.html  # ✅ Presentación auto-contenida (generada)
 ├── 📄 PruebasUnitarias-presentation.html # ✅ Presentación auto-contenida (generada)
 │
+├── 🌐 index.html                   # Página de inicio (GitHub Pages)
 ├── 🐍 build_presentations.py       # Script que fusiona las diapositivas
 ├── 📄 CLAUDE.md                    # Guía para Claude Code
 └── 📄 README.md                    # Este archivo
