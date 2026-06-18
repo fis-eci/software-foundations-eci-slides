@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Presentaciones — Fundamentos de Ingeniería de Software · ECI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0d1a;
+      --bg-card: #0d1b3e;
+      --border: rgba(255,255,255,0.08);
+      --text: #e8edf2;
+      --muted: #8b9bb4;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 64px;
+      max-width: 720px;
+    }
+
+    .eci-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-left: 3px solid #c0392b;
+      border-radius: 8px;
+      padding: 8px 18px;
+      margin-bottom: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .eci-badge i { color: #c0392b; }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    h1 span { color: #58a6ff; }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ── Cards grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 1060px;
+      margin-bottom: 64px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px 32px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      border-color: var(--accent-dim);
+    }
+
+    /* Per-deck accent colours */
+    .card-cvs       { --accent: #58a6ff; --accent-dim: rgba(88,166,255,0.3); --icon-bg: rgba(88,166,255,0.1); --tag-bg: rgba(63,185,80,0.15); --tag-color: #3fb950; }
+    .card-oracle    { --accent: #00d4ff; --accent-dim: rgba(0,212,255,0.3); --icon-bg: rgba(0,212,255,0.1); --tag-bg: rgba(255,107,53,0.15); --tag-color: #ff6b35; }
+    .card-unitarias { --accent: #f89820; --accent-dim: rgba(248,152,32,0.3); --icon-bg: rgba(248,152,32,0.1); --tag-bg: rgba(76,175,80,0.15); --tag-color: #4caf50; }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: var(--icon-bg);
+      border: 1px solid var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .card-num {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--tag-bg);
+      color: var(--tag-color);
+      border: 1px solid var(--tag-color);
+      opacity: 0.85;
+    }
+
+    .slides-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slides-count i { color: var(--accent); font-size: 11px; }
+
+    .open-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      margin-top: 8px;
+      transition: gap 0.2s ease;
+    }
+
+    .card:hover .open-btn { gap: 14px; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
+      padding-top: 40px;
+      width: 100%;
+      max-width: 1060px;
+    }
+
+    footer a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    .footer-author {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="eci-badge">
+      <i class="fa-solid fa-university"></i>
+      ESCUELA COLOMBIANA DE INGENIERÍA JULIO GARAVITO
+    </div>
+    <h1>FUNDAMENTOS DE<br/><span>INGENIERÍA DE SOFTWARE</span></h1>
+    <p class="subtitle">Presentaciones interactivas para los cursos DOPO y MYSD · 2026</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- CVS -->
+    <a class="card card-cvs" href="./CVS-presentation.html" target="_blank" rel="noopener">
+      <div class="card-num">01</div>
+      <div class="card-icon"><i class="fa-brands fa-git-alt"></i></div>
+      <div class="card-title">Control de Versiones con Git &amp; GitHub</div>
+      <p class="card-desc">Conceptos de VCS, flujos de trabajo con ramas, pull requests, resolución de conflictos y buenas prácticas colaborativas.</p>
+      <div class="card-meta">
+        <span class="tag">MYSD &amp; DOPO</span>
+        <span class="slides-count"><i class="fa-solid fa-clone"></i> 16 diapositivas</span>
+      </div>
+      <div class="open-btn">ABRIR PRESENTACIÓN <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <!-- Oracle SQL -->
+    <a class="card card-oracle" href="./OracleSQL-presentation.html" target="_blank" rel="noopener">
+      <div class="card-num">02</div>
+      <div class="card-icon"><i class="fa-solid fa-database"></i></div>
+      <div class="card-title">Entornos Oracle SQL Developer</div>
+      <p class="card-desc">Configuración del servidor granate y entorno local con Oracle XE. Conexiones, SQL Worksheet, exportación y administración básica.</p>
+      <div class="card-meta">
+        <span class="tag">MYSD</span>
+        <span class="slides-count"><i class="fa-solid fa-clone"></i> 11 diapositivas</span>
+      </div>
+      <div class="open-btn">ABRIR PRESENTACIÓN <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <!-- Pruebas Unitarias -->
+    <a class="card card-unitarias" href="./PruebasUnitarias-presentation.html" target="_blank" rel="noopener">
+      <div class="card-num">03</div>
+      <div class="card-icon"><i class="fa-solid fa-vial-circle-check"></i></div>
+      <div class="card-title">Pruebas Unitarias en Java</div>
+      <p class="card-desc">Introducción a JUnit en BlueJ. Estructura de casos de prueba, fixtures, aserciones y metodología de prueba unitaria en Java.</p>
+      <div class="card-meta">
+        <span class="tag">DOPO</span>
+        <span class="slides-count"><i class="fa-solid fa-clone"></i> 9 diapositivas</span>
+      </div>
+      <div class="open-btn">ABRIR PRESENTACIÓN <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+  </div>
+
+  <footer>
+    <p>
+      Repositorio completo del curso en
+      <a href="https://github.com/fis-eci/software-foundations-eci" target="_blank" rel="noopener">
+        <i class="fa-brands fa-github"></i> fis-eci/software-foundations-eci
+      </a>
+    </p>
+    <p class="footer-author">
+      Andersson David Sánchez Méndez — Monitor MYSD &amp; DOPO ·
+      <a href="https://github.com/AnderssonProgramming" target="_blank" rel="noopener">github.com/AnderssonProgramming</a>
+    </p>
+  </footer>
+
+</body>
+</html>
