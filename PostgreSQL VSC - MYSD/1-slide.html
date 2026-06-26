@@ -39,10 +39,6 @@
   .gd4{width:8px;height:8px;background:#00D4FF;box-shadow:0 0 20px 4px rgba(0,212,255,0.5);bottom:160px;right:360px;}
   .gd5{width:6px;height:6px;background:#4FC3F7;box-shadow:0 0 16px 4px rgba(79,195,247,0.4);top:440px;left:52px;}
 
-  /* ── Big faded background number ── */
-  .bg-num{position:absolute;bottom:-30px;right:20px;font-family:'Orbitron',sans-serif;font-size:320px;font-weight:900;
-    color:transparent;-webkit-text-stroke:1px rgba(79,195,247,0.05);line-height:1;pointer-events:none;user-select:none;}
-
   /* ── Vertical accent line ── */
   .vline{position:absolute;left:50px;top:120px;width:4px;height:280px;
     background:linear-gradient(to bottom,#4FC3F7,rgba(0,122,204,0.3),transparent);border-radius:2px;}
@@ -105,14 +101,14 @@
   .fcard.fc1 .fc-val{color:#4FC3F7;}
   .fcard.fc2 .fc-val{color:#FF6B35;}
 
-  /* ── Tech stack pills (right side bottom) ── */
-  .stack{position:absolute;right:56px;top:530px;width:310px;
-    background:rgba(10,20,50,0.5);backdrop-filter:blur(10px);
-    border:1px solid rgba(79,195,247,0.15);border-radius:10px;padding:14px 18px;}
-  .stack-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#4FC3F7;margin-bottom:10px;opacity:0.8;}
-  .pills{display:flex;flex-wrap:wrap;gap:7px;}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 12px;border-radius:20px;
-    background:rgba(79,195,247,0.08);border:1px solid rgba(79,195,247,0.25);color:#C9D1D9;}
+  /* ── Right side extra info (bottom) ── */
+  .rextra{position:absolute;right:56px;top:530px;width:310px;
+    background:rgba(10,20,50,0.45);backdrop-filter:blur(10px);
+    border:1px solid rgba(79,195,247,0.12);border-radius:10px;padding:14px 18px;}
+  .rextra-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:#4FC3F7;margin-bottom:10px;opacity:0.7;}
+  .rextra-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .rextra-row i{color:#4FC3F7;font-size:11px;width:14px;text-align:center;}
+  .rextra-row span{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;}
 
   /* ── Code watermark ── */
   .watermark{position:absolute;right:32px;bottom:80px;font-family:'JetBrains Mono',monospace;font-size:12px;
@@ -147,9 +143,6 @@
   <div class="gd gd3"></div>
   <div class="gd gd4"></div>
   <div class="gd gd5"></div>
-
-  <!-- Big background number -->
-  <div class="bg-num">01</div>
 
   <!-- Code watermark -->
   <div class="watermark">
@@ -221,21 +214,16 @@
     </div>
   </div>
 
-  <!-- Tech stack pills -->
-  <div class="stack">
-    <div class="stack-title">TECH STACK</div>
-    <div class="pills">
-      <span class="pill">PostgreSQL 16</span>
-      <span class="pill">VS Code</span>
-      <span class="pill">SQLTools</span>
-      <span class="pill">Git</span>
-      <span class="pill">Java</span>
-    </div>
+  <!-- Extra info bottom-right -->
+  <div class="rextra">
+    <div class="rextra-title">ENTORNO DE TRABAJO</div>
+    <div class="rextra-row"><i class="fa-solid fa-plug"></i><span>Extensión: SQLTools + Driver PostgreSQL</span></div>
+    <div class="rextra-row"><i class="fa-solid fa-code-branch"></i><span>Scripts .sql versionados con Git</span></div>
+    <div class="rextra-row"><i class="fa-solid fa-ban"></i><span>Sin asistentes de IA — modo vainilla</span></div>
   </div>
 
   <!-- Footer -->
   <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
-  <div class="footer-r">PostgreSQL · MYSD</div>
 
   <!-- Bottom tricolor bar -->
   <div class="tricolor"><div></div><div></div><div></div></div>
@@ -243,3 +231,24 @@
 </div>
 </body>
 </html>
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

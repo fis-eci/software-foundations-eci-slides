@@ -192,10 +192,6 @@
   .gd4{width:8px;height:8px;background:#00D4FF;box-shadow:0 0 20px 4px rgba(0,212,255,0.5);bottom:160px;right:360px;}
   .gd5{width:6px;height:6px;background:#4FC3F7;box-shadow:0 0 16px 4px rgba(79,195,247,0.4);top:440px;left:52px;}
 
-  /* ── Big faded background number ── */
-  .bg-num{position:absolute;bottom:-30px;right:20px;font-family:'Orbitron',sans-serif;font-size:320px;font-weight:900;
-    color:transparent;-webkit-text-stroke:1px rgba(79,195,247,0.05);line-height:1;pointer-events:none;user-select:none;}
-
   /* ── Vertical accent line ── */
   .vline{position:absolute;left:50px;top:120px;width:4px;height:280px;
     background:linear-gradient(to bottom,#4FC3F7,rgba(0,122,204,0.3),transparent);border-radius:2px;}
@@ -258,14 +254,14 @@
   .fcard.fc1 .fc-val{color:#4FC3F7;}
   .fcard.fc2 .fc-val{color:#FF6B35;}
 
-  /* ── Tech stack pills (right side bottom) ── */
-  .stack{position:absolute;right:56px;top:530px;width:310px;
-    background:rgba(10,20,50,0.5);backdrop-filter:blur(10px);
-    border:1px solid rgba(79,195,247,0.15);border-radius:10px;padding:14px 18px;}
-  .stack-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#4FC3F7;margin-bottom:10px;opacity:0.8;}
-  .pills{display:flex;flex-wrap:wrap;gap:7px;}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 12px;border-radius:20px;
-    background:rgba(79,195,247,0.08);border:1px solid rgba(79,195,247,0.25);color:#C9D1D9;}
+  /* ── Right side extra info (bottom) ── */
+  .rextra{position:absolute;right:56px;top:530px;width:310px;
+    background:rgba(10,20,50,0.45);backdrop-filter:blur(10px);
+    border:1px solid rgba(79,195,247,0.12);border-radius:10px;padding:14px 18px;}
+  .rextra-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:#4FC3F7;margin-bottom:10px;opacity:0.7;}
+  .rextra-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .rextra-row i{color:#4FC3F7;font-size:11px;width:14px;text-align:center;}
+  .rextra-row span{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;}
 
   /* ── Code watermark ── */
   .watermark{position:absolute;right:32px;bottom:80px;font-family:'JetBrains Mono',monospace;font-size:12px;
@@ -300,9 +296,6 @@
   <div class="gd gd3"></div>
   <div class="gd gd4"></div>
   <div class="gd gd5"></div>
-
-  <!-- Big background number -->
-  <div class="bg-num">01</div>
 
   <!-- Code watermark -->
   <div class="watermark">
@@ -374,21 +367,16 @@
     </div>
   </div>
 
-  <!-- Tech stack pills -->
-  <div class="stack">
-    <div class="stack-title">TECH STACK</div>
-    <div class="pills">
-      <span class="pill">PostgreSQL 16</span>
-      <span class="pill">VS Code</span>
-      <span class="pill">SQLTools</span>
-      <span class="pill">Git</span>
-      <span class="pill">Java</span>
-    </div>
+  <!-- Extra info bottom-right -->
+  <div class="rextra">
+    <div class="rextra-title">ENTORNO DE TRABAJO</div>
+    <div class="rextra-row"><i class="fa-solid fa-plug"></i><span>Extensión: SQLTools + Driver PostgreSQL</span></div>
+    <div class="rextra-row"><i class="fa-solid fa-code-branch"></i><span>Scripts .sql versionados con Git</span></div>
+    <div class="rextra-row"><i class="fa-solid fa-ban"></i><span>Sin asistentes de IA — modo vainilla</span></div>
   </div>
 
   <!-- Footer -->
   <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
-  <div class="footer-r">PostgreSQL · MYSD</div>
 
   <!-- Bottom tricolor bar -->
   <div class="tricolor"><div></div><div></div><div></div></div>
@@ -396,6 +384,27 @@
 </div>
 </body>
 </html>
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
 `,
       `<!doctype html>
 <html lang="es">
@@ -461,7 +470,6 @@
   <div data-object="true" data-object-type="shape" class="tc tc2"></div>
   <div data-object="true" data-object-type="shape" class="gd gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">02</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;">
@@ -502,7 +510,7 @@
   </div>
 
   <div data-object="true" data-object-type="textbox" class="footer" style="position:absolute;bottom:14px;left:50px;">MYSD • PostgreSQL • VS Code</div>
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -577,7 +585,6 @@
   <div data-object="true" data-object-type="shape" class="tc2"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">03</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">FILOSOFÍA</span></div>
@@ -624,7 +631,7 @@
     <i class="fa-solid fa-book-open"></i>&nbsp; Configuración completa: <b>Guía VS Code Vainilla → sección MYSD (PostgreSQL)</b>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -699,7 +706,6 @@
   <div data-object="true" data-object-type="shape" class="tc2"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">04</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">EXTENSIONES</span></div>
@@ -751,7 +757,7 @@
     <span>Antes de continuar, aplica la <b>configuración Vainilla para MYSD</b> según la Guía VS Code Vainilla del curso.</span>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -819,7 +825,6 @@
   <div data-object="true" data-object-type="shape" class="tc1"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">05</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">CONEXIÓN REMOTA</span></div>
@@ -882,7 +887,7 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── tu_usuario
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -950,7 +955,6 @@
   <div data-object="true" data-object-type="shape" class="tc1"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">06</div>
 
   <div data-object="true" data-object-type="textbox" class="watermark" style="position:absolute;right:60px;bottom:140px;">
     CREATE DATABASE mi_proyecto;<br>
@@ -1006,7 +1010,7 @@
     <span>La conexión local es tu <b>laboratorio personal</b>. Úsala para practicar sin afectar el servidor compartido de la Escuela.</span>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1087,7 +1091,6 @@
   <div data-object="true" data-object-type="shape" class="tc2"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">07</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">FLUJO DE TRABAJO</span></div>
@@ -1150,7 +1153,7 @@
     <div class="footnote">Esto reemplaza el <b>Object Navigator</b> de Oracle SQL Developer.</div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1224,7 +1227,6 @@
   <div data-object="true" data-object-type="shape" class="tc1"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">08</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">CONTROL DE VERSIONES</span></div>
@@ -1270,7 +1272,7 @@
     <b>Principio:</b> Un <code>commit</code> = un cambio atómico con propósito claro.
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1340,7 +1342,6 @@
   <div data-object="true" data-object-type="shape" class="tc1"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">09</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">BUENAS PRÁCTICAS</span></div>
@@ -1391,7 +1392,7 @@
 <span class="cmt">-- Luego: clic derecho sobre la conexión → <span class="act">Disconnect</span></span></pre>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1462,7 +1463,6 @@
   <div data-object="true" data-object-type="shape" class="tc2"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">10</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">COMPARATIVA</span></div>
@@ -1509,7 +1509,7 @@
     <span>Ambos entornos te enseñan los <b>mismos conceptos</b> de SQL relacional. La diferencia es el motor y la herramienta — la lógica de <code>SELECT</code>, <code>JOIN</code>, <code>CREATE TABLE</code> es <b>estándar SQL</b>.</span>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1548,10 +1548,6 @@
   .gd1{width:10px;height:10px;background:#4FC3F7;box-shadow:0 0 24px 6px rgba(79,195,247,0.5);top:130px;left:48px;}
   .gd2{width:10px;height:10px;background:#FF6B35;box-shadow:0 0 24px 6px rgba(255,107,53,0.5);bottom:170px;right:72px;}
   .gd3{width:8px;height:8px;background:#00D4FF;box-shadow:0 0 18px 4px rgba(0,212,255,0.4);top:380px;left:620px;}
-
-  /* Big bg number */
-  .bg-num{position:absolute;bottom:-20px;right:30px;font-family:'Orbitron',sans-serif;font-size:280px;font-weight:900;
-    color:transparent;-webkit-text-stroke:1px rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;}
 
   /* Header */
   .hb{position:absolute;top:0;left:0;width:1280px;height:78px;
@@ -1624,8 +1620,6 @@
   <div class="gd gd1"></div>
   <div class="gd gd2"></div>
   <div class="gd gd3"></div>
-  <div class="bg-num">11</div>
-
   <!-- Header -->
   <div class="hb"></div>
   <div style="position:absolute;top:24px;left:50px;"><span class="chip">PRÁCTICA</span></div>
@@ -1673,7 +1667,6 @@
   </a>
 
   <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
-  <div class="footer-r">PostgreSQL · MYSD</div>
   <div class="tricolor"><div></div><div></div><div></div></div>
 
 </div>
@@ -1744,7 +1737,6 @@
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
   <div data-object="true" data-object-type="shape" class="gd3"></div>
-  <div style="position:absolute;bottom:80px;right:40px;font-family:'Orbitron',sans-serif;font-size:200px;font-weight:900;color:rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;z-index:0;">12</div>
 
   <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
   <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">CIERRE</span></div>
@@ -1809,7 +1801,7 @@
     « <b>Scripts versionados</b>, <b>servidor limpio</b> y <b>consultas conscientes</b> — así trabaja un ingeniero responsable. »
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">PostgreSQL · MYSD</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
   <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -1848,10 +1840,6 @@
   .gd1{width:10px;height:10px;background:#4FC3F7;box-shadow:0 0 24px 6px rgba(79,195,247,0.5);top:100px;left:60px;}
   .gd2{width:10px;height:10px;background:#00FF88;box-shadow:0 0 24px 6px rgba(0,255,136,0.4);bottom:180px;right:100px;}
   .gd3{width:8px;height:8px;background:#FF6B35;box-shadow:0 0 18px 4px rgba(255,107,53,0.4);top:500px;left:600px;}
-
-  /* Bg number */
-  .bg-num{position:absolute;bottom:-20px;right:20px;font-family:'Orbitron',sans-serif;font-size:280px;font-weight:900;
-    color:transparent;-webkit-text-stroke:1px rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;}
 
   /* Header */
   .hb{position:absolute;top:0;left:0;width:1280px;height:78px;
@@ -1950,8 +1938,6 @@
   <div class="gd gd1"></div>
   <div class="gd gd2"></div>
   <div class="gd gd3"></div>
-  <div class="bg-num">13</div>
-
   <!-- Header -->
   <div class="hb"></div>
   <div style="position:absolute;top:24px;left:50px;"><span class="chip">CONTACTO</span></div>
@@ -2035,7 +2021,6 @@
   </div>
 
   <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
-  <div class="footer-r">PostgreSQL · MYSD</div>
   <div class="tricolor"><div></div><div></div><div></div></div>
 
 </div>
