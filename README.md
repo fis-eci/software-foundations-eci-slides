@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/Licencia-Apache%202.0-blue.svg)](./LICENSE)
 [![HTML](https://img.shields.io/badge/Tecnología-HTML%20%2B%20CSS-orange.svg)](.)
-[![Slides](https://img.shields.io/badge/Diapositivas-36%20slides-blue.svg)](.)
+[![Slides](https://img.shields.io/badge/Diapositivas-60%20slides-blue.svg)](.)
 [![Institución](https://img.shields.io/badge/ECI-Julio%20Garavito-red.svg)](https://www.escuelaing.edu.co)
 
 <br/>
@@ -30,13 +30,16 @@
 
 ## 🗂️ Presentaciones Disponibles
 
-Este repositorio genera **3 presentaciones de una sola página** (archivos `.html` auto-contenidos), una por cada tema:
+Este repositorio genera **6 presentaciones de una sola página** (archivos `.html` auto-contenidos), una por cada tema:
 
 | # | Archivo | Tema | Slides | Cursos |
 |---|---------|------|:------:|--------|
 | 1 | [`CVS-presentation.html`](./CVS-presentation.html) | Control de Versiones con Git & GitHub | 16 | MYSD & DOPO |
-| 2 | [`OracleSQL-presentation.html`](./OracleSQL-presentation.html) | Entornos Oracle SQL Developer | 11 | MYSD |
-| 3 | [`PruebasUnitarias-presentation.html`](./PruebasUnitarias-presentation.html) | Pruebas Unitarias en Java (JUnit + BlueJ) | 9 | DOPO |
+| 2 | [`PruebasUnitarias-presentation.html`](./PruebasUnitarias-presentation.html) | Pruebas Unitarias en Java (JUnit + BlueJ) | 9 | DOPO |
+| 3 | [`OracleSQL-presentation.html`](./OracleSQL-presentation.html) | Entornos Oracle SQL Developer | 11 | MYSD |
+| 4 | [`SQL-PostgreVSC-presentation.html`](./SQL-PostgreVSC-presentation.html) | PostgreSQL en VS Code | 12 | MYSD |
+| 5 | [`Analisis-Eclipse-presentation.html`](./Analisis-Eclipse-presentation.html) | Análisis de Software en Eclipse IDE | 15 | DOPO |
+| 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 13 | DOPO |
 
 ### 🎨 Temas visuales por mazo
 
@@ -58,8 +61,11 @@ Accede directamente desde el navegador mediante **GitHub Pages**:
 |---|---|
 | Página principal | 🔗 [fis-eci.github.io/software-foundations-eci-slides](https://fis-eci.github.io/software-foundations-eci-slides/) |
 | Control de Versiones (CVS) | 🔗 [CVS-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/CVS-presentation.html) |
-| Oracle SQL Developer | 🔗 [OracleSQL-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/OracleSQL-presentation.html) |
 | Pruebas Unitarias | 🔗 [PruebasUnitarias-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/PruebasUnitarias-presentation.html) |
+| Oracle SQL Developer | 🔗 [OracleSQL-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/OracleSQL-presentation.html) |
+| PostgreSQL en VS Code | 🔗 [SQL-PostgreVSC-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/SQL-PostgreVSC-presentation.html) |
+| Análisis Software Eclipse | 🔗 [Analisis-Eclipse-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/Analisis-Eclipse-presentation.html) |
+| Análisis Software VS Code | 🔗 [Analisis-VSC-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/Analisis-VSC-presentation.html) |
 
 ### Opción B — Abrir localmente
 

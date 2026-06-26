@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis de Software VSC — DOPO</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Stage: the area above the nav bar where the slide lives */
+    #stage {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 52px;
+      overflow: hidden;
+    }
+
+    /* The iframe is positioned absolutely and scaled via JS transform */
+    #slide-frame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1280px;
+      height: 720px;
+      border: none;
+      display: block;
+      transform-origin: top left;
+      /* transform is set dynamically by scaleSlide() */
+    }
+
+    /* Progress bar sits just above the nav bar */
+    #progress-wrap {
+      position: fixed;
+      bottom: 52px; left: 0; right: 0;
+      height: 3px;
+      background: #21262d;
+      z-index: 9998;
+    }
+    #progress-bar {
+      height: 100%;
+      background: #58a6ff;
+      transition: width 0.2s ease;
+    }
+
+    /* Navigation bar */
+    #nav-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13, 17, 23, 0.97);
+      border-top: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      z-index: 9999;
+    }
+
+    .nbtn {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 5px 13px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .nbtn:hover  { background: #30363d; }
+    .nbtn:disabled { opacity: 0.3; cursor: default; }
+
+    #counter {
+      color: #8b949e;
+      font-size: 13px;
+      flex-shrink: 0;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    #slide-title {
+      color: #c9d1d9;
+      font-size: 13px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #jump-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    #jump-label { color: #8b949e; font-size: 12px; }
+    #jump-input {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 13px;
+      width: 48px;
+      text-align: center;
+    }
+    #jump-input:focus { outline: none; border-color: #58a6ff; }
+
+    #btn-fs {
+      background: transparent;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #btn-fs:hover { color: #c9d1d9; background: #21262d; }
+
+    .hint { color: #484f58; font-size: 11px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <iframe id="slide-frame" srcdoc=""></iframe>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <div id="nav-bar">
+    <button class="nbtn" id="btn-prev">&#9664; Anterior</button>
+    <span id="counter">1 / 13</span>
+    <span id="slide-title">Análisis de Software VSC — DOPO</span>
+    <div id="jump-wrap">
+      <span id="jump-label">Ir a:</span>
+      <input id="jump-input" type="number" min="1" max="13" value="1">
+    </div>
+    <button class="nbtn" id="btn-next">Siguiente &#9654;</button>
+    <button id="btn-fs" title="Pantalla completa (F)">&#x26F6;</button>
+    <span class="hint">&#8592; &#8594; &nbsp;Espacio</span>
+  </div>
+
+  <script>
+    var SLIDES = [
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Portada — Análisis VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .glow{position:absolute;top:-180px;right:-180px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,122,204,0.28) 0%,rgba(0,122,204,0) 65%);z-index:1}
+  .deco-code{position:absolute;top:60px;right:80px;font-size:200px;color:rgba(0,122,204,0.07);z-index:1}
+  .deco-terminal{position:absolute;bottom:60px;left:60px;font-size:140px;color:rgba(79,195,247,0.06);z-index:1}
+  .content{position:absolute;left:80px;top:90px;width:1120px;z-index:10}
+  .badge{display:inline-block;background:#007ACC;color:#fff;padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:2px;border-radius:4px;font-family:'Roboto Mono',monospace}
+  .title{font-size:62px;font-weight:700;line-height:1.05;margin-top:28px;color:#fff;letter-spacing:-1px}
+  .title .accent{color:#007ACC;display:block}
+  .subtitle{font-size:22px;color:#8B949E;font-weight:300;margin-top:22px;max-width:880px;line-height:1.4}
+  .cards{display:flex;gap:18px;margin-top:46px}
+  .card{flex:1;background:#161B22;border:1px solid #30363D;border-radius:8px;padding:20px 18px;border-left:4px solid;position:relative}
+  .card.c1{border-left-color:#4A90D9}
+  .card.c2{border-left-color:#F89820}
+  .card.c3{border-left-color:#2EA44F}
+  .card.c4{border-left-color:#DA3633}
+  .card .ico{font-size:24px;margin-bottom:10px}
+  .card.c1 .ico{color:#4A90D9}
+  .card.c2 .ico{color:#F89820}
+  .card.c3 .ico{color:#2EA44F}
+  .card.c4 .ico{color:#DA3633}
+  .card .name{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+  .card .role{font-size:12px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1px;text-transform:uppercase}
+  .author{position:absolute;left:80px;bottom:60px;display:flex;align-items:center;gap:14px;background:#161B22;border:1px solid #30363D;border-radius:40px;padding:8px 22px 8px 8px;z-index:10}
+  .author .avatar{width:44px;height:44px;border-radius:50%;background:#007ACC;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .author .name{font-size:15px;font-weight:700;color:#fff}
+  .author .role{font-size:11px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1px}
+  .footer{position:absolute;right:80px;bottom:70px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="01 Portada">
+  <div class="glow"></div>
+  <i class="fas fa-code deco-code"></i>
+  <i class="fas fa-terminal deco-terminal"></i>
+
+  <div class="content">
+    <span class="badge">UNIDAD DE APRENDIZAJE • NIVEL PROFESIONAL</span>
+    <h1 class="title">Análisis de Software en<span class="accent">Visual Studio Code</span></h1>
+    <p class="subtitle">Guía para estudiantes de DOPO — Entorno moderno con filosofía Vainilla</p>
+
+    <div class="cards">
+      <div class="card c1">
+        <div class="ico"><i class="fas fa-search"></i></div>
+        <div class="name">SonarLint</div>
+        <div class="role">Diseño</div>
+      </div>
+      <div class="card c2">
+        <div class="ico"><i class="fas fa-shield-halved"></i></div>
+        <div class="name">PMD</div>
+        <div class="role">Calidad</div>
+      </div>
+      <div class="card c3">
+        <div class="ico"><i class="fas fa-chart-bar"></i></div>
+        <div class="name">JaCoCo + Coverage Gutters</div>
+        <div class="role">Cobertura</div>
+      </div>
+      <div class="card c4">
+        <div class="ico"><i class="fas fa-dna"></i></div>
+        <div class="name">PIT + Maven</div>
+        <div class="role">Mutación</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="author">
+    <div class="avatar">A</div>
+    <div>
+      <div class="name">Andersson David Sánchez Méndez</div>
+      <div class="role">MONITOR DOPO</div>
+    </div>
+  </div>
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Prerrequisitos y Extensiones</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:140px;color:rgba(0,122,204,0.05);z-index:1}
+  .content{position:absolute;top:110px;left:60px;width:1160px;z-index:10}
+  .prereqs{display:flex;gap:18px;margin-bottom:22px}
+  .preq{flex:1;background:#161B22;border:1px solid #30363D;border-top:3px solid;border-radius:8px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+  .preq.p1{border-top-color:#2EA44F}
+  .preq.p2{border-top-color:#007ACC}
+  .preq .ico{font-size:28px;flex-shrink:0;margin-top:2px}
+  .preq.p1 .ico{color:#2EA44F}
+  .preq.p2 .ico{color:#007ACC}
+  .preq .title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+  .preq .desc{font-size:13px;color:#C9D1D9;line-height:1.4}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .table .row{display:flex;border-bottom:1px solid #30363D}
+  .table .row:last-child{border-bottom:none}
+  .table .row.head{background:#21262D;font-weight:700;color:#fff;font-size:13px;font-family:'Roboto Mono',monospace;letter-spacing:1px;text-transform:uppercase}
+  .table .row.alt{background:#21262D}
+  .table .cell{padding:11px 18px;font-size:13px;color:#C9D1D9}
+  .table .cell.c1{flex:0 0 320px;color:#4FC3F7;font-weight:700;font-family:'Roboto Mono',monospace;border-right:1px solid #30363D}
+  .table .row.head .cell.c1{color:#fff}
+  .table .cell.c2{flex:1}
+  .note{margin-top:14px;background:rgba(0,122,204,0.08);border-left:3px solid #007ACC;padding:10px 16px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .note i{color:#4FC3F7;margin-right:8px}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="02 Prerrequisitos">
+  <div class="header"><span class="h-badge">PRERREQUISITOS</span><span class="h-title">Antes de Empezar: Extensiones Requeridas</span></div>
+  <i class="fas fa-puzzle-piece deco"></i>
+
+  <div class="content">
+    <div class="prereqs">
+      <div class="preq p1">
+        <div class="ico"><i class="fas fa-check-circle"></i></div>
+        <div>
+          <div class="title">Teoría completada</div>
+          <div class="desc">Has estudiado la Unidad 4 principal: los 4 análisis y el ejemplo CuentaBancaria.</div>
+        </div>
+      </div>
+      <div class="preq p2">
+        <div class="ico"><i class="fas fa-sliders"></i></div>
+        <div>
+          <div class="title">VS Code Vainilla configurado</div>
+          <div class="desc">Tienes el settings.json aplicado según la Guía VS Code Vainilla del curso.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="row head"><div class="cell c1">Extensión</div><div class="cell c2">Propósito en esta unidad</div></div>
+      <div class="row"><div class="cell c1">Extension Pack for Java</div><div class="cell c2">Compilación, ejecución y gestión del proyecto</div></div>
+      <div class="row alt"><div class="cell c1">Java Test Runner</div><div class="cell c2">Ejecución de pruebas JUnit desde VS Code</div></div>
+      <div class="row"><div class="cell c1">JaCoCo (externa)</div><div class="cell c2">Generación del reporte de cobertura</div></div>
+      <div class="row alt"><div class="cell c1">Coverage Gutters</div><div class="cell c2">Visualización de cobertura en el editor</div></div>
+      <div class="row"><div class="cell c1">PMD</div><div class="cell c2">Análisis estático de calidad</div></div>
+      <div class="row alt"><div class="cell c1">SonarLint</div><div class="cell c2">Análisis de diseño en tiempo real</div></div>
+    </div>
+
+    <div class="note"><i class="fas fa-info-circle"></i>Si alguna extensión falta, instálala desde el panel de extensiones (<b>Ctrl+Shift+X</b>) siguiendo la Guía VS Code Vainilla.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Panorama — Los 4 Análisis</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:140px;color:rgba(0,122,204,0.05);z-index:1}
+  .content{position:absolute;top:108px;left:60px;width:1160px;z-index:10}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .row{display:flex;border-bottom:1px solid #30363D;align-items:stretch}
+  .row:last-child{border-bottom:none}
+  .row.head{background:#21262D;font-weight:700;color:#fff;font-size:12px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .row.alt{background:#21262D}
+  .cell{padding:18px 22px;font-size:14px;color:#C9D1D9;display:flex;align-items:center;box-sizing:border-box}
+  .c-tool{flex:0 0 280px;border-right:1px solid #30363D;gap:14px;font-weight:700;font-size:15px}
+  .c-tool .ico{font-size:24px;width:30px;text-align:center}
+  .c-cmd{flex:1;border-right:1px solid #30363D;font-family:'Roboto Mono',monospace;font-size:13px;color:#4FC3F7}
+  .c-result{flex:0 0 340px;font-family:'Roboto Mono',monospace;font-size:13px;color:#C9D1D9}
+  .row.head .cell{color:#fff;font-family:'Roboto Mono',monospace}
+  .ico-sonar{color:#4A90D9}.ico-pmd{color:#F89820}.ico-jacoco{color:#2EA44F}.ico-pit{color:#DA3633}
+  .note{margin-top:24px;background:rgba(0,122,204,0.08);border-left:3px solid #007ACC;padding:14px 18px;font-size:13px;color:#C9D1D9;border-radius:4px;max-width:780px}
+  .note b{color:#4FC3F7}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="03 Panorama">
+  <div class="header"><span class="h-badge">PANORAMA</span><span class="h-title">Los 4 Análisis — Cómo se Ejecutan en VS Code</span></div>
+  <i class="fas fa-layer-group deco"></i>
+
+  <div class="content">
+    <div class="table">
+      <div class="row head">
+        <div class="cell c-tool">Herramienta</div>
+        <div class="cell c-cmd">Cómo ejecutar en VS Code</div>
+        <div class="cell c-result">Ver resultado en</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-sonar"><i class="fas fa-search"></i></span><span>SonarLint</span></div>
+        <div class="cell c-cmd">Automático al escribir/guardar</div>
+        <div class="cell c-result">Vista Problems (Ctrl+Shift+M)</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pmd"><i class="fas fa-shield-halved"></i></span><span>PMD</span></div>
+        <div class="cell c-cmd">Ctrl+Shift+P → PMD: Run</div>
+        <div class="cell c-result">Vista Problems (Ctrl+Shift+M)</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-jacoco"><i class="fas fa-chart-bar"></i></span><span>JaCoCo</span></div>
+        <div class="cell c-cmd">Testing 🧪 → Run All Tests → Coverage Gutters: Display Coverage</div>
+        <div class="cell c-result">Líneas coloreadas en el editor</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pit"><i class="fas fa-dna"></i></span><span>PIT</span></div>
+        <div class="cell c-cmd">Terminal: mvn pitest:mutationCoverage</div>
+        <div class="cell c-result">target/pit-reports/index.html</div>
+      </div>
+    </div>
+
+    <div class="note"><b>Caso de estudio:</b> clase <b>CuentaBancaria</b> con dos defectos intencionales — el mismo ejemplo de la Unidad 4.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SonarLint en VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#4A90D9;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(74,144,217,0.05);z-index:1}
+  .col-left{position:absolute;top:100px;left:60px;width:560px;z-index:10}
+  .col-right{position:absolute;top:100px;left:660px;width:560px;z-index:10}
+  .intro{font-size:13px;color:#C9D1D9;line-height:1.5;background:#161B22;border-left:3px solid #4A90D9;padding:12px 14px;border-radius:4px}
+  .steps{margin-top:14px}
+  .step{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+  .step-num{flex-shrink:0;width:26px;height:26px;background:#4A90D9;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:'Roboto Mono',monospace}
+  .step-txt{font-size:12.5px;color:#C9D1D9;line-height:1.45;padding-top:3px}
+  .mini-title{font-size:11px;font-weight:700;color:#4FC3F7;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:18px;margin-bottom:8px}
+  .mini-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .mt-row{display:flex;padding:8px 12px;font-size:12px;color:#C9D1D9;border-bottom:1px solid #30363D}
+  .mt-row:last-child{border-bottom:none}
+  .mt-row:nth-child(even){background:#21262D}
+  .mt-num{flex-shrink:0;width:22px;color:#4A90D9;font-weight:700;font-family:'Roboto Mono',monospace}
+  .editor{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .ed-tab{background:#252526;padding:7px 14px;font-size:11px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .ed-tab .red-dot{display:inline-block;width:8px;height:8px;background:#DA3633;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .problem{padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11.5px;color:#D29922;border-bottom:1px solid #30363D;background:#1E1E1E}
+  .problem .err{color:#DA3633;font-weight:700}
+  .problem .file{color:#4FC3F7}
+  .problem .line{color:#8B949E}
+  .code{padding:12px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.7}
+  .code .err-underline{border-bottom:2px dotted #DA3633;padding-bottom:1px}
+  .code .ok{color:#2EA44F}
+  .code .key{color:#569CD6}
+  .code .label{font-size:10px;color:#8B949E;display:block;margin-top:4px;font-family:'Roboto Mono',monospace}
+  .arrow{text-align:center;color:#4FC3F7;font-size:16px;margin:4px 0}
+  .activity{margin-top:14px;background:rgba(248,152,32,0.08);border-left:3px solid #F89820;padding:11px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#F89820}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="04 SonarLint">
+  <div class="header"><span class="h-badge">ANÁLISIS 1</span><span class="h-title">🔵 SonarLint — Análisis de Diseño en Tiempo Real</span></div>
+  <i class="fas fa-search deco"></i>
+
+  <div class="col-left">
+    <div class="intro">SonarLint analiza <b>automáticamente</b> al escribir y guardar. No requiere ejecutar ningún comando.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-txt">Los problemas aparecen <b>subrayados</b> en el editor según severidad</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-txt"><b>Ctrl+Shift+M</b> abre la vista Problems con todos los incidentes por archivo</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-txt">Clic sobre el incidente → navega a la línea afectada</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-txt">El panel de SonarLint describe la regla y sugiere corrección</div></div>
+    </div>
+
+    <div class="mini-title">Flujo de Resolución</div>
+    <div class="mini-table">
+      <div class="mt-row"><div class="mt-num">1</div>Identifica incidente de mayor severidad en Problems</div>
+      <div class="mt-row"><div class="mt-num">2</div>Navega → lee la regla violada</div>
+      <div class="mt-row"><div class="mt-num">3</div>Documenta: ¿Por qué es relevante? ¿Qué principio viola?</div>
+      <div class="mt-row"><div class="mt-num">4</div>Aplica → verifica que el subrayado desaparece</div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title" style="margin-top:0">Demo: Vista Problems</div>
+    <div class="editor">
+      <div class="ed-tab"><span class="red-dot"></span>PROBLEMS — 1</div>
+      <div class="problem"><span class="err">●</span> <span class="file">CuentaBancaria.java</span> <span class="line">[line 8]</span><br>SonarLint: "Use '<b style="color:#fff">&amp;&amp;</b>' instead of non short-circuit operator '<b style="color:#DA3633">&amp;</b>'"</div>
+      <div class="code">
+        <span class="label">// Código original</span>
+        <span class="key">if</span> (monto &gt; 0 <span class="err-underline">&amp;</span> monto &lt;= saldo) {<br>
+        <span class="label" style="color:#DA3633">↑ subrayado en rojo</span>
+      </div>
+    </div>
+
+    <div class="arrow">↓ corrección</div>
+
+    <div class="editor">
+      <div class="ed-tab" style="color:#2EA44F"><i class="fas fa-check"></i> CORRECCIÓN APLICADA</div>
+      <div class="code">
+        <span class="key">if</span> (monto &gt; 0 <span class="ok">&amp;&amp;</span> monto &lt;= saldo) { <span class="ok">✓</span>
+      </div>
+    </div>
+
+    <div class="activity"><b>⏸️ Pausa</b> cuando veas el subrayado. ¿Puedes escribir la corrección antes de que el monitor lo haga?</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PMD en VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#F89820;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(248,152,32,0.05);z-index:1}
+  .col-left{position:absolute;top:100px;left:60px;width:560px;z-index:10}
+  .col-right{position:absolute;top:100px;left:660px;width:560px;z-index:10}
+  .palette{background:#3C3C3C;border-radius:8px;padding:12px 16px;border:1px solid #4a4a4a}
+  .palette-label{font-size:10px;color:#969696;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+  .palette-input{background:#1E1E1E;padding:8px 12px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:13px;color:#C9D1D9;border:1px solid #555}
+  .palette-input .prompt{color:#F89820;margin-right:6px}
+  .palette-opt{padding:7px 12px;background:#094771;font-family:'Roboto Mono',monospace;font-size:12px;color:#fff;margin-top:6px;border-radius:3px}
+  .steps{margin-top:14px}
+  .step{display:flex;gap:12px;margin-bottom:9px;align-items:flex-start}
+  .step-num{flex-shrink:0;width:26px;height:26px;background:#F89820;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:'Roboto Mono',monospace}
+  .step-txt{font-size:12.5px;color:#C9D1D9;line-height:1.4;padding-top:3px}
+  .mini-title{font-size:11px;font-weight:700;color:#F89820;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:14px;margin-bottom:8px}
+  .mini-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .mt-row{display:flex;padding:7px 12px;font-size:11.5px;color:#C9D1D9;border-bottom:1px solid #30363D}
+  .mt-row:last-child{border-bottom:none}
+  .mt-row:nth-child(even){background:#21262D}
+  .mt-num{flex-shrink:0;width:24px;color:#F89820;font-weight:700;font-family:'Roboto Mono',monospace}
+  .incident{background:#161B22;border:1px solid #30363D;border-left:3px solid #F89820;border-radius:6px;padding:11px 14px;margin-bottom:10px}
+  .inc-title{font-size:11px;color:#F89820;font-family:'Roboto Mono',monospace;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+  .inc-msg{font-size:12.5px;color:#C9D1D9;line-height:1.4}
+  .editor{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .ed-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .code{padding:11px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.6}
+  .code .key{color:#569CD6}
+  .code .com{color:#6A9955}
+  .code .str{color:#CE9178}
+  .result-ok{background:rgba(46,164,79,0.1);border:1px solid #2EA44F;border-radius:6px;padding:9px 14px;color:#2EA44F;font-family:'Roboto Mono',monospace;font-size:13px;font-weight:700}
+  .activity{margin-top:12px;background:rgba(248,152,32,0.08);border-left:3px solid #F89820;padding:10px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#F89820}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="05 PMD">
+  <div class="header"><span class="h-badge">ANÁLISIS 2</span><span class="h-title">🟠 PMD — Análisis de Calidad vía Paleta de Comandos</span></div>
+  <i class="fas fa-shield-halved deco"></i>
+
+  <div class="col-left">
+    <div class="palette">
+      <div class="palette-label"><i class="fas fa-terminal"></i> &nbsp;Paleta de Comandos — Ctrl+Shift+P</div>
+      <div class="palette-input"><span class="prompt">&gt;</span>PMD: Run</div>
+      <div class="palette-opt"><i class="fas fa-play"></i> &nbsp;PMD: Run on current file</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-txt"><b>Ctrl+Shift+P</b> → escribe <b>PMD: Run</b></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-txt">Selecciona el archivo o carpeta a analizar</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-txt">Los resultados aparecen en la vista <b>Problems</b> clasificados por severidad</div></div>
+    </div>
+
+    <div class="mini-title">Flujo de Resolución</div>
+    <div class="mini-table">
+      <div class="mt-row"><div class="mt-num">1</div>Ordena por severidad en la vista Problems</div>
+      <div class="mt-row"><div class="mt-num">2</div>Selecciona el incidente más relevante</div>
+      <div class="mt-row"><div class="mt-num">3</div>Documenta: ¿Qué principio viola?</div>
+      <div class="mt-row"><div class="mt-num">4</div>Aplica la corrección</div>
+      <div class="mt-row"><div class="mt-num">5</div>Re-ejecuta PMD: Run → confirma que desapareció</div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="incident">
+      <div class="inc-title"><i class="fas fa-exclamation-triangle"></i> Incidente detectado</div>
+      <div class="inc-msg"><b>UnusedPrivateMethod:</b> Avoid unused private methods such as '<span style="color:#F89820;font-family:Roboto Mono">metodoInterno</span>'.</div>
+    </div>
+
+    <div class="editor">
+      <div class="ed-tab">CuentaBancaria.java</div>
+      <div class="code">
+        <span class="key">private void</span> metodoInterno() { <span class="com">// ← nunca llamado</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="str">"debug"</span>);<br>
+        }
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#F89820;font-size:14px;margin:6px 0">↓ Corrección: eliminar el método</div>
+
+    <div class="result-ok"><i class="fas fa-check-circle"></i> &nbsp;PMD: 0 violations found</div>
+
+    <div class="activity"><b>⏸️ Antes</b> de ver la solución, escribe en papel tu propuesta de corrección.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>JaCoCo + Coverage Gutters</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(46,164,79,0.05);z-index:1}
+  .steps-row{position:absolute;top:100px;left:60px;width:1160px;display:flex;gap:16px;align-items:stretch;z-index:10}
+  .step-card{flex:1;background:#161B22;border:1px solid #30363D;border-radius:8px;padding:16px 18px}
+  .step-card.s1{border-top:3px solid #2EA44F}
+  .step-card.s2{border-top:3px solid #007ACC}
+  .step-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .step-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .step-card.s1 .step-ico{background:rgba(46,164,79,0.15);color:#2EA44F}
+  .step-card.s2 .step-ico{background:rgba(0,122,204,0.15);color:#007ACC}
+  .step-label{font-size:10.5px;font-family:'Roboto Mono',monospace;color:#8B949E;letter-spacing:1.5px;text-transform:uppercase}
+  .step-title{font-size:16px;font-weight:700;color:#fff;margin-top:2px}
+  .step-body{font-size:12.5px;color:#C9D1D9;line-height:1.5;margin-top:8px}
+  .step-body code{background:#0D1117;color:#4FC3F7;padding:2px 6px;border-radius:3px;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .arrow-mid{position:absolute;top:158px;left:610px;font-size:30px;color:#4FC3F7;z-index:11;width:60px;text-align:center}
+  .legend{position:absolute;top:316px;left:60px;width:1160px;display:flex;gap:16px;z-index:10}
+  .leg{flex:1;background:#161B22;border:1px solid #30363D;border-radius:6px;padding:9px 14px;display:flex;align-items:center;gap:10px}
+  .leg-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+  .leg-dot.g{background:#2EA44F}.leg-dot.r{background:#DA3633}
+  .leg-txt{font-size:12px;color:#C9D1D9}
+  .leg-txt b{color:#fff}
+  .editor-area{position:absolute;top:382px;left:60px;width:680px;z-index:10}
+  .editor{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .ed-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .code-line{display:flex;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.7}
+  .gutter{width:6px;flex-shrink:0}
+  .gutter.g{background:#2EA44F}.gutter.r{background:#DA3633}
+  .ln{width:30px;text-align:right;color:#6e6e6e;padding:0 8px;flex-shrink:0;background:#1E1E1E}
+  .code-txt{padding:0 12px;flex:1}
+  .code-txt .key{color:#569CD6}
+  .code-txt .com{color:#6A9955}
+  .right-col{position:absolute;top:382px;left:760px;width:460px;z-index:10}
+  .note{background:rgba(210,153,34,0.08);border-left:3px solid #D29922;padding:10px 14px;font-size:12px;color:#C9D1D9;border-radius:4px;line-height:1.5}
+  .note b{color:#D29922}
+  .activity{margin-top:12px;background:rgba(46,164,79,0.08);border-left:3px solid #2EA44F;padding:11px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#2EA44F}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="06 JaCoCo">
+  <div class="header"><span class="h-badge">ANÁLISIS 3</span><span class="h-title">🟢 JaCoCo + Coverage Gutters — Pruebas de Cobertura</span></div>
+  <i class="fas fa-chart-bar deco"></i>
+
+  <div class="steps-row">
+    <div class="step-card s1">
+      <div class="step-header">
+        <div class="step-ico"><i class="fas fa-vial"></i></div>
+        <div>
+          <div class="step-label">PASO 1</div>
+          <div class="step-title">Ejecutar las pruebas</div>
+        </div>
+      </div>
+      <div class="step-body">Panel de <b>Testing 🧪</b> en la barra lateral → <b>Run All Tests</b>.<br>JaCoCo genera automáticamente <code>jacoco.xml</code> en <code>target/</code> o <code>coverage/</code>.</div>
+    </div>
+    <div class="step-card s2">
+      <div class="step-header">
+        <div class="step-ico"><i class="fas fa-eye"></i></div>
+        <div>
+          <div class="step-label">PASO 2</div>
+          <div class="step-title">Visualizar la cobertura</div>
+        </div>
+      </div>
+      <div class="step-body"><b>Ctrl+Shift+P</b> → <code>Coverage Gutters: Display Coverage</code>.<br>El editor colorea las líneas automáticamente.</div>
+    </div>
+  </div>
+
+  <div class="arrow-mid"><i class="fas fa-arrow-right"></i></div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-dot g"></div><div class="leg-txt"><b>Verde</b> — Línea ejecutada por las pruebas</div></div>
+    <div class="leg"><div class="leg-dot r"></div><div class="leg-txt"><b>Rojo</b> — Línea NO ejecutada — cobertura pendiente</div></div>
+  </div>
+
+  <div class="editor-area">
+    <div class="editor">
+      <div class="ed-tab">CuentaBancaria.java — Coverage Gutters activo</div>
+      <div class="code-line"><div class="gutter g"></div><div class="ln">12</div><div class="code-txt"><span class="key">public void</span> consignar(<span class="key">double</span> monto) {</div></div>
+      <div class="code-line"><div class="gutter g"></div><div class="ln">13</div><div class="code-txt">&nbsp;&nbsp;&nbsp;<span class="key">if</span> (monto &gt; 0) {</div></div>
+      <div class="code-line"><div class="gutter g"></div><div class="ln">14</div><div class="code-txt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saldo = saldo + monto;</div></div>
+      <div class="code-line"><div class="gutter r"></div><div class="ln">15</div><div class="code-txt">&nbsp;&nbsp;&nbsp;} <span class="com">// ← rama else implícita sin cubrir</span></div></div>
+      <div class="code-line"><div class="gutter g"></div><div class="ln">17</div><div class="code-txt"><span class="key">public void</span> retirar(<span class="key">double</span> monto) {</div></div>
+      <div class="code-line"><div class="gutter r"></div><div class="ln">18</div><div class="code-txt">&nbsp;&nbsp;&nbsp;<span class="key">if</span> (monto &gt; 0 &amp;&amp; monto &lt;= saldo) { <span class="com">// ← rama parcial</span></div></div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="note"><b><i class="fas fa-info-circle"></i> Tip:</b> Si Coverage Gutters no encuentra el reporte, verifica que <code style="color:#4FC3F7;font-family:'Roboto Mono'">Coverage Gutters: Coverage Base Dir</code> apunte a la carpeta del <code style="color:#4FC3F7;font-family:'Roboto Mono'">jacoco.xml</code>.</div>
+    <div class="activity"><b>⏸️ Identifica</b> las líneas rojas antes de que el monitor las señale. ¿Qué caso de prueba falta?</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PIT con Maven</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#DA3633;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(218,54,51,0.05);z-index:1}
+  .col-left{position:absolute;top:96px;left:60px;width:560px;z-index:10}
+  .col-right{position:absolute;top:96px;left:660px;width:560px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;color:#DA3633;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+  .code-block{background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:12px 14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#D4D4D4;line-height:1.55}
+  .code-block .tag{color:#569CD6}
+  .code-block .attr{color:#9CDCFE}
+  .code-block .val{color:#CE9178}
+  .code-block .com{color:#6A9955}
+  .note-sm{margin-top:8px;font-size:11.5px;color:#8B949E;font-style:italic}
+  .terminal{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .term-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .term-body{padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11.5px;line-height:1.55}
+  .term-body .prompt{color:#2EA44F}
+  .term-body .cmd{color:#fff}
+  .term-body .info{color:#4FC3F7}
+  .term-body .ok{color:#2EA44F;font-weight:700}
+  .term-body .num{color:#D29922}
+  .result-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .rt-row{display:flex;padding:7px 12px;font-size:12px;border-bottom:1px solid #30363D;align-items:center}
+  .rt-row:last-child{border-bottom:none}
+  .rt-row.alt{background:#21262D}
+  .rt-label{flex:0 0 90px;font-weight:700;color:#fff;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .rt-ico{flex:0 0 28px;font-size:14px;text-align:center}
+  .rt-ico.g{color:#2EA44F}.rt-ico.r{color:#DA3633}
+  .rt-val{flex:1;color:#C9D1D9;font-size:11.5px}
+  .mutant{background:#161B22;border:1px solid #30363D;border-left:3px solid #DA3633;border-radius:6px;padding:9px 14px;margin-bottom:10px;font-family:'Roboto Mono',monospace;font-size:12px;color:#C9D1D9}
+  .mutant b{color:#DA3633}
+  .mutant .arrow{color:#F89820;margin:0 8px}
+  .solution-code{background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#D4D4D4;line-height:1.6}
+  .solution-code .key{color:#569CD6}
+  .solution-code .ann{color:#DCDCAA}
+  .solution-code .str{color:#CE9178}
+  .activity{margin-top:10px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:10px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#DA3633}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="07 PIT Maven">
+  <div class="header"><span class="h-badge">ANÁLISIS 4</span><span class="h-title">🔴 PIT con Maven — Pruebas de Mutación</span></div>
+  <i class="fas fa-dna deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title">Configurar pom.xml</div>
+    <div class="code-block">
+<span class="tag">&lt;plugin&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;groupId&gt;</span>org.pitest<span class="tag">&lt;/groupId&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;artifactId&gt;</span>pitest-maven<span class="tag">&lt;/artifactId&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;version&gt;</span>1.15.0<span class="tag">&lt;/version&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;configuration&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;targetClasses&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;param&gt;</span>com.tupackage.*<span class="tag">&lt;/param&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/targetClasses&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;targetTests&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;param&gt;</span>com.tupackage.*Test<span class="tag">&lt;/param&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/targetTests&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/configuration&gt;</span><br>
+<span class="tag">&lt;/plugin&gt;</span>
+    </div>
+    <div class="note-sm"><i class="fas fa-info-circle"></i> Este bloque va dentro de <code style="color:#4FC3F7">&lt;build&gt;&lt;plugins&gt;...&lt;/plugins&gt;&lt;/build&gt;</code></div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title">Ejecución e interpretación</div>
+    <div class="terminal">
+      <div class="term-tab"><i class="fas fa-terminal"></i> TERMINAL — bash</div>
+      <div class="term-body">
+        <span class="prompt">$</span> <span class="cmd">mvn pitest:mutationCoverage</span><br>
+        <span class="info">[INFO]</span> Scanning for projects...<br>
+        <span class="info">[INFO]</span> Generated <span class="num">12</span> mutations<br>
+        <span class="info">[INFO]</span> <span class="ok">10 mutations killed (83%)</span><br>
+        <span class="info">[INFO]</span> <span class="ok">BUILD SUCCESS</span>
+      </div>
+    </div>
+
+    <div class="result-table">
+      <div class="rt-row"><div class="rt-label">Killed</div><div class="rt-ico g"><i class="fas fa-circle"></i></div><div class="rt-val">10/12 — pruebas eficaces</div></div>
+      <div class="rt-row alt"><div class="rt-label">Survived</div><div class="rt-ico r"><i class="fas fa-circle"></i></div><div class="rt-val">2/12 — pruebas débiles ← acción requerida</div></div>
+    </div>
+
+    <div class="mutant"><b>Survived:</b> &nbsp;<code>monto &gt; 0</code><span class="arrow">→</span><code>monto &gt;= 0</code> &nbsp;❌ ninguna prueba falló</div>
+
+    <div class="solution-code">
+<span class="ann">@Test</span><br>
+<span class="key">public void</span> shouldNotConsignarWhenMontoCero() {<br>
+&nbsp;&nbsp;cuenta.consignar(<span class="str">0.0</span>);<br>
+&nbsp;&nbsp;assertEquals(<span class="str">0.0</span>, cuenta.getSaldo(), <span class="str">0.01</span>);<br>
+}
+    </div>
+
+    <div class="activity"><b>⏸️ Cuando veas</b> un mutante Survived, pausa y escribe la prueba que lo mataría.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>S4 — Abrir Proyecto en VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#7C5CBF;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(124,92,191,0.05);z-index:1}
+  .col-left{position:absolute;top:108px;left:60px;width:540px;z-index:10}
+  .col-right{position:absolute;top:108px;left:640px;width:580px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;color:#7C5CBF;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+  .step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;background:#161B22;border:1px solid #30363D;border-radius:6px;padding:12px 14px}
+  .step-num{flex-shrink:0;width:30px;height:30px;background:#7C5CBF;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-family:'Roboto Mono',monospace}
+  .step-txt{font-size:13px;color:#C9D1D9;line-height:1.45;padding-top:5px}
+  .step-txt b{color:#fff}
+  .step-txt code{background:#0D1117;color:#4FC3F7;padding:1px 6px;border-radius:3px;font-family:'Roboto Mono',monospace;font-size:12px}
+  .note{margin-top:14px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:11px 14px;font-size:12px;color:#C9D1D9;border-radius:4px;line-height:1.5}
+  .note b{color:#DA3633}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden;margin-bottom:14px}
+  .row{display:flex;border-bottom:1px solid #30363D}
+  .row:last-child{border-bottom:none}
+  .row.head{background:#21262D;font-weight:700;color:#fff;font-size:11px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .row.alt{background:#21262D}
+  .cell{padding:11px 16px;font-size:13px;color:#C9D1D9}
+  .cell.c1{flex:0 0 130px;color:#4FC3F7;font-weight:700;border-right:1px solid #30363D}
+  .row.head .cell.c1{color:#fff}
+  .cell.c2{flex:1;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .code-block{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .cb-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .cb-body{padding:11px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.6}
+  .cb-body .key{color:#569CD6}
+  .cb-body .cls{color:#4EC9B0}
+  .cb-body .com{color:#6A9955}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="08 S4 Proyecto">
+  <div class="header"><span class="h-badge">S4 PRÁCTICA</span><span class="h-title">Cierre del Proyecto: Abrir y Verificar en VS Code</span></div>
+  <i class="fas fa-folder-open deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title">Abrir el Proyecto</div>
+    <div class="step"><div class="step-num">1</div><div class="step-txt"><b>File → Open Folder</b> → carpeta raíz del proyecto</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-txt">VS Code detecta el proyecto Java automáticamente (Extension Pack for Java)</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-txt"><code>Ctrl+Shift+M</code> — verifica que la vista <b>Problems</b> no tenga errores rojos</div></div>
+
+    <div class="note"><b><i class="fas fa-exclamation-triangle"></i> Importante:</b> Si VS Code no detecta el proyecto, asegúrate de que la carpeta contenga los <code style="color:#4FC3F7;font-family:'Roboto Mono'">.java</code> o la estructura <code style="color:#4FC3F7;font-family:'Roboto Mono'">src/com/tupackage/</code></div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title">Tabla de Operaciones</div>
+    <div class="table">
+      <div class="row head"><div class="cell c1">Acción</div><div class="cell c2">Cómo hacerlo en VS Code</div></div>
+      <div class="row"><div class="cell c1">Compilar</div><div class="cell c2">Automático al guardar (<span style="color:#4FC3F7">java.autobuild.enabled: true</span>)</div></div>
+      <div class="row alt"><div class="cell c1">Documentar</div><div class="cell c2">Terminal: <span style="color:#4FC3F7">javadoc -d docs src/*.java</span></div></div>
+      <div class="row"><div class="cell c1">Ejecutar</div><div class="cell c2" style="font-family:'Roboto',sans-serif;font-size:12.5px">Clic <b style="color:#2EA44F">▶ Run</b> sobre el método main, o presiona <b style="color:#4FC3F7">F5</b></div></div>
+      <div class="row alt"><div class="cell c1">Probar</div><div class="cell c2" style="font-family:'Roboto',sans-serif;font-size:12.5px">Panel <b>Testing 🧪</b> → Run All Tests</div></div>
+    </div>
+
+    <div class="mini-title" style="margin-top:4px">Si falta el método main</div>
+    <div class="code-block">
+      <div class="cb-tab">Main.java</div>
+      <div class="cb-body">
+        <span class="key">public static void</span> main(String[] args) {<br>
+        &nbsp;&nbsp;&nbsp;<span class="cls">Contest</span> contest = <span class="key">new</span> <span class="cls">Contest</span>();<br>
+        &nbsp;&nbsp;&nbsp;contest.simular();<br>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>S4 — Protocolo de 5 Etapas</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(0,122,204,0.05);z-index:1}
+  .pipeline{position:absolute;top:100px;left:60px;width:1160px;z-index:10}
+  .stage{display:flex;align-items:center;gap:18px;margin-bottom:11px;background:#161B22;border:1px solid #30363D;border-radius:8px;padding:13px 18px;border-left:4px solid}
+  .stage.s1{border-left-color:#4A90D9}
+  .stage.s2{border-left-color:#F89820}
+  .stage.s3{border-left-color:#D29922}
+  .stage.s4{border-left-color:#2EA44F}
+  .stage.s5{border-left-color:#007ACC}
+  .stage-num{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;font-family:'Roboto Mono',monospace;color:#fff}
+  .stage.s1 .stage-num{background:#4A90D9}
+  .stage.s2 .stage-num{background:#F89820}
+  .stage.s3 .stage-num{background:#D29922}
+  .stage.s4 .stage-num{background:#2EA44F}
+  .stage.s5 .stage-num{background:#007ACC}
+  .stage-ico{flex-shrink:0;width:42px;text-align:center;font-size:22px}
+  .stage.s1 .stage-ico{color:#4A90D9}
+  .stage.s2 .stage-ico{color:#F89820}
+  .stage.s3 .stage-ico{color:#D29922}
+  .stage.s4 .stage-ico{color:#2EA44F}
+  .stage.s5 .stage-ico{color:#007ACC}
+  .stage-body{flex:1}
+  .stage-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+  .stage-desc{font-size:12.5px;color:#C9D1D9;line-height:1.4}
+  .stage-tag{flex-shrink:0;font-size:10.5px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;background:#21262D;padding:5px 10px;border-radius:4px;border:1px solid #30363D}
+  .deliverable{position:absolute;bottom:50px;left:60px;width:1160px;background:rgba(0,122,204,0.1);border:1px solid #007ACC;border-radius:8px;padding:13px 20px;display:flex;align-items:center;gap:16px;z-index:10}
+  .del-ico{font-size:28px;color:#007ACC;flex-shrink:0}
+  .del-text{flex:1}
+  .del-title{font-size:11px;font-weight:700;color:#007ACC;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .del-desc{font-size:13px;color:#C9D1D9;margin-top:2px;line-height:1.4}
+  .del-desc b{color:#fff}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="09 Protocolo 5 etapas">
+  <div class="header"><span class="h-badge">S4 PROTOCOLO</span><span class="h-title">Ciclo de Análisis: Las 5 Etapas para cada Herramienta</span></div>
+  <i class="fas fa-list-check deco"></i>
+
+  <div class="pipeline">
+    <div class="stage s1">
+      <div class="stage-num">1</div>
+      <div class="stage-ico"><i class="fas fa-magnifying-glass"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Identificar</div>
+        <div class="stage-desc">Ejecuta la herramienta y revisa la vista de resultados. Selecciona el incidente más relevante.</div>
+      </div>
+      <div class="stage-tag">EXPLORAR</div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-num">2</div>
+      <div class="stage-ico"><i class="fas fa-book-open-reader"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Comprender</div>
+        <div class="stage-desc">Lee la regla violada. Entiende qué principio se está rompiendo y por qué importa.</div>
+      </div>
+      <div class="stage-tag">ESTUDIAR</div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-num">3</div>
+      <div class="stage-ico"><i class="fas fa-pen-to-square"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Documentar</div>
+        <div class="stage-desc">Registra: ¿Qué se detectó? ¿Por qué es relevante? ¿Qué principio viola?</div>
+      </div>
+      <div class="stage-tag">REGISTRAR</div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-num">4</div>
+      <div class="stage-ico"><i class="fas fa-wrench"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Aplicar Corrección</div>
+        <div class="stage-desc">Modifica el código o las pruebas para resolver el incidente identificado.</div>
+      </div>
+      <div class="stage-tag">CORREGIR</div>
+    </div>
+
+    <div class="stage s5">
+      <div class="stage-num">5</div>
+      <div class="stage-ico"><i class="fas fa-circle-check"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Verificar</div>
+        <div class="stage-desc">Re-ejecuta la herramienta. Confirma que el incidente desapareció y no se generaron nuevos problemas.</div>
+      </div>
+      <div class="stage-tag">VALIDAR</div>
+    </div>
+  </div>
+
+  <div class="deliverable">
+    <div class="del-ico"><i class="fas fa-file-arrow-down"></i></div>
+    <div class="del-text">
+      <div class="del-title">Entregable esperado</div>
+      <div class="del-desc">Reporte que documenta <b>al menos 1 incidente resuelto por cada una de las 4 herramientas</b> siguiendo las 5 etapas — con evidencia visual (capturas de VS Code).</div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Comparativa Eclipse vs VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#4FC3F7;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(79,195,247,0.05);z-index:1}
+  .table-area{position:absolute;top:104px;left:60px;width:830px;z-index:10}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .row{display:flex;border-bottom:1px solid #30363D;align-items:stretch}
+  .row:last-child{border-bottom:none}
+  .row.head{background:#21262D;font-weight:700;color:#fff;font-size:11px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .row.alt{background:#21262D}
+  .cell{padding:16px 18px;font-size:13px;color:#C9D1D9;display:flex;align-items:center;box-sizing:border-box;gap:10px}
+  .c-tool{flex:0 0 180px;border-right:1px solid #30363D;font-weight:700;font-size:14px}
+  .c-eclipse{flex:1;border-right:1px solid #30363D;font-size:12.5px}
+  .c-vscode{flex:1;font-size:12.5px;color:#4FC3F7;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .row.head .cell{color:#fff;font-family:'Roboto Mono',monospace;font-size:11px}
+  .row.head .c-vscode{color:#fff}
+  .ico-sonar{color:#4A90D9}.ico-pmd{color:#F89820}.ico-jacoco{color:#2EA44F}.ico-pit{color:#DA3633}
+  .ico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+  .note{margin-top:18px;background:rgba(0,122,204,0.08);border-left:3px solid #007ACC;padding:13px 18px;font-size:12.5px;color:#C9D1D9;border-radius:4px;line-height:1.5}
+  .note b{color:#4FC3F7}
+  .side{position:absolute;top:104px;left:920px;width:300px;z-index:10}
+  .side-card{background:linear-gradient(135deg,rgba(0,122,204,0.15),rgba(79,195,247,0.08));border:1px solid #007ACC;border-radius:10px;padding:20px;display:flex;flex-direction:column;height:430px;box-sizing:border-box}
+  .side-icon{font-size:42px;color:#4FC3F7;text-align:center;margin-bottom:14px}
+  .side-badge{display:inline-block;background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;align-self:center;margin-bottom:16px}
+  .side-text{font-size:15px;color:#fff;line-height:1.5;text-align:center;font-weight:300}
+  .side-text b{color:#4FC3F7;font-weight:700}
+  .side-divider{width:50px;height:2px;background:#4FC3F7;margin:14px auto;border-radius:2px}
+  .side-bottom{font-size:11px;color:#8B949E;text-align:center;font-family:'Roboto Mono',monospace;letter-spacing:1px;margin-top:auto}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="10 Comparativa">
+  <div class="header"><span class="h-badge">COMPARATIVA</span><span class="h-title">Eclipse vs. VS Code — Diferencias Clave de Análisis</span></div>
+  <i class="fas fa-code-compare deco"></i>
+
+  <div class="table-area">
+    <div class="table">
+      <div class="row head">
+        <div class="cell c-tool">Análisis</div>
+        <div class="cell c-eclipse"><i class="fab fa-eclipse" style="display:none"></i>Eclipse</div>
+        <div class="cell c-vscode">VS Code</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-sonar"><i class="fas fa-search"></i></span>SonarLint</div>
+        <div class="cell c-eclipse">Vista On-The-Fly Issues nativa</div>
+        <div class="cell c-vscode">Vista Problems (Ctrl+Shift+M)</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pmd"><i class="fas fa-shield-halved"></i></span>PMD</div>
+        <div class="cell c-eclipse">Menú contextual PMD → Check Code</div>
+        <div class="cell c-vscode">Ctrl+Shift+P → PMD: Run</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-jacoco"><i class="fas fa-chart-bar"></i></span>JaCoCo</div>
+        <div class="cell c-eclipse">Coverage As → JUnit Test</div>
+        <div class="cell c-vscode">Run All Tests → Coverage Gutters: Display Coverage</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pit"><i class="fas fa-dna"></i></span>PIT</div>
+        <div class="cell c-eclipse">Plugin Pitclipse nativo (clic derecho)</div>
+        <div class="cell c-vscode">mvn pitest:mutationCoverage (terminal)</div>
+      </div>
+    </div>
+
+    <div class="note"><b><i class="fas fa-lightbulb"></i> Clave:</b> El flujo de resolución y el protocolo de 5 etapas son <b>IDÉNTICOS</b> en ambos entornos. Solo cambia la forma de ejecutar, no la lógica.</div>
+  </div>
+
+  <div class="side">
+    <div class="side-card">
+      <div class="side-icon"><i class="fas fa-quote-left"></i></div>
+      <div class="side-badge">PRINCIPIO</div>
+      <div class="side-text">El resultado del análisis <b>no depende del IDE</b> — depende de la <b>calidad de tu código</b> y <b>tus pruebas</b>.</div>
+      <div class="side-divider"></div>
+      <div class="side-bottom">DOPO · UNIDAD 4</div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Video de Práctica Guiada</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:140px;right:90px;font-size:160px;color:rgba(0,122,204,0.05);z-index:1}
+  .deco2{position:absolute;bottom:120px;left:60px;font-size:140px;color:rgba(46,164,79,0.04);z-index:1}
+  .video-card{position:absolute;top:120px;left:130px;width:1020px;background:rgba(0,122,204,0.08);border:1px solid #007ACC;border-radius:14px;padding:32px 50px;box-sizing:border-box;z-index:10;box-shadow:0 0 80px rgba(0,122,204,0.15)}
+  .vc-row{display:flex;gap:32px;align-items:center}
+  .vc-play{flex:0 0 130px;text-align:center}
+  .vc-play i{font-size:100px;color:#007ACC;filter:drop-shadow(0 0 18px rgba(0,122,204,0.4))}
+  .vc-body{flex:1}
+  .vc-tag{display:inline-block;background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:10px}
+  .vc-title{font-size:24px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
+  .vc-title .accent{color:#4FC3F7}
+  .vc-desc{font-size:13.5px;color:#C9D1D9;line-height:1.5;margin-bottom:14px}
+  .vc-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .vc-tool{font-family:'Roboto Mono',monospace;font-size:11px;padding:5px 10px;border-radius:4px;background:#161B22;border:1px solid #30363D;color:#C9D1D9}
+  .vc-tool .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .vc-tool.t1 .dot{background:#4A90D9}
+  .vc-tool.t2 .dot{background:#F89820}
+  .vc-tool.t3 .dot{background:#2EA44F}
+  .vc-tool.t4 .dot{background:#DA3633}
+  .vc-link{background:#0D1117;border:1px solid #007ACC;border-radius:6px;padding:9px 14px;font-family:'Roboto Mono',monospace;font-size:13px;color:#4FC3F7;display:inline-flex;align-items:center;gap:10px}
+  .vc-link i{color:#007ACC}
+  .cross-ref{position:absolute;left:130px;bottom:80px;width:1020px;background:#161B22;border:1px solid #30363D;border-left:3px solid #F89820;border-radius:6px;padding:13px 18px;display:flex;align-items:center;gap:14px;z-index:10;box-sizing:border-box}
+  .cr-ico{font-size:22px;color:#F89820;flex-shrink:0}
+  .cr-text{flex:1;font-size:13px;color:#C9D1D9}
+  .cr-text b{color:#fff}
+  .cr-link{font-family:'Roboto Mono',monospace;color:#4FC3F7;margin-left:6px}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="11 Video">
+  <div class="header"><span class="h-badge">PRÁCTICA</span><span class="h-title">🎥 Video de Práctica Guiada</span></div>
+  <i class="fas fa-circle-play deco"></i>
+  <i class="fas fa-code deco2"></i>
+
+  <div class="video-card">
+    <div class="vc-row">
+      <div class="vc-play"><i class="fas fa-circle-play"></i></div>
+      <div class="vc-body">
+        <span class="vc-tag">VIDEO 3 • DOPO</span>
+        <div class="vc-title">Los 4 Análisis en Acción en <span class="accent">VS Code</span>: SonarLint, PMD, JaCoCo y PIT</div>
+        <div class="vc-desc">Abrimos el proyecto <b>CuentaBancaria</b>, ejecutamos los cuatro análisis y resolvemos los incidentes encontrados, siguiendo el protocolo de 5 etapas en cada herramienta.</div>
+        <div class="vc-tools">
+          <span class="vc-tool t1"><span class="dot"></span>SonarLint</span>
+          <span class="vc-tool t2"><span class="dot"></span>PMD: Run</span>
+          <span class="vc-tool t3"><span class="dot"></span>Coverage Gutters</span>
+          <span class="vc-tool t4"><span class="dot"></span>mvn pitest:mutationCoverage</span>
+        </div>
+        <div class="vc-link"><i class="fab fa-youtube"></i>https://youtu.be/N29OODjHMUE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cross-ref">
+    <div class="cr-ico"><i class="fas fa-exchange-alt"></i></div>
+    <div class="cr-text"><b>¿Prefieres Eclipse?</b> Ver el <b>Video 2</b> (Análisis en Eclipse):<span class="cr-link">https://youtu.be/t2J1zNvKKKU</span></div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Verificación y Recursos</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:130px;color:rgba(0,122,204,0.05);z-index:1}
+  .col-left{position:absolute;top:108px;left:60px;width:580px;z-index:10}
+  .col-right{position:absolute;top:108px;left:680px;width:540px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .mt-q{color:#D29922}
+  .mt-r{color:#007ACC}
+  .question-card{background:linear-gradient(135deg,rgba(210,153,34,0.1),rgba(0,122,204,0.05));border:1px solid #D29922;border-left:4px solid #D29922;border-radius:10px;padding:22px 24px}
+  .q-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:14px}
+  .q-icon{font-size:32px;color:#D29922;margin-bottom:8px}
+  .q-text{font-size:16px;color:#fff;line-height:1.55;font-weight:400}
+  .q-text b{color:#4FC3F7}
+  .q-divider{height:1px;background:#30363D;margin:18px 0}
+  .q-hint{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#8B949E;font-style:italic}
+  .q-hint i{color:#D29922}
+  .resources{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .res-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid #30363D;gap:14px}
+  .res-row:last-child{border-bottom:none}
+  .res-row:nth-child(even){background:#21262D}
+  .res-ico{flex-shrink:0;width:28px;text-align:center;font-size:16px}
+  .res-ico.guide{color:#007ACC}
+  .res-ico.doc{color:#4FC3F7}
+  .res-ico.wiki{color:#2EA44F}
+  .res-body{flex:1;min-width:0}
+  .res-name{font-size:13px;color:#fff;font-weight:700}
+  .res-url{font-size:11px;color:#8B949E;font-family:'Roboto Mono',monospace;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="12 Verificación">
+  <div class="header"><span class="h-badge">CIERRE</span><span class="h-title">Verificación Final y Recursos</span></div>
+  <i class="fas fa-clipboard-check deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title mt-q"><i class="fas fa-circle-question"></i> PREGUNTA DE VERIFICACIÓN</div>
+    <div class="question-card">
+      <span class="q-tag">RETO FINAL</span>
+      <div class="q-icon"><i class="fas fa-lightbulb"></i></div>
+      <div class="q-text">Tienes la configuración Vainilla activa pero VS Code sigue mostrando <b>sugerencias de métodos Java</b>. ¿Qué ajuste en <b>settings.json</b> es específico para Java?</div>
+      <div class="q-divider"></div>
+      <div class="q-hint"><i class="fas fa-key"></i>Pista: busca claves que empiecen por <b style="color:#4FC3F7">"java."</b> relacionadas con completion/suggestions.</div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title mt-r"><i class="fas fa-book-bookmark"></i> RECURSOS</div>
+    <div class="resources">
+      <div class="res-row">
+        <div class="res-ico guide"><i class="fas fa-laptop-code"></i></div>
+        <div class="res-body">
+          <div class="res-name">Guía VS Code Vainilla</div>
+          <div class="res-url">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">Extension Pack for Java</div>
+          <div class="res-url">marketplace.visualstudio.com — vscjava.vscode-java-pack</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">Coverage Gutters</div>
+          <div class="res-url">marketplace.visualstudio.com — ryanluker.vscode-coverage-gutters</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">PMD para VS Code</div>
+          <div class="res-url">marketplace.visualstudio.com — pmd</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">PIT Mutation Testing</div>
+          <div class="res-url">pitest.org</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">JaCoCo</div>
+          <div class="res-url">jacoco.org</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico wiki"><i class="fas fa-book-open"></i></div>
+        <div class="res-body">
+          <div class="res-name">Wiki del curso</div>
+          <div class="res-url">fis-eci.github.io/software-foundations-eci/Unidad-Analisis-VSC/</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`,
+      `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Contacto y Soporte</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:140px;right:80px;font-size:160px;color:rgba(210,153,34,0.05);z-index:1}
+  .deco2{position:absolute;bottom:110px;left:80px;font-size:140px;color:rgba(0,122,204,0.04);z-index:1}
+  .intro{position:absolute;top:120px;left:0;width:1280px;text-align:center;z-index:10}
+  .intro-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 12px;border-radius:3px;margin-bottom:14px}
+  .intro-title{font-size:36px;font-weight:700;color:#fff;line-height:1.2}
+  .intro-sub{font-size:15px;color:#8B949E;margin-top:10px;font-weight:300}
+  .cards{position:absolute;top:300px;left:90px;width:1100px;display:flex;gap:30px;z-index:10}
+  .card{flex:1;background:#161B22;border:1px solid #30363D;border-radius:12px;padding:30px 28px;position:relative;overflow:hidden}
+  .card.c1{border-top:4px solid #007ACC}
+  .card.c2{border-top:4px solid #D29922}
+  .card-glow{position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;opacity:0.08}
+  .card.c1 .card-glow{background:radial-gradient(circle,#007ACC 0%,transparent 70%)}
+  .card.c2 .card-glow{background:radial-gradient(circle,#D29922 0%,transparent 70%)}
+  .card-ico{font-size:46px;margin-bottom:14px;position:relative;z-index:2}
+  .card.c1 .card-ico{color:#007ACC}
+  .card.c2 .card-ico{color:#D29922}
+  .card-label{font-size:10.5px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;position:relative;z-index:2}
+  .card-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:14px;position:relative;z-index:2}
+  .card-link{font-family:'Roboto Mono',monospace;font-size:15px;color:#4FC3F7;background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:10px 14px;display:inline-flex;align-items:center;gap:10px;position:relative;z-index:2}
+  .card.c1 .card-link i{color:#007ACC}
+  .card.c2 .card-link i{color:#D29922}
+  .card-desc{font-size:12.5px;color:#8B949E;margin-top:12px;line-height:1.5;position:relative;z-index:2}
+  .closing{position:absolute;bottom:90px;left:0;width:1280px;text-align:center;z-index:10}
+  .closing-divider{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px}
+  .closing-divider .line{height:1px;width:120px;background:linear-gradient(90deg,transparent,#30363D,transparent)}
+  .closing-divider .dot{width:8px;height:8px;background:#007ACC;border-radius:50%;box-shadow:0 0 12px rgba(0,122,204,0.6)}
+  .closing-text{font-size:13px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1.5px}
+  .closing-text b{color:#fff}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="13 Contacto">
+  <div class="header"><span class="h-badge">SOPORTE</span><span class="h-title">¿Tienes Dudas o Problemas?</span></div>
+  <i class="fas fa-life-ring deco"></i>
+  <i class="fas fa-headset deco2"></i>
+
+  <div class="intro">
+    <span class="intro-tag">ESTAMOS PARA AYUDARTE</span>
+    <div class="intro-title">Canales Oficiales de Soporte</div>
+    <div class="intro-sub">Reporta problemas técnicos, consulta dudas conceptuales o solicita orientación.</div>
+  </div>
+
+  <div class="cards">
+    <div class="card c1">
+      <div class="card-glow"></div>
+      <div class="card-ico"><i class="fab fa-github"></i></div>
+      <div class="card-label">REPORTAR INCIDENCIAS</div>
+      <div class="card-title">GitHub Issues</div>
+      <div class="card-link"><i class="fab fa-github"></i>@fis-eci</div>
+      <div class="card-desc">Errores técnicos, problemas con extensiones, sugerencias para la guía o el material del curso.</div>
+    </div>
+
+    <div class="card c2">
+      <div class="card-glow"></div>
+      <div class="card-ico"><i class="fas fa-envelope"></i></div>
+      <div class="card-label">CONSULTAS ACADÉMICAS</div>
+      <div class="card-title">Correo Institucional</div>
+      <div class="card-link"><i class="fas fa-paper-plane"></i>fis@escuelaing.edu.co</div>
+      <div class="card-desc">Dudas conceptuales sobre la unidad, orientación pedagógica o solicitudes de monitoría.</div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-divider">
+      <div class="line"></div><div class="dot"></div><div class="line"></div>
+    </div>
+    <div class="closing-text"><b>ESCUELA COLOMBIANA DE INGENIERÍA JULIO GARAVITO</b> &nbsp;·&nbsp; DOPO</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+
+`
+    ];
+    var TITLES = ["Portada — Análisis VS Code", "Prerrequisitos y Extensiones", "Panorama — Los 4 Análisis", "SonarLint en VS Code", "PMD en VS Code", "JaCoCo + Coverage Gutters", "PIT con Maven", "S4 — Abrir Proyecto en VS Code", "S4 — Protocolo de 5 Etapas", "Comparativa Eclipse vs VS Code", "Video de Práctica Guiada", "Verificación y Recursos", "Contacto y Soporte"];
+    var TOTAL  = SLIDES.length;
+    var NAV_H  = 52 + 3; /* nav bar + progress bar */
+
+    var frame    = document.getElementById('slide-frame');
+    var counterEl = document.getElementById('counter');
+    var titleEl  = document.getElementById('slide-title');
+    var progEl   = document.getElementById('progress-bar');
+    var btnPrev  = document.getElementById('btn-prev');
+    var btnNext  = document.getElementById('btn-next');
+    var jumpIn   = document.getElementById('jump-input');
+
+    var cur = 0;
+
+    function scaleSlide() {
+      var stageW = window.innerWidth;
+      var stageH = window.innerHeight - NAV_H;
+      var s      = Math.min(stageW / 1280, stageH / 720);
+      var offX   = (stageW - 1280 * s) / 2;
+      var offY   = (stageH - 720  * s) / 2;
+      frame.style.transform = 'translate(' + offX + 'px, ' + offY + 'px) scale(' + s + ')';
+    }
+
+    function goTo(n) {
+      cur = Math.max(0, Math.min(n, TOTAL - 1));
+      frame.srcdoc    = SLIDES[cur];
+      counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+      titleEl.textContent   = TITLES[cur] || '';
+      progEl.style.width    = ((cur + 1) / TOTAL * 100) + '%';
+      btnPrev.disabled = cur === 0;
+      btnNext.disabled = cur === TOTAL - 1;
+      jumpIn.value     = cur + 1;
+      history.replaceState(null, '', '#' + (cur + 1));
+    }
+
+    btnNext.addEventListener('click', function() { goTo(cur + 1); });
+    btnPrev.addEventListener('click', function() { goTo(cur - 1); });
+
+    jumpIn.addEventListener('change', function() {
+      var n = parseInt(this.value, 10);
+      if (!isNaN(n)) goTo(n - 1);
+    });
+    jumpIn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var n = parseInt(this.value, 10);
+        if (!isNaN(n)) goTo(n - 1);
+        frame.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (document.activeElement === jumpIn) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(cur + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(cur - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault(); goTo(TOTAL - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFs();
+      }
+    });
+
+    document.getElementById('btn-fs').addEventListener('click', toggleFs);
+
+    function toggleFs() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', scaleSlide);
+    window.addEventListener('fullscreenchange', scaleSlide);
+
+    /* Restore slide from URL hash, default to slide 1 */
+    var h = parseInt(location.hash.slice(1), 10);
+    scaleSlide();
+    goTo(isNaN(h) ? 0 : h - 1);
+  </script>
+
+</body>
+</html>

@@ -31,10 +31,28 @@ DECKS = [
         "title":  "Oracle SQL Developer — MYSD",
     },
     {
+        "folder": "PostgreSQL VSC - MYSD",
+        "count":  12,
+        "output": "SQL-PostgreVSC-presentation.html",
+        "title":  "PostgreSQL VSC — MYSD",
+    },
+    {
         "folder": "Pruebas Unitarias - DOPO",
         "count":  9,
         "output": "PruebasUnitarias-presentation.html",
         "title":  "Pruebas Unitarias en Java — DOPO",
+    },
+    {
+        "folder": "Analisis Software Eclipse - DOPO",
+        "count":  15,
+        "output": "Analisis-Eclipse-presentation.html",
+        "title":  "Análisis de Software Eclipse — DOPO",
+    },
+    {
+        "folder": "Analisis Software VSC - DOPO",
+        "count":  13,
+        "output": "Analisis-VSC-presentation.html",
+        "title":  "Análisis de Software VSC — DOPO",
     },
 ]
 
@@ -338,7 +356,8 @@ def verify(output: str, expected_count: int):
         content = f.read()
 
     # Count only the ones inside JS template literals (the outer shell adds one extra)
-    found = content.count('`<!DOCTYPE html')
+    # Match both `<!DOCTYPE html` and `<!doctype html` (case-insensitive)
+    found = len(re.findall(r'`<!doctype html', content, re.IGNORECASE))
     assert found == expected_count, \
         f'Slide count mismatch in {output}: expected {expected_count}, found {found}'
 

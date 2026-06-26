@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis de Software Eclipse — DOPO</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #0a0a0a;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Stage: the area above the nav bar where the slide lives */
+    #stage {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 52px;
+      overflow: hidden;
+    }
+
+    /* The iframe is positioned absolutely and scaled via JS transform */
+    #slide-frame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1280px;
+      height: 720px;
+      border: none;
+      display: block;
+      transform-origin: top left;
+      /* transform is set dynamically by scaleSlide() */
+    }
+
+    /* Progress bar sits just above the nav bar */
+    #progress-wrap {
+      position: fixed;
+      bottom: 52px; left: 0; right: 0;
+      height: 3px;
+      background: #21262d;
+      z-index: 9998;
+    }
+    #progress-bar {
+      height: 100%;
+      background: #58a6ff;
+      transition: width 0.2s ease;
+    }
+
+    /* Navigation bar */
+    #nav-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13, 17, 23, 0.97);
+      border-top: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      z-index: 9999;
+    }
+
+    .nbtn {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 5px 13px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .nbtn:hover  { background: #30363d; }
+    .nbtn:disabled { opacity: 0.3; cursor: default; }
+
+    #counter {
+      color: #8b949e;
+      font-size: 13px;
+      flex-shrink: 0;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    #slide-title {
+      color: #c9d1d9;
+      font-size: 13px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #jump-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    #jump-label { color: #8b949e; font-size: 12px; }
+    #jump-input {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 13px;
+      width: 48px;
+      text-align: center;
+    }
+    #jump-input:focus { outline: none; border-color: #58a6ff; }
+
+    #btn-fs {
+      background: transparent;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #btn-fs:hover { color: #c9d1d9; background: #21262d; }
+
+    .hint { color: #484f58; font-size: 11px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <iframe id="slide-frame" srcdoc=""></iframe>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <div id="nav-bar">
+    <button class="nbtn" id="btn-prev">&#9664; Anterior</button>
+    <span id="counter">1 / 15</span>
+    <span id="slide-title">Análisis de Software Eclipse — DOPO</span>
+    <div id="jump-wrap">
+      <span id="jump-label">Ir a:</span>
+      <input id="jump-input" type="number" min="1" max="15" value="1">
+    </div>
+    <button class="nbtn" id="btn-next">Siguiente &#9654;</button>
+    <button id="btn-fs" title="Pantalla completa (F)">&#x26F6;</button>
+    <span class="hint">&#8592; &#8594; &nbsp;Espacio</span>
+  </div>
+
+  <script>
+    var SLIDES = [
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Portada — Análisis de Software en Eclipse IDE</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .card-accent-sonar { border-top: 4px solid #4A90D9; }
+    .card-accent-pmd { border-top: 4px solid #F89820; }
+    .card-accent-jacoco { border-top: 4px solid #2EA44F; }
+    .card-accent-pit { border-top: 4px solid #DA3633; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="01 Portada">
+    <!-- Glowing backgrounds -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; right: -100px; top: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(248, 152, 32, 0.15) 0%, transparent 70%); z-index: 1;"></div>
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: -100px; bottom: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(124, 92, 191, 0.15) 0%, transparent 70%); z-index: 1;"></div>
+
+    <!-- Decorative background icons -->
+    <div data-object="true" data-object-type="icon" style="position: absolute; left: 60px; top: 60px; font-size: 160px; color: #FFFFFF; opacity: 0.05; z-index: 1;">
+      <i class="fa-brands fa-java"></i>
+    </div>
+    <div data-object="true" data-object-type="icon" style="position: absolute; right: 80px; bottom: 80px; font-size: 140px; color: #FFFFFF; opacity: 0.05; z-index: 1;">
+      <i class="fa-solid fa-code"></i>
+    </div>
+
+    <!-- Badge superior -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 120px; width: 500px; z-index: 10;">
+      <span style="display: inline-block; padding: 6px 14px; background-color: rgba(248, 152, 32, 0.1); border: 1px solid rgba(248, 152, 32, 0.3); border-radius: 20px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">
+        UNIDAD DE APRENDIZAJE • NIVEL PROFESIONAL
+      </span>
+    </div>
+
+    <!-- Título principal -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 175px; width: 1080px; z-index: 10;">
+      <h1 style="margin: 0; font-size: 58px; font-weight: 700; line-height: 1.15; color: #FFFFFF;">
+        Análisis de Software en<br>
+        <span style="color: #F89820; text-shadow: 0 0 30px rgba(248, 152, 32, 0.2);">Eclipse IDE</span>
+      </h1>
+      <p style="margin: 20px 0 0 0; font-size: 22px; color: #8B949E; font-weight: 300;">
+        Guía para estudiantes de DOPO — De BlueJ al entorno profesional
+      </p>
+    </div>
+
+    <!-- Author pill -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 100px; top: 380px; width: 500px; z-index: 10;">
+      <div style="display: inline-flex; align-items: center; background: #161B22; border: 1px solid #30363D; padding: 8px 16px; border-radius: 30px;">
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #F89820; color: #0D1117; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; margin-right: 12px; font-family: 'Roboto Mono', monospace;">A</span>
+        <div>
+          <div style="color: #FFFFFF; font-weight: 700; font-size: 14px; line-height: 1.2;">Andersson David Sánchez Méndez</div>
+          <div style="color: #8B949E; font-size: 12px; font-family: 'Roboto Mono', monospace; line-height: 1.2;">Monitor DOPO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Tarjetas horizontales inferiores -->
+    <div class="card-accent-sonar" data-object="true" data-object-type="shape" style="position: absolute; left: 100px; top: 480px; width: 250px; height: 140px; background-color: #161B22; border-radius: 0 0 8px 8px; border-left: 1px solid #30363D; border-right: 1px solid #30363D; border-bottom: 1px solid #30363D; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10;">
+      <div style="padding: 20px;">
+        <div style="color: #4A90D9; font-size: 28px; margin-bottom: 10px;"><i class="fa-solid fa-search"></i></div>
+        <div style="color: #FFFFFF; font-weight: 700; font-size: 18px; margin-bottom: 4px;">SonarLint</div>
+        <div style="color: #8B949E; font-size: 13px; font-family: 'Roboto Mono', monospace;">Diseño</div>
+      </div>
+    </div>
+
+    <div class="card-accent-pmd" data-object="true" data-object-type="shape" style="position: absolute; left: 375px; top: 480px; width: 250px; height: 140px; background-color: #161B22; border-radius: 0 0 8px 8px; border-left: 1px solid #30363D; border-right: 1px solid #30363D; border-bottom: 1px solid #30363D; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10;">
+      <div style="padding: 20px;">
+        <div style="color: #F89820; font-size: 28px; margin-bottom: 10px;"><i class="fa-solid fa-shield-halved"></i></div>
+        <div style="color: #FFFFFF; font-weight: 700; font-size: 18px; margin-bottom: 4px;">PMD</div>
+        <div style="color: #8B949E; font-size: 13px; font-family: 'Roboto Mono', monospace;">Calidad</div>
+      </div>
+    </div>
+
+    <div class="card-accent-jacoco" data-object="true" data-object-type="shape" style="position: absolute; left: 650px; top: 480px; width: 250px; height: 140px; background-color: #161B22; border-radius: 0 0 8px 8px; border-left: 1px solid #30363D; border-right: 1px solid #30363D; border-bottom: 1px solid #30363D; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10;">
+      <div style="padding: 20px;">
+        <div style="color: #2EA44F; font-size: 28px; margin-bottom: 10px;"><i class="fa-solid fa-chart-bar"></i></div>
+        <div style="color: #FFFFFF; font-weight: 700; font-size: 18px; margin-bottom: 4px;">JaCoCo</div>
+        <div style="color: #8B949E; font-size: 13px; font-family: 'Roboto Mono', monospace;">Cobertura</div>
+      </div>
+    </div>
+
+    <div class="card-accent-pit" data-object="true" data-object-type="shape" style="position: absolute; left: 925px; top: 480px; width: 255px; height: 140px; background-color: #161B22; border-radius: 0 0 8px 8px; border-left: 1px solid #30363D; border-right: 1px solid #30363D; border-bottom: 1px solid #30363D; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10;">
+      <div style="padding: 20px;">
+        <div style="color: #DA3633; font-size: 28px; margin-bottom: 10px;"><i class="fa-solid fa-dna"></i></div>
+        <div style="color: #FFFFFF; font-weight: 700; font-size: 18px; margin-bottom: 4px;">PIT</div>
+        <div style="color: #8B949E; font-size: 13px; font-family: 'Roboto Mono', monospace;">Mutación</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Propósito y Resultados de Aprendizaje</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="02 Propósito">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">PROPÓSITO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">¿Para qué sirve esta unidad?</span>
+    </div>
+
+    <!-- Left Column: Propósito + Contexto -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 540px; z-index: 10;">
+      <div style="border-left: 4px solid #F89820; background-color: rgba(248, 152, 32, 0.08); padding: 24px; border-radius: 0 12px 12px 0; margin-bottom: 30px; box-sizing: border-box; border-top: 1px solid rgba(248, 152, 32, 0.15); border-right: 1px solid rgba(248, 152, 32, 0.15); border-bottom: 1px solid rgba(248, 152, 32, 0.15);">
+        <h3 style="margin: 0 0 10px 0; font-size: 20px; color: #F89820; font-weight: 700; font-family: 'Roboto Mono', monospace; text-transform: uppercase;">Propósito General</h3>
+        <p style="margin: 0; font-size: 18px; line-height: 1.5; color: #C9D1D9; font-weight: 300;">
+          Dominar las herramientas de análisis de software profesionales para detectar, medir y resolver problemas de diseño, calidad, cobertura y mutación en proyectos Java reales.
+        </p>
+      </div>
+
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Contexto del Aprendizaje</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 16px; box-sizing: border-box;">
+          <div style="display: flex; align-items: center; margin-bottom: 8px;">
+            <i class="fa-solid fa-university" style="color: #7C5CBF; font-size: 18px; margin-right: 10px;"></i>
+            <span style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Curso DOPO</span>
+          </div>
+          <span style="display: inline-block; padding: 2px 8px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.3); border-radius: 4px; color: #7C5CBF; font-size: 11px; font-family: 'Roboto Mono', monospace;">Aprendizaje Activo</span>
+        </div>
+        <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 16px; box-sizing: border-box;">
+          <div style="display: flex; align-items: center; margin-bottom: 8px;">
+            <i class="fa-solid fa-laptop-code" style="color: #F89820; font-size: 18px; margin-right: 10px;"></i>
+            <span style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Eclipse IDE</span>
+          </div>
+          <span style="display: inline-block; padding: 2px 8px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.3); border-radius: 4px; color: #F89820; font-size: 11px; font-family: 'Roboto Mono', monospace;">4 Plugins Profesionales</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Resultados de Aprendizaje -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 640px; top: 120px; width: 580px; height: 500px; background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 30px; box-sizing: border-box; z-index: 10;">
+      <h3 style="margin: 0 0 25px 0; font-size: 16px; color: #58A6FF; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;">
+        Resultados de Aprendizaje
+      </h3>
+
+      <!-- RA 1 -->
+      <div style="display: flex; margin-bottom: 24px;">
+        <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(31, 110, 235, 0.15); border: 1px solid rgba(31, 110, 235, 0.4); display: flex; align-items: center; justify-content: center; color: #58A6FF; font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 18px; margin-right: 20px;">1</div>
+        <div>
+          <h4 style="margin: 0 0 6px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Explica los conceptos de análisis</h4>
+          <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.4;">Diferencia análisis estático de dinámico e identifica sus herramientas aplicadas.</p>
+        </div>
+      </div>
+
+      <!-- RA 2 -->
+      <div style="display: flex; margin-bottom: 24px;">
+        <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(31, 110, 235, 0.15); border: 1px solid rgba(31, 110, 235, 0.4); display: flex; align-items: center; justify-content: center; color: #58A6FF; font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 18px; margin-right: 20px;">2</div>
+        <div>
+          <h4 style="margin: 0 0 6px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Interpreta reportes y resuelve incidentes</h4>
+          <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.4;">Lee resultados de SonarLint, PMD, JaCoCo y PIT y aplica correcciones justificadas de diseño y calidad.</p>
+        </div>
+      </div>
+
+      <!-- RA 3 -->
+      <div style="display: flex;">
+        <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(31, 110, 235, 0.15); border: 1px solid rgba(31, 110, 235, 0.4); display: flex; align-items: center; justify-content: center; color: #58A6FF; font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 18px; margin-right: 20px;">3</div>
+        <div>
+          <h4 style="margin: 0 0 6px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Utiliza herramientas profesionales</h4>
+          <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.4;">Configura y ejecuta de forma autónoma los cuatro análisis integrados dentro del Eclipse IDE.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>De BlueJ a Eclipse</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="03 Transición">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">CONTEXTO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">De BlueJ a Eclipse: La Transición Profesional</span>
+    </div>
+
+    <!-- BlueJ Card -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 490px; height: 420px; background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 30px; box-sizing: border-box; z-index: 10;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fa-solid fa-graduation-cap" style="font-size: 48px; color: #8B949E; margin-bottom: 10px;"></i>
+        <h3 style="margin: 0; font-size: 24px; color: #8B949E; font-weight: 700;">BlueJ</h3>
+      </div>
+      <ul style="margin: 0; padding-left: 20px; color: #C9D1D9; font-size: 16px; line-height: 1.8; font-weight: 300;">
+        <li style="margin-bottom: 10px;">Diseñado para enseñanza e introducción a la programación.</li>
+        <li style="margin-bottom: 10px;">Sin plugins integrados para análisis de código ni reportes.</li>
+        <li style="margin-bottom: 10px;">Enfoque en proyectos simples y representación visual básica.</li>
+        <li style="margin-bottom: 10px;">Excelente para aprender OOP inicial, pero limitado en producción.</li>
+      </ul>
+      <div style="position: absolute; bottom: 30px; left: 30px; width: calc(100% - 60px); text-align: center;">
+        <span style="padding: 4px 12px; background-color: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); border-radius: 4px; color: #8B949E; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em;">ENTORNO ANTERIOR</span>
+      </div>
+    </div>
+
+    <!-- Arrow Center -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 570px; top: 280px; width: 140px; text-align: center; z-index: 10;">
+      <i class="fa-solid fa-arrow-right" style="font-size: 42px; color: #F89820;"></i>
+      <div style="margin-top: 10px; font-family: 'Roboto Mono', monospace; font-size: 12px; color: #F89820; font-weight: 700;">Ahora en DOPO</div>
+    </div>
+
+    <!-- Eclipse IDE Card -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 730px; top: 120px; width: 490px; height: 420px; background-color: rgba(248, 152, 32, 0.03); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 12px; padding: 30px; box-sizing: border-box; z-index: 10; box-shadow: 0 10px 30px rgba(248, 152, 32, 0.05);">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fa-solid fa-tools" style="font-size: 48px; color: #F89820; margin-bottom: 10px;"></i>
+        <h3 style="margin: 0; font-size: 24px; color: #F89820; font-weight: 700;">Eclipse IDE</h3>
+      </div>
+      <ul style="margin: 0; padding-left: 20px; color: #FFFFFF; font-size: 16px; line-height: 1.8; font-weight: 300;">
+        <li style="margin-bottom: 10px;">Entorno de producción industrial real utilizado por ingenieros.</li>
+        <li style="margin-bottom: 10px;">Marketplace masivo con potentes herramientas de análisis.</li>
+        <li style="margin-bottom: 10px;">Gestión avanzada de compilación, classpath y dependencias.</li>
+        <li style="margin-bottom: 10px;">Integración nativa con <strong style="color: #F89820;">SonarLint</strong>, <strong style="color: #F89820;">PMD</strong>, <strong style="color: #F89820;">JaCoCo</strong> y <strong style="color: #F89820;">PIT</strong>.</li>
+      </ul>
+      <div style="position: absolute; bottom: 30px; left: 30px; width: calc(100% - 60px); text-align: center;">
+        <span style="padding: 4px 12px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em;">ENTORNO PROFESIONAL</span>
+      </div>
+    </div>
+
+    <!-- Bottom Note -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(88, 166, 255, 0.06); border-top: 1px solid #58A6FF; border-radius: 4px; padding: 12px 24px; box-sizing: border-box; text-align: center; font-size: 14px; color: #C9D1D9;">
+        💡 <strong style="color: #58A6FF;">Esta transición es el S3 del curso:</strong> llevar tu proyecto académico de BlueJ a un entorno real y medirlo rigurosamente con herramientas de la industria de software.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalación de Eclipse IDE</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="04 Instalación">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">INSTALACIÓN</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Paso 1: Instalar Eclipse IDE for Java Developers</span>
+    </div>
+
+    <!-- Connector lines behind steps -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 160px; top: 250px; width: 960px; height: 4px; border-top: 2px dashed #30363D; z-index: 1;"></div>
+
+    <!-- Step 1 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 140px; width: 260px; height: 320px; text-align: center; z-index: 10;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: rgba(88, 166, 255, 0.1); border: 2px solid #58A6FF; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; box-shadow: 0 0 20px rgba(88, 166, 255, 0.15);">
+        <i class="fa-solid fa-download" style="font-size: 32px; color: #58A6FF;"></i>
+      </div>
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #58A6FF; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Paso 1: Descargar</div>
+      <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Obtener el instalador</h4>
+      <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+        Entra a <strong style="color: #58A6FF;">eclipse.org/downloads</strong> y descarga la versión: <strong style="font-family:'Roboto Mono', monospace; font-size:12px; color:#F89820;">Eclipse IDE for Java Developers</strong>.
+      </p>
+    </div>
+
+    <!-- Step 2 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 350px; top: 140px; width: 260px; height: 320px; text-align: center; z-index: 10;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: rgba(248, 152, 32, 0.1); border: 2px solid #F89820; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; box-shadow: 0 0 20px rgba(248, 152, 32, 0.15);">
+        <i class="fa-solid fa-play-circle" style="font-size: 32px; color: #F89820;"></i>
+      </div>
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #F89820; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Paso 2: Instalar</div>
+      <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Ejecutar el Setup</h4>
+      <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+        Abre el archivo descargado. Acepta la ruta de instalación recomendada por defecto, haz clic en <strong style="color: #F89820;">Install</strong> y luego en <strong style="color: #F89820;">Launch</strong>.
+      </p>
+    </div>
+
+    <!-- Step 3 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 640px; top: 140px; width: 260px; height: 320px; text-align: center; z-index: 10;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: rgba(124, 92, 191, 0.1); border: 2px solid #7C5CBF; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; box-shadow: 0 0 20px rgba(124, 92, 191, 0.15);">
+        <i class="fa-solid fa-folder-open" style="font-size: 32px; color: #7C5CBF;"></i>
+      </div>
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #7C5CBF; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Paso 3: Workspace</div>
+      <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Definir la ruta</h4>
+      <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+        Selecciona o crea la carpeta de trabajo principal (Workspace) donde vivirán todos tus proyectos y análisis del curso DOPO.
+      </p>
+    </div>
+
+    <!-- Step 4 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 930px; top: 140px; width: 290px; height: 320px; text-align: center; z-index: 10;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: rgba(46, 164, 79, 0.1); border: 2px solid #2EA44F; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; box-shadow: 0 0 20px rgba(46, 164, 79, 0.15);">
+        <i class="fa-solid fa-check-circle" style="font-size: 32px; color: #2EA44F;"></i>
+      </div>
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #2EA44F; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Paso 4: Verificar</div>
+      <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Acceso Exitoso</h4>
+      <p style="margin: 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+        Asegúrate de que Eclipse abra de forma correcta, sin advertencias de compatibilidad, y muestre la interfaz de bienvenida inicial.
+      </p>
+    </div>
+
+    <!-- Warning bottom panel -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 540px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(210, 153, 34, 0.08); border-left: 4px solid #D29922; border-radius: 0 8px 8px 0; padding: 20px; box-sizing: border-box; display: flex; align-items: center;">
+        <i class="fa-solid fa-triangle-exclamation" style="color: #D29922; font-size: 24px; margin-right: 20px; flex-shrink: 0;"></i>
+        <div style="font-size: 15px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
+          <strong style="color: #D29922;">Requisito indispensable:</strong> Debes tener instalado previamente el kit de desarrollo Java (<strong style="font-family: 'Roboto Mono', monospace;">JDK 11</strong> o <strong style="font-family: 'Roboto Mono', monospace;">JDK 17</strong>) en tu sistema operativo antes de arrancar Eclipse IDE. Compruébalo ingresando la instrucción <span style="font-family: 'Roboto Mono', monospace; background-color: #161B22; padding: 2px 6px; border-radius: 4px; color: #FFFFFF;">java -version</span> desde tu terminal de comandos.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalación de Plugins</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .plugin-card {
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 20px;
+      box-sizing: border-box;
+      height: 220px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="05 Plugins">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">PLUGINS</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Paso 2: Instalar Plugins via Eclipse Marketplace</span>
+    </div>
+
+    <!-- Instruction Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 100px; width: 1160px; z-index: 10;">
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 15px; color: #58A6FF; background-color: rgba(88, 166, 255, 0.05); border: 1px dashed rgba(88, 166, 255, 0.3); padding: 10px 20px; border-radius: 6px;">
+        <i class="fa-solid fa-circle-info" style="margin-right: 10px;"></i>Ruta de instalación: <strong style="color: #FFFFFF;">Help</strong> &rarr; <strong style="color: #FFFFFF;">Eclipse Marketplace...</strong> &rarr; Busca cada plugin &rarr; <strong style="color: #FFFFFF;">Install</strong> &rarr; <strong style="color: #FFFFFF;">Restart Now</strong> (uno a uno)
+      </div>
+    </div>
+
+    <!-- Plugin 1: SonarLint -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 175px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #4A90D9;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-search" style="color: #4A90D9; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">SonarLint</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(74, 144, 217, 0.15); border: 1px solid rgba(74, 144, 217, 0.3); border-radius: 4px; color: #4A90D9; font-family: 'Roboto Mono', monospace; font-size: 11px;">ESTÁTICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">SonarLint</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Análisis de diseño en tiempo real</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Subraya problemas en el editor mientras escribes, sin ejecutar comandos adicionales. Detecta bugs, vulnerabilidades y code smells de diseño OOP al instante.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 2: PMD -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 175px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #F89820;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-shield-halved" style="color: #F89820; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">PMD Eclipse Plugin</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.3); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 11px;">ESTÁTICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">PMD Eclipse Plugin</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Análisis de calidad y malas prácticas</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Analiza el árbol de sintaxis abstracta para identificar código muerto, bloques catch vacíos, parámetros no utilizados, variables sobreescritas y violación de estándares.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 3: JaCoCo -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 415px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #2EA44F;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-chart-bar" style="color: #2EA44F; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">EclEmma / JaCoCo</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.3); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 11px;">DINÁMICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">EclEmma</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Pruebas de cobertura integradas</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Colorea tu base de código en tiempo de ejecución (verde, rojo, amarillo) para mapear qué instrucciones y ramificaciones lógicas están siendo realmente ejercitadas por tus pruebas JUnit.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 4: PIT -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 415px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #DA3633;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-dna" style="color: #DA3633; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">Pitclipse / PIT</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.3); border-radius: 4px; color: #DA3633; font-family: 'Roboto Mono', monospace; font-size: 11px;">DINÁMICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">Pitclipse</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Pruebas de mutación y robustez</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Introduce sutiles fallos artificiales de forma automatizada (mutantes) en tu código para verificar que tus pruebas unitarias son capaces de capturar y matar dichos errores de forma oportuna.
+        </p>
+      </div>
+    </div>
+
+    <!-- Alert footer inside workspace -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 650px; width: 1160px; text-align: center; z-index: 10;">
+      <span style="font-size: 13px; color: #D29922; font-weight: 700;">
+        ⚠️ Recuerda: Es fundamental reiniciar Eclipse después de la instalación de cada plugin para evitar conflictos de runtime.
+      </span>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Flujo de Trabajo Básico</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .flow-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      border-radius: 6px;
+      border: 1px solid #30363D;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="06 Operaciones">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">FLUJO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Operaciones Fundamentales en Eclipse</span>
+    </div>
+
+    <!-- Rows Section (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 680px; z-index: 10;">
+      <!-- Row 1 -->
+      <div class="flow-row" style="background-color: #161B22; border-left: 5px solid #58A6FF;">
+        <i class="fa-solid fa-cogs" style="color: #58A6FF; font-size: 22px; width: 35px; text-align: center; margin-right: 15px;"></i>
+        <div style="flex-grow: 1;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFFFFF;">COMPILAR</div>
+          <div style="font-size: 13px; color: #8B949E; margin-top: 2px;">Automático al guardar archivo. Manual: <strong style="color: #C9D1D9;">Project &rarr; Build Project</strong></div>
+        </div>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #58A6FF; background-color: rgba(88, 166, 255, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(88, 166, 255, 0.2);">build path</span>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="flow-row" style="background-color: #21262D; border-left: 5px solid #7C5CBF;">
+        <i class="fa-solid fa-file-code" style="color: #7C5CBF; font-size: 22px; width: 35px; text-align: center; margin-right: 15px;"></i>
+        <div style="flex-grow: 1;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFFFFF;">DOCUMENTAR</div>
+          <div style="font-size: 13px; color: #8B949E; margin-top: 2px;"><strong style="color: #C9D1D9;">Project &rarr; Generate Javadoc...</strong> &rarr; selecciona carpeta de destino</div>
+        </div>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #7C5CBF; background-color: rgba(124, 92, 191, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(124, 92, 191, 0.2);">javadoc</span>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="flow-row" style="background-color: #161B22; border-left: 5px solid #F89820;">
+        <i class="fa-solid fa-play" style="color: #F89820; font-size: 22px; width: 35px; text-align: center; margin-right: 15px;"></i>
+        <div style="flex-grow: 1;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFFFFF;">EJECUTAR</div>
+          <div style="font-size: 13px; color: #8B949E; margin-top: 2px;">Clic derecho sobre clase con main &rarr; <strong style="color: #C9D1D9;">Run As &rarr; Java Application</strong></div>
+        </div>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #F89820; background-color: rgba(248, 152, 32, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(248, 152, 32, 0.2);">JVM</span>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="flow-row" style="background-color: #21262D; border-left: 5px solid #2EA44F;">
+        <i class="fa-solid fa-vial" style="color: #2EA44F; font-size: 22px; width: 35px; text-align: center; margin-right: 15px;"></i>
+        <div style="flex-grow: 1;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFFFFF;">PROBAR (JUnit)</div>
+          <div style="font-size: 13px; color: #8B949E; margin-top: 2px;">Clic derecho sobre clase Test &rarr; <strong style="color: #C9D1D9;">Run As &rarr; JUnit Test</strong></div>
+        </div>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; background-color: rgba(46, 164, 79, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(46, 164, 79, 0.2);">JUnit 4</span>
+      </div>
+    </div>
+
+    <!-- Code Block Section (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 760px; top: 120px; width: 460px; height: 495px; background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 14px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Ejemplo de Método Main indispensable</h3>
+      <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
+        Recuerda estructurar el punto de entrada para ejecutar las simulaciones requeridas en el taller:
+      </p>
+      
+      <pre style="margin: 0; background-color: #0D1117; border: 1px solid #30363D; border-radius: 6px; padding: 20px; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; overflow-x: auto; line-height: 1.6;">
+<span style="color: #F89820;">public static void</span> <span style="color: #58A6FF;">main</span>(String[] args) {
+    Contest contest = <span style="color: #F89820;">new</span> Contest();
+    contest.simular();
+}</pre>
+
+      <div style="margin-top: 20px; border-top: 1px solid #30363D; padding-top: 15px; font-size: 13px; color: #8B949E; line-height: 1.4;">
+        💡 El compilador de Eclipse creará los ejecutables binarios de forma inmediata al vuelo tras cada guardado exitoso (<kbd style="background: #21262D; border: 1px solid #30363D; padding: 2px 5px; border-radius: 3px; font-size: 11px;">Ctrl + S</kbd>).
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panorama de los Cuatro Análisis</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .quadrant {
+      border: 1px solid #30363D;
+      border-radius: 12px;
+      padding: 30px;
+      box-sizing: border-box;
+      height: 235px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="07 Panorama">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Los Cuatro Pilares del Análisis de Software</span>
+    </div>
+
+    <!-- Quadrant 1: SonarLint -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(74, 144, 217, 0.03); border-color: rgba(74, 144, 217, 0.3); border-top: 4px solid #4A90D9;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #4A90D9; font-weight: 700;">ESTÁTICO 1</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">SonarLint</h3>
+          </div>
+          <i class="fa-solid fa-search" style="font-size: 40px; color: #4A90D9; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿El software cumple los principios de buen diseño?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Inspección continua de malas prácticas y acoplamiento en el diseño de clases.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 2: PMD -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(248, 152, 32, 0.03); border-color: rgba(248, 152, 32, 0.3); border-top: 4px solid #F89820;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #F89820; font-weight: 700;">ESTÁTICO 2</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">PMD</h3>
+          </div>
+          <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: #F89820; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿El código no presenta defectos ni malas prácticas?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Escaneo automatizado de código muerto, duplicación y violaciones de estándares de calidad.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 3: JaCoCo -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 385px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(46, 164, 79, 0.03); border-color: rgba(46, 164, 79, 0.3); border-top: 4px solid #2EA44F;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; font-weight: 700;">DINÁMICO 1</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">JaCoCo</h3>
+          </div>
+          <i class="fa-solid fa-chart-bar" style="font-size: 40px; color: #2EA44F; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿Qué código está realmente siendo probado?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Mapeo de cobertura lógica y de sentencias ejecutadas durante las pruebas unitarias.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 4: PIT -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 385px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(218, 54, 51, 0.03); border-color: rgba(218, 54, 51, 0.3); border-top: 4px solid #DA3633;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #DA3633; font-weight: 700;">DINÁMICO 2</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">PIT</h3>
+          </div>
+          <i class="fa-solid fa-dna" style="font-size: 40px; color: #DA3633; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿Las pruebas realmente detectan errores?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Pruebas de mutación automatizadas que inyectan fallas para desafiar tus asserts JUnit.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Badge Case of Study -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 540px; top: 310px; width: 200px; height: 100px; background-color: #161B22; border: 2px solid #30363D; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 20;">
+      <div style="text-align: center;">
+        <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #F89820; font-weight: 700;">CASO DE ESTUDIO</div>
+        <div style="font-weight: 700; font-size: 15px; color: #FFFFFF; margin-top: 4px;">CuentaBancaria</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SonarLint — Análisis de Diseño</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .sonar-step {
+      font-size: 13px;
+      color: #C9D1D9;
+      padding: 10px 0;
+      border-bottom: 1px solid #21262D;
+      font-weight: 300;
+    }
+    .sonar-step:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="08 SonarLint">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(74, 144, 217, 0.15); border: 1px solid rgba(74, 144, 217, 0.4); border-radius: 4px; color: #4A90D9; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 1</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🔵 SonarLint — Análisis de Diseño en Tiempo Real</span>
+    </div>
+
+    <!-- Column 1: Config & Flow (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #4A90D9; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Activar y utilizar la vista</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 20px; box-sizing: border-box; margin-bottom: 20px;">
+        <div style="font-size: 14px; color: #FFFFFF; line-height: 1.5; font-weight: 300;">
+          1. Ve al menú superior: <strong style="color: #4A90D9;">Window &rarr; Show View &rarr; Other...</strong><br>
+          2. Selecciona: <strong style="color: #4A90D9;">SonarLint &rarr; On-The-Fly Issues</strong>.<br>
+          3. La pestaña se abrirá mostrando los incidentes ordenados por severidad y tipo.
+        </div>
+      </div>
+
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Flujo de Resolución</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px 25px; box-sizing: border-box;">
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">1.</strong> Identifica el incidente con mayor severidad de la lista.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">2.</strong> Haz doble clic: Eclipse te llevará exactamente a la línea afectada.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">3.</strong> Abre la regla de SonarLint para entender por qué es una mala práctica.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">4.</strong> Aplica la corrección oportuna o documenta tu justificación técnica.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">5.</strong> Guarda la clase (<kbd style="background: #21262D; border: 1px solid #30363D; padding: 1px 4px; border-radius: 3px; font-size:10px;">Ctrl+S</kbd>) y comprueba que el aviso desaparezca.</div>
+      </div>
+    </div>
+
+    <!-- Column 2: Caso de Estudio (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #DA3633; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Caso de Estudio: CuentaBancaria</h3>
+      
+      <!-- Bad Code Block -->
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px 8px 0 0; padding: 20px; box-sizing: border-box; position: relative;">
+        <div style="position: absolute; right: 20px; top: 15px; font-size: 11px; font-family: 'Roboto Mono', monospace; color: #DA3633; background: rgba(218, 54, 51, 0.1); border: 1px solid rgba(218, 54, 51, 0.3); padding: 2px 8px; border-radius: 4px;">REGLA VIOLADA</div>
+        <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; line-height: 1.5;">
+<span style="color: #F89820;">public void</span> <span style="color: #58A6FF;">retirar</span>(<span style="color: #F89820;">double</span> monto) {
+    <span style="color: #F89820;">if</span> (monto &gt; 0 <strong style="color: #DA3633; background-color: rgba(218, 54, 51, 0.2); padding: 2px 4px; border-radius: 3px;">&amp;</strong> monto &lt;= saldo) {  <span style="color: #8B949E;">// &larr; Alerta</span>
+        saldo = saldo - monto;
+    }
+}</pre>
+        <div style="margin-top: 10px; font-size: 12px; color: #DA3633; font-family: 'Roboto Mono', monospace;"><i class="fa-solid fa-circle-xmark" style="margin-right: 6px;"></i>Use "&&" instead of "&" (Logical vs Bitwise AND)</div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="text-align: center; margin: 10px 0;">
+        <i class="fa-solid fa-arrow-down" style="font-size: 20px; color: #2EA44F;"></i>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; font-weight: 700; margin-left: 10px;">CORRECCIÓN DE DISEÑO</span>
+      </div>
+
+      <!-- Fixed Code Block -->
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 0 0 8px 8px; padding: 20px; box-sizing: border-box; border-top: none;">
+        <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; line-height: 1.5;">
+<span style="color: #F89820;">public void</span> <span style="color: #58A6FF;">retirar</span>(<span style="color: #F89820;">double</span> monto) {
+    <span style="color: #F89820;">if</span> (monto &gt; 0 <strong style="color: #2EA44F; background-color: rgba(46, 164, 79, 0.2); padding: 2px 4px; border-radius: 3px;">&amp;&amp;</strong> monto &lt;= saldo) { <span style="color: #2EA44F;">// &check; AND lógico</span>
+        saldo = saldo - monto;
+    }
+}</pre>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(248, 152, 32, 0.08); border-left: 4px solid #F89820; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #F89820; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Cuando estés viendo la guía del monitor, pausa el video inmediatamente al observar el primer subrayado de advertencia de SonarLint. ¿Eres capaz de predecir cuál es la solución adecuada antes de verla?
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>PMD — Análisis de Calidad</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .exec-step {
+      display: flex;
+      align-items: center;
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px 20px;
+      width: 350px;
+      box-sizing: border-box;
+    }
+    .prio-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="09 PMD">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 2</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🟠 PMD — Análisis de Calidad y Malas Prácticas</span>
+    </div>
+
+    <!-- Section 1: Cómo Ejecutar (Top horizontal steps) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 1160px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #F89820; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Procedimiento de Ejecución</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="exec-step">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background-color: #30363D; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 12px; font-family: 'Roboto Mono', monospace;">1</span>
+          <span style="font-size: 13px; color: #C9D1D9;">Clic derecho sobre tu proyecto</span>
+        </div>
+        <div style="color: #8B949E;"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="exec-step">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background-color: rgba(248,152,32,0.15); border: 1px solid rgba(248,152,32,0.3); color: #F89820; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 12px; font-family: 'Roboto Mono', monospace;">2</span>
+          <span style="font-size: 13px; color: #FFFFFF; font-weight: 700;">PMD &rarr; Check Code</span>
+        </div>
+        <div style="color: #8B949E;"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="exec-step">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background-color: #30363D; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 12px; font-family: 'Roboto Mono', monospace;">3</span>
+          <span style="font-size: 13px; color: #C9D1D9;">Ordena vista PMD Violations por "P"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Tabla de Prioridades (Left-Bottom) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 220px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Tabla de Prioridades en PMD</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; height: 320px;">
+        
+        <div class="prio-row" style="background-color: rgba(218, 54, 51, 0.08); border-left: 4px solid #DA3633;">
+          <span style="font-weight: 700; width: 100px; color: #DA3633; font-family: 'Roboto Mono', monospace;">Prioridad 1</span>
+          <span style="flex-grow: 1; color: #FFFFFF;">Crítico (posible bug real en runtime)</span>
+          <span style="font-size: 11px; background-color: #DA3633; padding: 2px 6px; border-radius: 4px; font-weight: 700;">OBLIGATORIO</span>
+        </div>
+
+        <div class="prio-row" style="background-color: rgba(248, 152, 32, 0.08); border-left: 4px solid #F89820;">
+          <span style="font-weight: 700; width: 100px; color: #F89820; font-family: 'Roboto Mono', monospace;">Prioridad 2</span>
+          <span style="flex-grow: 1; color: #C9D1D9;">Alta (problema grave de calidad)</span>
+          <span style="font-size: 11px; background-color: #F89820; color: #0D1117; padding: 2px 6px; border-radius: 4px; font-weight: 700;">JUSTIFICAR</span>
+        </div>
+
+        <div class="prio-row" style="background-color: rgba(210, 153, 34, 0.08); border-left: 4px solid #D29922;">
+          <span style="font-weight: 700; width: 100px; color: #D29922; font-family: 'Roboto Mono', monospace;">Prioridad 3-5</span>
+          <span style="flex-grow: 1; color: #8B949E;">Media/Baja (estilo o menor)</span>
+          <span style="font-size: 11px; background-color: #21262D; border: 1px solid #30363D; padding: 2px 6px; border-radius: 4px;">OPCIONAL</span>
+        </div>
+
+        <div style="margin-top: 15px; font-size: 12px; color: #8B949E; line-height: 1.4; border-top: 1px solid #21262D; padding-top: 10px;">
+          💡 <strong style="color: #C9D1D9;">Consejo del monitor:</strong> Enfócate siempre en resolver primero los incidentes de prioridad 1 y 2. Las prioridades 3, 4 y 5 corresponden a formato de código.
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Caso de Estudio (Right-Bottom) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 220px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Caso de Estudio: Método Inútil</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 20px; box-sizing: border-box; height: 320px; border-left: 4px solid #F89820;">
+        <div style="font-family: 'Roboto Mono', monospace; font-size: 12px; color: #F89820; margin-bottom: 10px; font-weight: 700;">PMD WARNING: UnusedPrivateMethod</div>
+        
+        <pre style="margin: 0; background-color: #0D1117; border: 1px solid #21262D; border-radius: 6px; padding: 15px; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; line-height: 1.5;">
+<span style="color: #7C5CBF;">private void</span> <span style="color: #58A6FF;">metodoInterno</span>() {  <span style="color: #DA3633;">// Unused</span>
+    System.out.println(<span style="color: #2EA44F;">"debug"</span>);
+}</pre>
+
+        <div style="margin-top: 15px; font-size: 14px; line-height: 1.4; color: #C9D1D9;">
+          <strong style="color: #FFFFFF;">Diagnóstico técnico:</strong> Método privado que nunca se invoca dentro de la clase. Representa código muerto, viola el principio ágil <strong style="color: #F89820;">YAGNI</strong> (You Aren't Gonna Need It).<br>
+          <strong style="color: #FFFFFF; display: block; margin-top: 8px;">Solución recomendada:</strong> Eliminar el método inactivo por completo para mantener el proyecto limpio.
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(248, 152, 32, 0.08); border-left: 4px solid #F89820; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #F89820; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Antes de observar la solución que propone el monitor en la videoguía, escribe en un papel tu propia propuesta detallada de corrección para el método privado no utilizado.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>EclEmma (JaCoCo) — Pruebas de Cobertura</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .color-legend {
+      display: flex;
+      align-items: center;
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .code-sim {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 2px;
+      line-height: 1.4;
+    }
+    .coverage-green {
+      background-color: rgba(46, 164, 79, 0.15);
+      border-left: 4px solid #2EA44F;
+      color: #C9D1D9;
+    }
+    .coverage-red {
+      background-color: rgba(218, 54, 51, 0.15);
+      border-left: 4px solid #DA3633;
+      color: #C9D1D9;
+    }
+    .coverage-yellow {
+      background-color: rgba(210, 153, 34, 0.15);
+      border-left: 4px solid #D29922;
+      color: #FFFFFF;
+    }
+    .metric-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #21262D;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="10 JaCoCo">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 3</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🟢 EclEmma (JaCoCo) — Pruebas de Cobertura</span>
+    </div>
+
+    <!-- Column 1: Ejecución y Leyenda (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #2EA44F; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Ejecución de Cobertura</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; font-size: 13px; line-height: 1.5; margin-bottom: 18px; color: #C9D1D9; font-weight: 300;">
+        1. Clic derecho sobre la clase Test o paquete &rarr; <strong style="color: #FFFFFF;">Coverage As &rarr; JUnit Test</strong>.<br>
+        2. Al finalizar, Eclipse coloreará de forma automatizada el editor de código.
+      </div>
+
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Leyenda de Colores</h3>
+      <div>
+        <div class="color-legend" style="border-left: 5px solid #2EA44F;">
+          <span style="font-weight: 700; width: 90px; color: #2EA44F; font-family: 'Roboto Mono', monospace;">Verde</span>
+          <span style="color: #C9D1D9;">Instrucción totalmente ejecutada por las pruebas unitarias.</span>
+        </div>
+        <div class="color-legend" style="border-left: 5px solid #DA3633;">
+          <span style="font-weight: 700; width: 90px; color: #DA3633; font-family: 'Roboto Mono', monospace;">Rojo</span>
+          <span style="color: #C9D1D9;">Línea NO ejecutada. Cobertura lógica pendiente por verificar.</span>
+        </div>
+        <div class="color-legend" style="border-left: 5px solid #D29922;">
+          <span style="font-weight: 700; width: 90px; color: #D29922; font-family: 'Roboto Mono', monospace;">Amarillo</span>
+          <span style="color: #FFFFFF;">Rama de decisión parcialmente cubierta (ej. 'if' evaluado en true pero no en false).</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Simulación y Métricas (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Simulador Visual de Código Coloreado</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; margin-bottom: 18px;">
+        <div class="code-sim coverage-green">public void consignar(double monto) {</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;if (monto > 0) {</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saldo = saldo + monto;</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+        <div class="code-sim coverage-green">}</div>
+        <div class="code-sim coverage-green">public void retirar(double monto) {</div>
+        <div class="code-sim coverage-yellow">&nbsp;&nbsp;&nbsp;&nbsp;if (monto > 0 && monto &lt;= saldo) {  // &larr; Rama parcial</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saldo = saldo - monto;</div>
+        <div class="code-sim coverage-red">&nbsp;&nbsp;&nbsp;&nbsp;}  // &larr; Línea nunca ejecutada por completo</div>
+      </div>
+
+      <!-- Métricas dashboard -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="metric-badge">
+          <span style="font-size: 13px; color: #C9D1D9;">Line Coverage</span>
+          <span style="font-family: 'Roboto Mono', monospace; font-weight: 700; color: #2EA44F; font-size: 15px;">85% &check;</span>
+        </div>
+        <div class="metric-badge" style="border-color: rgba(210, 153, 34, 0.4);">
+          <span style="font-size: 13px; color: #C9D1D9;">Branch Coverage</span>
+          <span style="font-family: 'Roboto Mono', monospace; font-weight: 700; color: #D29922; font-size: 15px;">60% ⚠️</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(46, 164, 79, 0.08); border-left: 4px solid #2EA44F; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #2EA44F; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Identifica visualmente la línea amarilla en el editor antes de que el monitor la señale en la explicación en video. ¿Qué caso de prueba unitaria nos hace falta diseñar para que esa línea se pinte de color verde?
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pitclipse (PIT) — Pruebas de Mutación</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .mutation-flow-card {
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 15px 20px;
+      text-align: center;
+      width: 250px;
+      box-sizing: border-box;
+    }
+    .pit-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="11 PIT">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.4); border-radius: 4px; color: #DA3633; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 4</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🔴 Pitclipse (PIT) — Pruebas de Mutación</span>
+    </div>
+
+    <!-- Section 1: Concepto Visual (Top horizontal flow) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 1160px; z-index: 10;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="mutation-flow-card">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #58A6FF; margin-bottom: 4px;">PASO 1</div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Tu código fuente</div>
+        </div>
+        <div style="color: #8B949E;"><i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="mutation-flow-card" style="border-color: rgba(218,54,51,0.3); background-color: rgba(218,54,51,0.03);">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #DA3633; margin-bottom: 4px;">PASO 2</div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">PIT inyecta mutante</div>
+        </div>
+        <div style="color: #8B949E;"><i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="mutation-flow-card" style="border-color: rgba(46,164,79,0.3); background-color: rgba(46,164,79,0.03);">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; margin-bottom: 4px;">PASO 3</div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">¿Las pruebas fallan?</div>
+        </div>
+        <div style="color: #8B949E;"><i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="mutation-flow-card">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #8B949E; margin-bottom: 4px;">RESULTADO</div>
+          <div style="font-weight: 700; font-size: 14px; color: #C9D1D9;">Killed ✅ o Survived ❌</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Tabla de Resultados (Left-Bottom) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 240px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Resultados de Mutación</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; height: 300px;">
+        <div class="pit-row" style="background-color: rgba(46,164,79,0.08); border-left: 4px solid #2EA44F;">
+          <span style="font-weight: 700; width: 110px; color: #2EA44F; font-family: 'Roboto Mono', monospace;">Killed</span>
+          <span style="flex-grow: 1; color: #C9D1D9;">Mutante detectado por tu test &rarr; Prueba eficaz</span>
+          <span style="font-size: 11px; background-color: #2EA44F; padding: 2px 6px; border-radius: 4px; font-weight: 700;">EXITOSO</span>
+        </div>
+
+        <div class="pit-row" style="background-color: rgba(218, 54, 51, 0.08); border-left: 4px solid #DA3633;">
+          <span style="font-weight: 700; width: 110px; color: #DA3633; font-family: 'Roboto Mono', monospace;">Survived</span>
+          <span style="flex-grow: 1; color: #FFFFFF;">Mutante NO detectado por test &rarr; Prueba débil</span>
+          <span style="font-size: 11px; background-color: #DA3633; padding: 2px 6px; border-radius: 4px; font-weight: 700;">ALERTA</span>
+        </div>
+
+        <div class="pit-row" style="background-color: rgba(139, 148, 158, 0.08); border-left: 4px solid #8B949E;">
+          <span style="font-weight: 700; width: 110px; color: #8B949E; font-family: 'Roboto Mono', monospace;">No Coverage</span>
+          <span style="flex-grow: 1; color: #8B949E;">Línea sin ninguna prueba asociada</span>
+          <span style="font-size: 11px; background-color: #21262D; border: 1px solid #30363D; padding: 2px 6px; border-radius: 4px;">SIN COBERT</span>
+        </div>
+
+        <div style="margin-top: 15px; font-size: 12px; color: #8B949E; line-height: 1.4; border-top: 1px solid #21262D; padding-top: 10px;">
+          ⚙️ <strong style="color: #C9D1D9;">Ejecución:</strong> Clic derecho sobre el proyecto &rarr; <strong style="color: #FFFFFF;">PIT &rarr; PIT Mutation Test</strong>. Nota: Puede tomar unos minutos en procesar todo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Caso de Estudio (Right-Bottom) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 240px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Mutante Superviviente Detectado</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 20px; box-sizing: border-box; height: 300px; border-left: 4px solid #DA3633;">
+        <div style="font-size: 13px; color: #C9D1D9; margin-bottom: 8px; font-weight: 300;">
+          PIT cambió el operador de comparación <strong style="color: #F89820;">monto &gt; 0</strong> a <strong style="color: #F89820;">monto &gt;= 0</strong> en consignar, ¡y ningún assert falló!
+        </div>
+        
+        <pre style="margin: 0; background-color: #0D1117; border: 1px solid #21262D; border-radius: 6px; padding: 12px; font-family: 'Roboto Mono', monospace; font-size: 12px; color: #C9D1D9; line-height: 1.4;">
+<span style="color: #7C5CBF;">@Test</span>
+<span style="color: #7C5CBF;">public void</span> <span style="color: #58A6FF;">shouldNotConsignarWhenMontoCero</span>() {
+    CuentaBancaria cuenta = <span style="color: #7C5CBF;">new</span> CuentaBancaria();
+    cuenta.consignar(0.0);
+    assertEquals(0.0, cuenta.getSaldo(), 0.01);
+}</pre>
+
+        <div style="margin-top: 10px; font-size: 12px; line-height: 1.4; color: #2EA44F;">
+          ✔ <strong style="color: #FFFFFF;">Solución:</strong> El test anterior asegura que consignar 0.0 no altera el saldo de la cuenta, matando de inmediato este mutante alternativo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(218, 54, 51, 0.08); border-left: 4px solid #DA3633; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #DA3633; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Cuando visualices que un mutante ha sobrevivido (Survived), detén de inmediato la reproducción. Escribe en papel la prueba unitaria exacta que sería capaz de detectar y eliminar ese error artificial.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Importar Proyecto y Compilar</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: rgba(124, 92, 191, 0.15);
+      border: 1px solid rgba(124, 92, 191, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7C5CBF;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 15px;
+      margin-top: 2px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: #C9D1D9;
+      font-weight: 300;
+    }
+    .check-item i {
+      color: #2EA44F;
+      font-size: 18px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="12 S4 Importar">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">S4 PRÁCTICA</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Cierre del Proyecto: Importar de BlueJ a Eclipse</span>
+    </div>
+
+    <!-- Column 1: Importar (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Importación del Proyecto</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px;">
+        
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">File &rarr; Import...</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Selecciona la opción <strong style="color: #C9D1D9;">General &rarr; Existing Projects into Workspace</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Seleccionar directorio</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Haz clic en <strong style="color: #C9D1D9;">Browse</strong>, busca la ruta raíz del proyecto original de BlueJ y selecciona <strong style="color: #C9D1D9;">Finish</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Verificar pestaña Problems</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Comprueba que no se reporten errores rojos en la barra inferior de compilación de Eclipse.</p>
+          </div>
+        </div>
+
+        <div class="step-item" style="margin-bottom: 0;">
+          <div class="step-num">4</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Ajustar JDK de ser necesario</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Si hay errores: <strong style="color: #C9D1D9;">Preferences &rarr; Java &rarr; Installed JREs</strong> y añade tu JDK 11/17.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Column 2: Verificar Entorno (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #2EA44F; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Verificación del Entorno</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Proyecto importado correctamente sin fallos de dependencias.</div>
+          </div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Clase principal ejecutable (<strong style="color: #FFFFFF;">Run As &rarr; Java Application</strong>).</div>
+          </div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Pruebas JUnit funcionando y pasando en verde (<strong style="color: #FFFFFF;">JUnit Test</strong>).</div>
+          </div>
+          <div class="check-item" style="margin-bottom: 0;">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Javadoc estructurado y generado (<strong style="color: #FFFFFF;">Project &rarr; Generate Javadoc...</strong>).</div>
+          </div>
+        </div>
+
+        <div style="background-color: #0D1117; border: 1px solid #30363D; border-radius: 6px; padding: 15px; box-sizing: border-box;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #8B949E; margin-bottom: 6px;">CÓDIGO SI FALTA EL MAIN EN TU PROYECTO</div>
+          <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 12px; color: #C9D1D9; line-height: 1.4;">
+<span style="color: #F89820;">public static void</span> <span style="color: #58A6FF;">main</span>(String[] args) {
+    Contest contest = <span style="color: #F89820;">new</span> Contest();
+    contest.simular();
+}</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Instruction Note -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 550px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(124, 92, 191, 0.05); border: 1px solid rgba(124, 92, 191, 0.3); border-radius: 8px; padding: 16px 24px; box-sizing: border-box; text-align: center; font-size: 14px; color: #C9D1D9; font-weight: 300;">
+        ⚠️ <strong style="color: #7C5CBF;">Regla de oro:</strong> Únicamente cuando el entorno de Eclipse compile de forma exitosa y pase JUnit en verde, procede con la ejecución secuencial de las cuatro herramientas de análisis.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ciclo de Análisis: Las 5 Etapas</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      height: 70px;
+    }
+    .pipeline-step-num {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="13 S4 Protocolo">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">S4 PROTOCOLO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Ciclo de Análisis: Las 5 Etapas para cada Herramienta</span>
+    </div>
+
+    <!-- Pipeline Column (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 680px; z-index: 10;">
+      <!-- Step 1 -->
+      <div class="pipeline-step" style="border-left: 4px solid #58A6FF;">
+        <div class="pipeline-step-num" style="background-color: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.4); color: #58A6FF;">I</div>
+        <i class="fa-solid fa-play" style="color: #58A6FF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Inicial</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Ejecuta la herramienta y registra TODOS los incidentes en una tabla.</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="pipeline-step" style="border-left: 4px solid #F89820;">
+        <div class="pipeline-step-num" style="background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); color: #F89820;">II</div>
+        <i class="fa-solid fa-magnifying-glass" style="color: #F89820; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Interpretación</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Lee cada incidente de software. Clasifícalo de acuerdo con la prioridad.</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pipeline-step" style="border-left: 4px solid #7C5CBF;">
+        <div class="pipeline-step-num" style="background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); color: #7C5CBF;">III</div>
+        <i class="fa-solid fa-bullseye" style="color: #7C5CBF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Selección</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Elige el incidente más relevante. Justifica técnicamente la selección.</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="pipeline-step" style="border-left: 4px solid #2EA44F;">
+        <div class="pipeline-step-num" style="background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); color: #2EA44F;">IV</div>
+        <i class="fa-solid fa-wrench" style="color: #2EA44F; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Solución</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Aplica la corrección en el código Java y documenta el razonamiento.</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="pipeline-step" style="border-left: 4px solid #DA3633; margin-bottom: 0;">
+        <div class="pipeline-step-num" style="background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.4); color: #DA3633;">V</div>
+        <i class="fa-solid fa-chart-line" style="color: #DA3633; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Final</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Vuelve a ejecutar la herramienta y compara: Estado Inicial vs Final.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deliverable Column (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 760px; top: 110px; width: 460px; height: 495px; background-color: rgba(88, 166, 255, 0.03); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 12px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; z-index: 10;">
+      
+      <div>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <i class="fa-solid fa-file-alt" style="font-size: 48px; color: #58A6FF; margin-bottom: 10px;"></i>
+          <h3 style="margin: 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Entregable Esperado</h3>
+        </div>
+        
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+          Para cada una de las cuatro herramientas de análisis deberás consolidar e incluir en tu reporte final:
+        </p>
+
+        <ul style="margin: 0; padding-left: 20px; color: #8B949E; font-size: 13px; line-height: 1.7; font-weight: 300;">
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Tabla Inicial:</strong> Listado y conteo de todos los incidentes detectados antes de realizar cambios.</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Justificación de Selección:</strong> ¿Por qué seleccionaste ese incidente específico para resolver?</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Código Antes/Después:</strong> Evidencia del código fuente previo y el corregido.</li>
+          <li style="margin-bottom: 0;"><strong style="color: #C9D1D9;">Tabla Final:</strong> Reporte que evidencia la reducción o eliminación de fallos.</li>
+        </ul>
+      </div>
+
+      <div style="border-top: 1px solid rgba(88, 166, 255, 0.2); padding-top: 15px; font-size: 12px; color: #8B949E; text-align: center; line-height: 1.4;">
+        📋 Repite este ciclo de forma rigurosa para las cuatro herramientas antes de la fecha de entrega.
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos de Práctica Guiada</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .video-card {
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 12px;
+      padding: 24px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="14 Práctica">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">PRÁCTICA</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🎥 Videos de Práctica Guiada</span>
+    </div>
+
+    <!-- Video 1 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 1160px; z-index: 10;">
+      <div class="video-card" style="border-left: 5px solid #F89820;">
+        <div style="flex-shrink: 0; margin-right: 30px; color: #F89820; text-align: center; width: 80px;">
+          <i class="fa-regular fa-play-circle" style="font-size: 58px; text-shadow: 0 0 15px rgba(248,152,32,0.2);"></i>
+          <span style="display: block; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #F89820; margin-top: 8px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">VIDEO 1</span>
+        </div>
+        <div style="flex-grow: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 20px; color: #FFFFFF; font-weight: 700;">Instalación de Eclipse + 4 Plugins</h3>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; background-color: rgba(248, 152, 32, 0.1); border: 1px solid rgba(248, 152, 32, 0.25); color: #F89820; padding: 2px 8px; border-radius: 4px; font-weight: 700;">VIDEO 1 • DOPO</span>
+          </div>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
+            Instala Eclipse IDE for Java Developers y configura SonarLint, PMD, EclEmma y Pitclipse desde cero de manera clara y guiada.
+          </p>
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #58A6FF;">
+            <i class="fa-solid fa-link" style="margin-right: 8px;"></i>https://youtu.be/Gq7Tz84vEDk
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video 2 -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 340px; width: 1160px; z-index: 10;">
+      <div class="video-card" style="border-left: 5px solid #DA3633;">
+        <div style="flex-shrink: 0; margin-right: 30px; color: #DA3633; text-align: center; width: 80px;">
+          <i class="fa-regular fa-play-circle" style="font-size: 58px; text-shadow: 0 0 15px rgba(218,54,51,0.2);"></i>
+          <span style="display: block; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #DA3633; margin-top: 8px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">VIDEO 2</span>
+        </div>
+        <div style="flex-grow: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 20px; color: #FFFFFF; font-weight: 700;">Los 4 Análisis en Acción: CuentaBancaria</h3>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; background-color: rgba(218, 54, 51, 0.1); border: 1px solid rgba(218, 54, 51, 0.25); color: #DA3633; padding: 2px 8px; border-radius: 4px; font-weight: 700;">VIDEO 2 • DOPO</span>
+          </div>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
+            Importa el proyecto de BlueJ, ejecuta los cuatro análisis de software y resuelve cada uno de los incidentes presentados paso a paso.
+          </p>
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #58A6FF;">
+            <i class="fa-solid fa-link" style="margin-right: 8px;"></i>https://youtu.be/t2J1zNvKKKU
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbulb Bottom Box -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 560px; width: 1160px; z-index: 10;">
+      <div style="background-color: #161B22; border: 1px dashed #30363D; border-radius: 8px; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <i class="fa-solid fa-lightbulb" style="color: #D29922; font-size: 22px; margin-right: 20px; flex-shrink: 0;"></i>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #D29922;">Consejo de aprendizaje:</strong> Usa las actividades de pausa (<span style="font-size: 14px; vertical-align: middle;">⏸️</span>) de cada diapositiva para detener la explicación e intentar resolver los problemas antes de ver la solución en pantalla.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`,
+      `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificación Final y Recursos</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .resource-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #C9D1D9;
+      font-weight: 300;
+    }
+    .resource-item i {
+      color: #58A6FF;
+      font-size: 16px;
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="15 Cierre">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">CIERRE</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Verificación Final y Recursos</span>
+    </div>
+
+    <!-- Column 1: Pregunta de Verificación (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #D29922; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Desafío de Verificación</h3>
+      <div style="background-color: rgba(210, 153, 34, 0.05); border: 1px solid rgba(210, 153, 34, 0.3); border-left: 4px solid #D29922; border-radius: 0 12px 12px 0; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <i class="fa-solid fa-question-circle" style="color: #D29922; font-size: 24px; margin-right: 15px;"></i>
+            <h4 style="margin: 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Caso: Mutante Superviviente</h4>
+          </div>
+          <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+            Tras ejecutar la prueba de mutación con PIT, observas que el mutante <strong style="color: #DA3633; font-family: 'Roboto Mono', monospace; font-size: 13px;">saldo &gt; 0 &rarr; saldo &gt;= 0</strong> dentro del método <strong style="color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 13px;">retirar()</strong> sobrevivió de forma exitosa.
+          </p>
+          <p style="margin: 0; font-size: 14px; color: #8B949E; line-height: 1.5; font-weight: 300;">
+            ¿Qué prueba unitaria exacta codificarías para capturarlo y eliminarlo? Escríbela completa utilizando la estructura BDD (<strong style="color: #FFFFFF;">Given / When / Then</strong>) y la nomenclatura estándar <strong style="color: #FFFFFF; font-family: 'Roboto Mono', monospace; font-size:12px;">shouldXWhenY</strong>.
+          </p>
+        </div>
+
+        <div style="font-size: 12px; color: #8B949E; font-family: 'Roboto Mono', monospace; border-top: 1px solid rgba(210, 153, 34, 0.15); padding-top: 15px;">
+          💬 Resuélvelo y compáralo con el análisis de CuentaBancaria.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Column 2: Recursos (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #58A6FF; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Enlaces y Referencias</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div class="resource-item">
+            <i class="fa-solid fa-download"></i>
+            <div>Eclipse IDE: <strong style="color: #FFFFFF; font-family: 'Roboto Mono', monospace; font-size: 13px;">eclipse.org/downloads</strong></div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>SonarLint Marketplace: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (SonarLint)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>PMD Plugin: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (PMD Eclipse Plugin)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>EclEmma: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (EclEmma)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>Pitclipse: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (Pitclipse)</div>
+          </div>
+          <div class="resource-item" style="margin-bottom: 0;">
+            <i class="fa-solid fa-book"></i>
+            <div>Wiki IS-FUNDAMENTOS: <strong style="color: #58A6FF; font-family: 'Roboto Mono', monospace; font-size: 13px;">fis-eci.github.io/software-foundations-eci/Unidad-Analisis-Eclipse/</strong></div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #30363D; padding-top: 15px; text-align: center; font-style: italic; font-size: 13px; color: #8B949E; line-height: 1.4;">
+          "Los resultados del análisis apoyan la toma de decisiones, pero no sustituyen el juicio del ingeniero de software."
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
+`
+    ];
+    var TITLES = ["Portada — Análisis de Software en Eclipse IDE", "Propósito y Resultados de Aprendizaje", "De BlueJ a Eclipse", "Instalación de Eclipse IDE", "Instalación de Plugins", "Flujo de Trabajo Básico", "Panorama de los Cuatro Análisis", "SonarLint — Análisis de Diseño", "PMD — Análisis de Calidad", "EclEmma (JaCoCo) — Pruebas de Cobertura", "Pitclipse (PIT) — Pruebas de Mutación", "Importar Proyecto y Compilar", "Ciclo de Análisis: Las 5 Etapas", "Videos de Práctica Guiada", "Verificación Final y Recursos"];
+    var TOTAL  = SLIDES.length;
+    var NAV_H  = 52 + 3; /* nav bar + progress bar */
+
+    var frame    = document.getElementById('slide-frame');
+    var counterEl = document.getElementById('counter');
+    var titleEl  = document.getElementById('slide-title');
+    var progEl   = document.getElementById('progress-bar');
+    var btnPrev  = document.getElementById('btn-prev');
+    var btnNext  = document.getElementById('btn-next');
+    var jumpIn   = document.getElementById('jump-input');
+
+    var cur = 0;
+
+    function scaleSlide() {
+      var stageW = window.innerWidth;
+      var stageH = window.innerHeight - NAV_H;
+      var s      = Math.min(stageW / 1280, stageH / 720);
+      var offX   = (stageW - 1280 * s) / 2;
+      var offY   = (stageH - 720  * s) / 2;
+      frame.style.transform = 'translate(' + offX + 'px, ' + offY + 'px) scale(' + s + ')';
+    }
+
+    function goTo(n) {
+      cur = Math.max(0, Math.min(n, TOTAL - 1));
+      frame.srcdoc    = SLIDES[cur];
+      counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+      titleEl.textContent   = TITLES[cur] || '';
+      progEl.style.width    = ((cur + 1) / TOTAL * 100) + '%';
+      btnPrev.disabled = cur === 0;
+      btnNext.disabled = cur === TOTAL - 1;
+      jumpIn.value     = cur + 1;
+      history.replaceState(null, '', '#' + (cur + 1));
+    }
+
+    btnNext.addEventListener('click', function() { goTo(cur + 1); });
+    btnPrev.addEventListener('click', function() { goTo(cur - 1); });
+
+    jumpIn.addEventListener('change', function() {
+      var n = parseInt(this.value, 10);
+      if (!isNaN(n)) goTo(n - 1);
+    });
+    jumpIn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var n = parseInt(this.value, 10);
+        if (!isNaN(n)) goTo(n - 1);
+        frame.focus();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (document.activeElement === jumpIn) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(cur + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(cur - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault(); goTo(TOTAL - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFs();
+      }
+    });
+
+    document.getElementById('btn-fs').addEventListener('click', toggleFs);
+
+    function toggleFs() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', scaleSlide);
+    window.addEventListener('fullscreenchange', scaleSlide);
+
+    /* Restore slide from URL hash, default to slide 1 */
+    var h = parseInt(location.hash.slice(1), 10);
+    scaleSlide();
+    goTo(isNaN(h) ? 0 : h - 1);
+  </script>
+
+</body>
+</html>
