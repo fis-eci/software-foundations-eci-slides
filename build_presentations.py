@@ -32,7 +32,7 @@ DECKS = [
     },
     {
         "folder": "PostgreSQL VSC - MYSD",
-        "count":  13,
+        "count":  12,
         "output": "SQL-PostgreVSC-presentation.html",
         "title":  "PostgreSQL VSC — MYSD",
     },

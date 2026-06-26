@@ -38,11 +38,26 @@
   .res{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:5px solid #4FC3F7;border-radius:14px;padding:22px 26px;box-sizing:border-box;}
   .res .rh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:1.4px;margin-bottom:14px;}
   .res .rh i{font-size:18px;}
-  .res .ritem{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
+  .res .ritem{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
   .res .ritem:last-child{border-bottom:none;}
   .res .ricon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
   .res .rname{font-weight:700;color:#F0F4F8;}
-  .res .rurl{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#4FC3F7;display:block;margin-top:2px;}
+  .res .rurl{font-family:'JetBrains Mono',monospace;font-size:12px;color:#4FC3F7;display:block;margin-top:2px;}
+  /* Contact section */
+  .contact-sect{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);}
+  .contact-sect .ch{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#00FF88;letter-spacing:1.4px;margin-bottom:12px;}
+  .contact-sect .ch i{font-size:16px;color:#00FF88;}
+  .citem{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);margin-bottom:8px;text-decoration:none;}
+  .citem:last-child{margin-bottom:0;}
+  .citem.c-email{border-left:3px solid #4FC3F7;}
+  .citem.c-gh{border-left:3px solid #2EA44F;}
+  .citem .ci-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+  .citem.c-email .ci-icon{color:#4FC3F7;}
+  .citem.c-gh .ci-icon{color:#2EA44F;}
+  .citem .ci-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;letter-spacing:0.8px;display:block;margin-bottom:2px;}
+  .citem .ci-val{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;}
+  .citem.c-email .ci-val{color:#4FC3F7;}
+  .citem.c-gh .ci-val{color:#2EA44F;}
 
   /* Closing phrase */
   .closing{position:absolute;bottom:50px;left:50px;width:1180px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(79,195,247,0.7);letter-spacing:1.2px;line-height:1.5;font-style:italic;}
@@ -92,7 +107,7 @@
     </div>
   </div>
 
-  <!-- Resources (right) -->
+  <!-- Resources + Contact (right) -->
   <div data-object="true" data-object-type="textbox" class="res" style="position:absolute;top:108px;left:650px;width:580px;height:475px;">
     <div class="rh"><i class="fa-solid fa-book-bookmark"></i>RECURSOS</div>
 
@@ -101,24 +116,24 @@
       <div><span class="rname">PostgreSQL Docs</span><span class="rurl">postgresql.org/docs/</span></div>
     </div>
     <div class="ritem">
-      <span class="ricon">📦</span>
-      <div><span class="rname">Descarga PostgreSQL</span><span class="rurl">postgresql.org/download/</span></div>
-    </div>
-    <div class="ritem">
-      <span class="ricon">🔌</span>
-      <div><span class="rname">SQLTools Marketplace</span><span class="rurl">marketplace.visualstudio.com (buscar SQLTools)</span></div>
-    </div>
-    <div class="ritem">
-      <span class="ricon">🔌</span>
-      <div><span class="rname">Driver PostgreSQL</span><span class="rurl">marketplace.visualstudio.com (SQLTools PostgreSQL Driver)</span></div>
-    </div>
-    <div class="ritem">
       <span class="ricon">💻</span>
-      <div><span class="rname">Guía VS Code Vainilla</span><span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span></div>
+      <div><span class="rname">Guía VS Code Vainilla para MYSD</span><span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span></div>
     </div>
     <div class="ritem">
       <span class="ricon">📖</span>
-      <div><span class="rname">Wiki IS-FUNDAMENTOS</span><span class="rurl">fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/</span></div>
+      <div><span class="rname">Wiki IS-FUNDAMENTOS · Unidad SQL</span><span class="rurl">fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/</span></div>
+    </div>
+
+    <div class="contact-sect">
+      <div class="ch"><i class="fa-solid fa-headset"></i>CONTACTO Y SOPORTE</div>
+      <a class="citem c-email" href="mailto:fis@escuelaing.edu.co">
+        <i class="fa-solid fa-envelope ci-icon"></i>
+        <div><span class="ci-label">CORREO MONITORIA</span><span class="ci-val">fis@escuelaing.edu.co</span></div>
+      </a>
+      <a class="citem c-gh" href="https://github.com/fis-eci/software-foundations-eci/issues" target="_blank" rel="noopener">
+        <i class="fa-brands fa-github ci-icon"></i>
+        <div><span class="ci-label">PREGUNTAS E ISSUES</span><span class="ci-val">github.com/fis-eci — Abrir Issue</span></div>
+      </a>
     </div>
   </div>
 

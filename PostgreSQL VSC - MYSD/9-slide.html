@@ -20,28 +20,28 @@
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
-  .rule{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 18px;box-sizing:border-box;display:flex;gap:14px;align-items:flex-start;}
+  .rule{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:20px 22px;box-sizing:border-box;display:flex;gap:16px;align-items:flex-start;}
   .rule.r1{border-left:4px solid #DA3633;box-shadow:0 4px 20px rgba(218,54,51,0.15);}
   .rule.r2{border-left:4px solid #D29922;box-shadow:0 4px 20px rgba(210,153,34,0.15);}
   .rule.r3{border-left:4px solid #4FC3F7;box-shadow:0 4px 20px rgba(79,195,247,0.15);}
   .rule.r4{border-left:4px solid #2EA44F;box-shadow:0 4px 20px rgba(46,164,79,0.15);}
-  .rule .ic{font-size:24px;flex-shrink:0;width:30px;text-align:center;margin-top:2px;}
+  .rule .ic{font-size:30px;flex-shrink:0;width:34px;text-align:center;margin-top:2px;}
   .rule.r1 .ic{color:#DA3633;}
   .rule.r2 .ic{color:#D29922;}
   .rule.r3 .ic{color:#4FC3F7;}
   .rule.r4 .ic{color:#2EA44F;}
-  .rule .rt{font-family:'Roboto',sans-serif;font-size:13.5px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:4px;}
-  .rule .rt code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
+  .rule .rt{font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#F0F4F8;line-height:1.35;margin-bottom:6px;}
+  .rule .rt code{font-family:'JetBrains Mono',monospace;font-size:13.5px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
   .rule.r1 .rt code{color:#DA3633;}
   .rule.r3 .rt code{color:#4FC3F7;}
-  .rule .rd{font-family:'Roboto',sans-serif;font-size:11.5px;color:#C9D1D9;line-height:1.45;}
+  .rule .rd{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;}
 
-  .codeblock{background:#0a0e1a;border:1px solid rgba(51,103,145,0.5);border-left:4px solid #336791;border-radius:10px;padding:16px 20px;box-sizing:border-box;}
-  .codeblock .cbh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#4FC3F7;letter-spacing:1.3px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .codeblock{background:#0a0e1a;border:1px solid rgba(51,103,145,0.5);border-left:4px solid #336791;border-radius:10px;padding:22px 26px;box-sizing:border-box;}
+  .codeblock .cbh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:1.3px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .codeblock .cbh i{color:#336791;}
-  .codeblock pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.85;}
+  .codeblock pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:15px;line-height:2;}
   .codeblock pre .cmt{color:#8B949E;font-style:italic;}
   .codeblock pre .kw{color:#FF6B35;font-weight:700;}
   .codeblock pre .tbl{color:#4FC3F7;}
@@ -69,7 +69,7 @@
   </div>
 
   <!-- 4 rules grid -->
-  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:108px;left:50px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:108px;left:50px;width:585px;">
     <div class="ic"><i class="fa-solid fa-ban"></i></div>
     <div>
       <div class="rt">NO ejecutes <code>DROP TABLE</code> sin confirmación del equipo</div>
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:108px;left:645px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:108px;left:645px;width:585px;">
     <div class="ic"><i class="fa-solid fa-broom"></i></div>
     <div>
       <div class="rt">Vacía tus tablas temporales al finalizar</div>
@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:240px;left:50px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:258px;left:50px;width:585px;">
     <div class="ic"><i class="fa-solid fa-scissors"></i></div>
     <div>
       <div class="rt">Prefiere <code>TRUNCATE</code> sobre <code>DELETE</code> sin <code>WHERE</code></div>
@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r4" style="position:absolute;top:240px;left:645px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r4" style="position:absolute;top:258px;left:645px;width:585px;">
     <div class="ic"><i class="fa-solid fa-plug"></i></div>
     <div>
       <div class="rt">Desconéctate al terminar la sesión</div>
@@ -102,7 +102,7 @@
   </div>
 
   <!-- Code block -->
-  <div data-object="true" data-object-type="textbox" class="codeblock" style="position:absolute;top:380px;left:50px;width:1180px;">
+  <div data-object="true" data-object-type="textbox" class="codeblock" style="position:absolute;top:418px;left:50px;width:1180px;">
     <div class="cbh"><i class="fa-solid fa-terminal"></i>PROTOCOLO DE VACIADO AL FINALIZAR LA SESIÓN</div>
 <pre><span class="cmt">-- Protocolo de vaciado al finalizar la sesión:</span>
 <span class="kw">TRUNCATE TABLE</span> <span class="tbl">cuenta</span>;

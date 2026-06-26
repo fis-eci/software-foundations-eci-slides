@@ -138,11 +138,11 @@
 
   <div id="nav-bar">
     <button class="nbtn" id="btn-prev">&#9664; Anterior</button>
-    <span id="counter">1 / 13</span>
+    <span id="counter">1 / 12</span>
     <span id="slide-title">PostgreSQL VSC — MYSD</span>
     <div id="jump-wrap">
       <span id="jump-label">Ir a:</span>
-      <input id="jump-input" type="number" min="1" max="13" value="1">
+      <input id="jump-input" type="number" min="1" max="12" value="1">
     </div>
     <button class="nbtn" id="btn-next">Siguiente &#9654;</button>
     <button id="btn-fs" title="Pantalla completa (F)">&#x26F6;</button>
@@ -151,239 +151,146 @@
 
   <script>
     var SLIDES = [
-      `<!DOCTYPE html>
+      `<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <title>Portada — PostgreSQL en VS Code · MYSD</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Roboto+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html,body{width:1280px;height:720px;overflow:hidden;background:#060b18;font-family:'Roboto',sans-serif;color:#F0F4F8;}
-
-  .slide{position:relative;width:1280px;height:720px;overflow:hidden;}
-
-  /* ── Layered background ── */
-  .bg-grid{position:absolute;inset:0;
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
     background:
-      linear-gradient(rgba(79,195,247,0.06) 1px,transparent 1px) 0 0/48px 48px,
-      linear-gradient(90deg,rgba(79,195,247,0.06) 1px,transparent 1px) 0 0/48px 48px;
+      linear-gradient(rgba(10,14,26,0.85),rgba(10,14,26,0.92)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
   }
-  .bg-radial{position:absolute;inset:0;
-    background:radial-gradient(ellipse 900px 600px at 70% 50%,rgba(51,103,145,0.18) 0%,transparent 70%);
-  }
-  .bg-radial2{position:absolute;inset:0;
-    background:radial-gradient(ellipse 400px 400px at 15% 80%,rgba(79,195,247,0.08) 0%,transparent 70%);
-  }
-
-  /* ── Decorative rings ── */
-  .ring{position:absolute;border-radius:50%;pointer-events:none;}
-  .r1{width:600px;height:600px;border:1px dashed rgba(79,195,247,0.12);top:-200px;right:-160px;}
-  .r2{width:420px;height:420px;border:1px dashed rgba(51,103,145,0.2);top:-100px;right:-60px;}
-  .r3{width:220px;height:220px;border:1px dashed rgba(79,195,247,0.15);bottom:80px;left:500px;}
-  .r4{width:120px;height:120px;border:1px solid rgba(0,212,255,0.1);top:320px;right:280px;border-radius:50%;}
-
-  /* ── Glow dots ── */
-  .gd{position:absolute;border-radius:50%;pointer-events:none;}
-  .gd1{width:10px;height:10px;background:#4FC3F7;box-shadow:0 0 24px 6px rgba(79,195,247,0.6);top:108px;left:72px;}
-  .gd2{width:10px;height:10px;background:#00FF88;box-shadow:0 0 24px 6px rgba(0,255,136,0.5);top:530px;left:480px;}
-  .gd3{width:8px;height:8px;background:#FF6B35;box-shadow:0 0 20px 4px rgba(255,107,53,0.5);top:180px;right:108px;}
-  .gd4{width:8px;height:8px;background:#00D4FF;box-shadow:0 0 20px 4px rgba(0,212,255,0.5);bottom:160px;right:360px;}
-  .gd5{width:6px;height:6px;background:#4FC3F7;box-shadow:0 0 16px 4px rgba(79,195,247,0.4);top:440px;left:52px;}
-
-  /* ── Vertical accent line ── */
-  .vline{position:absolute;left:50px;top:120px;width:4px;height:280px;
-    background:linear-gradient(to bottom,#4FC3F7,rgba(0,122,204,0.3),transparent);border-radius:2px;}
-
-  /* ── Institution badge ── */
-  .badge{position:absolute;top:44px;left:64px;display:flex;align-items:center;gap:12px;
-    background:rgba(255,255,255,0.04);backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,0.08);border-left:3px solid #336791;
-    padding:10px 20px;border-radius:6px;}
-  .badge i{color:#4FC3F7;font-size:14px;}
-  .badge span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.8px;color:#8B949E;text-transform:uppercase;}
-
-  /* ── Main title block ── */
-  .title-block{position:absolute;top:128px;left:68px;}
-  .t-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;color:#4FC3F7;opacity:0.8;margin-bottom:12px;text-transform:uppercase;}
-  .t1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:64px;letter-spacing:1px;color:#F0F4F8;line-height:1;text-transform:uppercase;}
-  .t2{font-family:'Orbitron',sans-serif;font-weight:900;font-size:80px;color:#4FC3F7;line-height:1;letter-spacing:2px;
-    text-shadow:0 0 40px rgba(79,195,247,0.5),0 0 80px rgba(79,195,247,0.2);}
-  .t3{font-family:'Roboto',sans-serif;font-weight:300;font-size:32px;color:#C9D1D9;line-height:1.2;margin-top:4px;letter-spacing:0.5px;}
-  .t3 span{color:#007ACC;font-weight:500;}
-
-  /* ── Subtitle line ── */
-  .subtitle{position:absolute;top:430px;left:68px;font-family:'JetBrains Mono',monospace;font-size:13px;
-    color:rgba(79,195,247,0.6);letter-spacing:1.5px;display:flex;align-items:center;gap:10px;}
-  .subtitle::before{content:'';display:inline-block;width:32px;height:1px;background:#4FC3F7;opacity:0.6;}
-
-  /* ── Info rows ── */
-  .info-rows{position:absolute;top:466px;left:68px;display:flex;flex-direction:column;gap:10px;}
-  .irow{display:flex;align-items:center;gap:14px;
-    background:rgba(255,255,255,0.04);backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,0.08);padding:10px 18px;border-radius:6px;width:540px;}
-  .irow.r1{border-left:3px solid #4FC3F7;}
-  .irow.r2{border-left:3px solid #00FF88;}
-  .irow.r3{border-left:3px solid #FF6B35;}
-  .irow i{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
-  .irow.r1 i{color:#4FC3F7;}
-  .irow.r2 i{color:#00FF88;}
-  .irow.r3 i{color:#FF6B35;}
-  .irow span{font-size:13px;color:#C9D1D9;font-weight:400;}
-
-  /* ── Right floating cards ── */
-  .rside{position:absolute;right:56px;top:148px;width:310px;display:flex;flex-direction:column;gap:20px;}
-  .fcard{background:rgba(10,20,50,0.6);backdrop-filter:blur(14px);
-    border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 22px;
-    position:relative;overflow:hidden;}
-  .fcard::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
-    border-radius:50%;filter:blur(50px);opacity:0.2;}
-  .fcard.fc1{border-left:3px solid #4FC3F7;box-shadow:0 8px 32px rgba(79,195,247,0.08);}
-  .fcard.fc1::before{background:#4FC3F7;}
-  .fcard.fc2{border-left:3px solid #FF6B35;box-shadow:0 8px 32px rgba(255,107,53,0.08);}
-  .fcard.fc2::before{background:#FF6B35;}
-  .fc-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-  .fc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-  .fcard.fc1 .fc-icon{background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.3);color:#4FC3F7;}
-  .fcard.fc2 .fc-icon{background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:#FF6B35;}
-  .fc-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#F0F4F8;letter-spacing:1px;}
-  .fc-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .fc-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;width:52px;flex-shrink:0;}
-  .fc-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:#F0F4F8;font-weight:700;}
-  .fcard.fc1 .fc-val{color:#4FC3F7;}
-  .fcard.fc2 .fc-val{color:#FF6B35;}
-
-  /* ── Right side extra info (bottom) ── */
-  .rextra{position:absolute;right:56px;top:530px;width:310px;
-    background:rgba(10,20,50,0.45);backdrop-filter:blur(10px);
-    border:1px solid rgba(79,195,247,0.12);border-radius:10px;padding:14px 18px;}
-  .rextra-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:#4FC3F7;margin-bottom:10px;opacity:0.7;}
-  .rextra-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .rextra-row i{color:#4FC3F7;font-size:11px;width:14px;text-align:center;}
-  .rextra-row span{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;}
-
-  /* ── Code watermark ── */
-  .watermark{position:absolute;right:32px;bottom:80px;font-family:'JetBrains Mono',monospace;font-size:12px;
-    color:#4FC3F7;opacity:0.045;line-height:1.9;text-align:right;pointer-events:none;}
-
-  /* ── Bottom bar ── */
-  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:5px;display:flex;}
+  /* Decorative tech circles */
+  .tc{position:absolute;border-radius:50%;border-style:dashed;pointer-events:none;}
+  .tc1{width:520px;height:520px;border:1px dashed rgba(79,195,247,0.18);top:-180px;right:-160px;}
+  .tc2{width:340px;height:340px;border:1px dashed rgba(51,103,145,0.28);bottom:-130px;left:-110px;}
+  .tc3{width:180px;height:180px;border:1px dashed rgba(79,195,247,0.18);top:300px;right:340px;}
+  /* Glow dots */
+  .gd{position:absolute;width:8px;height:8px;border-radius:50%;}
+  .gd1{background:#4FC3F7;box-shadow:0 0 18px #4FC3F7;top:120px;left:80px;}
+  .gd2{background:#00FF88;box-shadow:0 0 18px #00FF88;top:520px;left:520px;}
+  .gd3{background:#FF6B35;box-shadow:0 0 18px #FF6B35;top:200px;right:120px;}
+  .gd4{background:#00D4FF;box-shadow:0 0 18px #00D4FF;bottom:180px;right:380px;}
+  .gd5{background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:420px;left:60px;}
+  /* Code watermark */
+  .watermark{position:absolute;right:30px;bottom:90px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#4FC3F7;opacity:0.06;line-height:1.8;text-align:right;pointer-events:none;}
+  /* Institution badge */
+  .institution{position:absolute;top:46px;left:64px;display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.1);border-left:3px solid #336791;
+    padding:10px 18px;border-radius:6px;}
+  .institution i{color:#4FC3F7;font-size:14px;}
+  .institution span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#C9D1D9;}
+  /* Main title */
+  .title-block{position:absolute;top:140px;left:64px;}
+  .t1{font-family:'Roboto',sans-serif;font-weight:900;font-size:56px;letter-spacing:2px;color:#F0F4F8;line-height:1;margin:0;}
+  .t2{font-family:'Roboto',sans-serif;font-weight:900;font-size:72px;letter-spacing:1px;color:#4FC3F7;line-height:1.05;margin:6px 0 4px 0;text-shadow:0 0 30px rgba(79,195,247,0.4);}
+  .t3{font-family:'Roboto',sans-serif;font-weight:300;font-size:40px;color:#F0F4F8;line-height:1.1;margin:0;}
+  .subtitle{position:absolute;top:430px;left:64px;font-family:'JetBrains Mono',monospace;font-size:14px;color:#8B949E;letter-spacing:0.8px;}
+  /* Info items */
+  .info-items{position:absolute;top:482px;left:64px;display:flex;flex-direction:column;gap:11px;}
+  .info-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);padding:9px 16px;border-radius:5px;width:520px;}
+  .info-item.b1{border-left:3px solid #4FC3F7;}
+  .info-item.b2{border-left:3px solid #00FF88;}
+  .info-item.b3{border-left:3px solid #FF6B35;}
+  .info-item i{font-size:14px;width:18px;text-align:center;}
+  .info-item .ic1{color:#4FC3F7;}
+  .info-item .ic2{color:#00FF88;}
+  .info-item .ic3{color:#FF6B35;}
+  .info-item span{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;font-weight:400;}
+  /* Floating cards */
+  .fcard{position:absolute;right:60px;width:280px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:18px 20px;}
+  .fcard1{top:160px;border-left:3px solid #4FC3F7;box-shadow:0 8px 28px rgba(79,195,247,0.08);}
+  .fcard2{top:300px;border-left:3px solid #FF6B35;box-shadow:0 8px 28px rgba(255,107,53,0.08);}
+  .fcard .fc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .fcard .fc-head i{font-size:18px;}
+  .fcard1 .fc-head i{color:#4FC3F7;}
+  .fcard2 .fc-head i{color:#FF6B35;}
+  .fcard .fc-title{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#F0F4F8;letter-spacing:0.5px;}
+  .fcard .fc-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;}
+  /* Bottom tricolor */
+  .tricolor{position:absolute;bottom:0;left:0;right:0;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
   .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
   .tricolor div:nth-child(3){background:#007ACC;flex:1;}
-  .footer-l{position:absolute;bottom:14px;left:68px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1.2px;}
-  .footer-r{position:absolute;bottom:14px;right:68px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1.2px;}
+  /* Footer */
+  .footer{position:absolute;bottom:18px;left:64px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+  .footer-r{position:absolute;bottom:18px;right:64px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
 </style>
 </head>
 <body>
-<div class="slide">
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc tc2"></div>
+  <div data-object="true" data-object-type="shape" class="tc tc3"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd2"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd3"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd4"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd5"></div>
 
-  <!-- Background layers -->
-  <div class="bg-grid"></div>
-  <div class="bg-radial"></div>
-  <div class="bg-radial2"></div>
-
-  <!-- Decorative rings -->
-  <div class="ring r1"></div>
-  <div class="ring r2"></div>
-  <div class="ring r3"></div>
-  <div class="ring r4"></div>
-
-  <!-- Glow dots -->
-  <div class="gd gd1"></div>
-  <div class="gd gd2"></div>
-  <div class="gd gd3"></div>
-  <div class="gd gd4"></div>
-  <div class="gd gd5"></div>
-
-  <!-- Code watermark -->
-  <div class="watermark">
+  <div data-object="true" data-object-type="textbox" class="watermark" style="position:absolute;right:30px;bottom:90px;">
     SELECT * FROM estudiantes WHERE curso = 'MYSD';<br>
-    -- Conectando a PostgreSQL...<br>
-    CREATE TABLE aprendizaje (<br>
-    &nbsp;&nbsp;id SERIAL PRIMARY KEY,<br>
-    &nbsp;&nbsp;tema VARCHAR(100) NOT NULL<br>
-    );<br>
-    GRANT CONNECT ON DATABASE postgres TO student;<br>
-    -- Conexión establecida · puerto 5432
+    -- Conectando al servidor...<br>
+    CREATE TABLE aprendizaje (id SERIAL PRIMARY KEY, tema VARCHAR);<br>
+    GRANT CONNECT TO student;
   </div>
 
-  <!-- Vertical accent line -->
-  <div class="vline"></div>
-
-  <!-- Institution badge -->
-  <div class="badge">
+  <div data-object="true" data-object-type="textbox" class="institution" style="position:absolute;top:46px;left:64px;">
     <i class="fa-solid fa-university"></i>
-    <span>Escuela Colombiana de Ingeniería Julio Garavito</span>
+    <span>ESCUELA COLOMBIANA DE INGENIERÍA JULIO GARAVITO</span>
   </div>
 
-  <!-- Main title -->
-  <div class="title-block">
-    <div class="t-label">// Guía de Entornos · MYSD 2026</div>
-    <div class="t1">PostgreSQL</div>
-    <div class="t2">en VS Code</div>
-    <div class="t3">Entorno Moderno — <span>Consultas Conscientes</span></div>
+  <div data-object="true" data-object-type="textbox" class="title-block" style="position:absolute;top:130px;left:64px;">
+    <div class="t1">GUÍA:</div>
+    <div class="t2">POSTGRESQL</div>
+    <div class="t3">en Visual Studio Code</div>
   </div>
 
-  <!-- Subtitle -->
-  <div class="subtitle">Sin asistentes de IA &nbsp;·&nbsp; Programación consciente &nbsp;·&nbsp; MYSD</div>
-
-  <!-- Info rows -->
-  <div class="info-rows">
-    <div class="irow r1">
-      <i class="fa-solid fa-database"></i>
-      <span>Fundamentos de Ingeniería de Software — MYSD</span>
-    </div>
-    <div class="irow r2">
-      <i class="fa-solid fa-check-circle"></i>
-      <span>Unidad de Aprendizaje · SQL con PostgreSQL + VS Code</span>
-    </div>
-    <div class="irow r3">
-      <i class="fa-solid fa-user"></i>
-      <span>Andersson David Sánchez Méndez — Monitor MYSD &amp; DOPO</span>
-    </div>
+  <div data-object="true" data-object-type="textbox" class="subtitle" style="position:absolute;top:432px;left:64px;">
+    Entorno Moderno para MYSD — Consultas Conscientes sin IA
   </div>
 
-  <!-- Right floating cards -->
-  <div class="rside">
-    <div class="fcard fc1">
-      <div class="fc-head">
-        <div class="fc-icon"><i class="fa-solid fa-server"></i></div>
-        <div class="fc-title">SERVIDOR ESCUELA</div>
-      </div>
-      <div class="fc-row"><span class="fc-label">host</span><span class="fc-val">granate.escuelaing.edu.co</span></div>
-      <div class="fc-row"><span class="fc-label">puerto</span><span class="fc-val">5432</span></div>
-      <div class="fc-row"><span class="fc-label">db</span><span class="fc-val">postgres</span></div>
-    </div>
-    <div class="fcard fc2">
-      <div class="fc-head">
-        <div class="fc-icon"><i class="fa-solid fa-laptop-code"></i></div>
-        <div class="fc-title">LOCAL</div>
-      </div>
-      <div class="fc-row"><span class="fc-label">host</span><span class="fc-val">localhost</span></div>
-      <div class="fc-row"><span class="fc-label">puerto</span><span class="fc-val">5432</span></div>
-      <div class="fc-row"><span class="fc-label">db</span><span class="fc-val">postgres</span></div>
-    </div>
+  <div data-object="true" data-object-type="textbox" class="info-items" style="position:absolute;top:482px;left:64px;">
+    <div class="info-item b1"><i class="fa-solid fa-database ic1"></i><span>Fundamentos de Ingeniería de Software</span></div>
+    <div class="info-item b2"><i class="fa-solid fa-check-circle ic2"></i><span>Unidad de Aprendizaje · MYSD</span></div>
+    <div class="info-item b3"><i class="fa-solid fa-user ic3"></i><span>Andersson David Sánchez Méndez — Monitor MYSD</span></div>
   </div>
 
-  <!-- Extra info bottom-right -->
-  <div class="rextra">
-    <div class="rextra-title">ENTORNO DE TRABAJO</div>
-    <div class="rextra-row"><i class="fa-solid fa-plug"></i><span>Extensión: SQLTools + Driver PostgreSQL</span></div>
-    <div class="rextra-row"><i class="fa-solid fa-code-branch"></i><span>Scripts .sql versionados con Git</span></div>
-    <div class="rextra-row"><i class="fa-solid fa-ban"></i><span>Sin asistentes de IA — modo vainilla</span></div>
+  <div data-object="true" data-object-type="textbox" class="fcard fcard1" style="position:absolute;top:160px;right:60px;width:280px;">
+    <div class="fc-head"><i class="fa-solid fa-server"></i><div class="fc-title">SERVIDOR ESCUELA</div></div>
+    <div class="fc-val">Host:5432/postgres</div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
+  <div data-object="true" data-object-type="textbox" class="fcard fcard2" style="position:absolute;top:300px;right:60px;width:280px;">
+    <div class="fc-head"><i class="fa-solid fa-hard-drive"></i><div class="fc-title">LOCAL</div></div>
+    <div class="fc-val">localhost:5432/postgres</div>
+  </div>
 
-  <!-- Bottom tricolor bar -->
-  <div class="tricolor"><div></div><div></div><div></div></div>
+  <div data-object="true" data-object-type="textbox" class="footer" style="position:absolute;bottom:18px;left:64px;">MYSD • PostgreSQL • VS Code</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:18px;right:64px;">01 / 12</div>
 
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
 </div>
 </body>
 </html>
+
+on:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+
 on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     <div></div><div></div><div></div>
   </div>
@@ -541,14 +448,14 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
-  .core{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:20px 24px;display:flex;align-items:center;gap:20px;box-sizing:border-box;}
-  .core i{font-size:42px;color:#4FC3F7;flex-shrink:0;}
-  .core .ctxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .core{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:26px 28px;display:flex;align-items:center;gap:24px;box-sizing:border-box;}
+  .core i{font-size:48px;color:#4FC3F7;flex-shrink:0;}
+  .core .ctxt{font-family:'Roboto',sans-serif;font-size:16px;color:#F0F4F8;line-height:1.55;}
   .core .ctxt b{color:#4FC3F7;font-weight:700;}
 
-  .rule{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px 18px;box-sizing:border-box;}
+  .rule{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:18px 22px;box-sizing:border-box;}
   .rule .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
   .rule.r1{border-left:4px solid #4FC3F7;}
   .rule.r1 .dot{background:#4FC3F7;box-shadow:0 0 10px #4FC3F7;}
@@ -556,20 +463,20 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   .rule.r2 .dot{background:#FF6B35;box-shadow:0 0 10px #FF6B35;}
   .rule.r3{border-left:4px solid #2EA44F;}
   .rule.r3 .dot{background:#2EA44F;box-shadow:0 0 10px #2EA44F;}
-  .rule .rt{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
-  .rule .rt b{font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .rule .rt{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.45;}
+  .rule .rt b{font-family:'JetBrains Mono',monospace;font-size:13px;}
   .rule.r1 .rt b{color:#4FC3F7;}
   .rule.r2 .rt b{color:#FF6B35;}
   .rule.r3 .rt b{color:#2EA44F;}
 
-  .avoid{background:rgba(255,68,68,0.05);border:1px solid rgba(255,68,68,0.2);border-radius:10px;padding:18px 22px;box-sizing:border-box;}
-  .avoid .ah{font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#FF4444;margin-bottom:12px;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;}
-  .avoid .ah i{font-size:16px;}
+  .avoid{background:rgba(255,68,68,0.05);border:1px solid rgba(255,68,68,0.2);border-radius:10px;padding:22px 26px;box-sizing:border-box;}
+  .avoid .ah{font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;color:#FF4444;margin-bottom:14px;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;}
+  .avoid .ah i{font-size:17px;}
   .avoid ul{margin:0;padding:0;list-style:none;}
-  .avoid li{display:flex;align-items:flex-start;gap:10px;font-family:'Roboto',sans-serif;font-size:12.5px;color:#C9D1D9;padding:6px 0;line-height:1.4;}
-  .avoid li i{color:#FF4444;font-size:13px;margin-top:2px;}
+  .avoid li{display:flex;align-items:flex-start;gap:10px;font-family:'Roboto',sans-serif;font-size:14px;color:#C9D1D9;padding:8px 0;line-height:1.45;}
+  .avoid li i{color:#FF4444;font-size:14px;margin-top:2px;}
 
-  .ref{position:absolute;bottom:48px;left:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;background:rgba(255,255,255,0.04);border:1px dashed rgba(79,195,247,0.3);padding:6px 12px;border-radius:4px;}
+  .ref{position:absolute;bottom:48px;left:50px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8B949E;background:rgba(255,255,255,0.04);border:1px dashed rgba(79,195,247,0.3);padding:8px 14px;border-radius:4px;}
   .ref b{color:#4FC3F7;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
@@ -601,23 +508,23 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   </div>
 
   <!-- Left: 3 rules -->
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:265px;left:50px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.5px;">3 REGLAS VAINILLA PARA MYSD</div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:272px;left:50px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.5px;">3 REGLAS VAINILLA PARA MYSD</div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:295px;left:50px;width:680px;">
+  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:302px;left:50px;width:680px;">
     <div class="dot"></div>
     <div class="rt"><b>Sin autocompletado SQL avanzado</b> — Desactivar en la configuración de SQLTools</div>
   </div>
-  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:362px;left:50px;width:680px;">
+  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:380px;left:50px;width:680px;">
     <div class="dot"></div>
     <div class="rt"><b>Sin asistentes visuales de consultas</b> — No usar generadores de queries</div>
   </div>
-  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:429px;left:50px;width:680px;">
+  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:458px;left:50px;width:680px;">
     <div class="dot"></div>
     <div class="rt"><b>Ejecución siempre manual</b> — Ctrl+Shift+E, nunca "ejecutar todo"</div>
   </div>
 
   <!-- Right: avoid -->
-  <div data-object="true" data-object-type="textbox" class="avoid" style="position:absolute;top:265px;left:750px;width:480px;">
+  <div data-object="true" data-object-type="textbox" class="avoid" style="position:absolute;top:272px;left:750px;width:480px;">
     <div class="ah"><i class="fa-solid fa-ban"></i>LO QUE NO SE HACE</div>
     <ul>
       <li><i class="fa-solid fa-times-circle"></i><span>GitHub Copilot generando el SELECT</span></li>
@@ -787,31 +694,31 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   .table{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:0;overflow:hidden;box-sizing:border-box;}
-  .table .th{display:grid;grid-template-columns:170px 1fr;background:rgba(79,195,247,0.08);padding:10px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
-  .table .tr{display:grid;grid-template-columns:170px 1fr;padding:9px 18px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13px;align-items:center;}
+  .table .th{display:grid;grid-template-columns:190px 1fr;background:rgba(79,195,247,0.08);padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
+  .table .tr{display:grid;grid-template-columns:190px 1fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:14px;align-items:center;}
   .table .tr:last-child{border-bottom:none;}
-  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:13px;}
   .table .tr .val{color:#F0F4F8;}
-  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
+  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:13px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
 
-  .diff{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);border-left:4px solid #FF6B35;border-radius:10px;padding:16px 20px;box-sizing:border-box;}
-  .diff .dh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#FF6B35;margin-bottom:8px;letter-spacing:0.4px;}
-  .diff .dh i{font-size:18px;}
-  .diff .dtxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.55;}
+  .diff{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);border-left:4px solid #FF6B35;border-radius:10px;padding:20px 24px;box-sizing:border-box;}
+  .diff .dh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#FF6B35;margin-bottom:10px;letter-spacing:0.4px;}
+  .diff .dh i{font-size:19px;}
+  .diff .dtxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.6;}
   .diff .dtxt b{color:#FF6B35;}
-  .diff .dtxt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:11.5px;background:rgba(255,107,53,0.1);padding:1px 5px;border-radius:3px;}
+  .diff .dtxt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:12.5px;background:rgba(255,107,53,0.1);padding:1px 5px;border-radius:3px;}
 
-  .stepslist{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px 18px;box-sizing:border-box;}
-  .stepslist .sh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:10px;}
-  .stepslist .sitem{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+  .stepslist{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 22px;box-sizing:border-box;}
+  .stepslist .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:14px;}
+  .stepslist .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
   .stepslist .sitem:last-child{margin-bottom:0;}
-  .stepslist .snum{width:22px;height:22px;border-radius:50%;background:rgba(79,195,247,0.15);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
-  .stepslist .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
-  .stepslist .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;}
-  .stepslist .stxt em{color:#00FF88;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+  .stepslist .snum{width:26px;height:26px;border-radius:50%;background:rgba(79,195,247,0.15);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
+  .stepslist .stxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.45;}
+  .stepslist .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  .stepslist .stxt em{color:#00FF88;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -879,7 +786,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:430px;left:750px;width:480px;background:rgba(0,122,204,0.08);border:1px solid rgba(0,122,204,0.3);border-left:4px solid #007ACC;border-radius:10px;padding:14px 18px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:11px;color:#C9D1D9;line-height:1.7;">
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:430px;left:750px;width:480px;background:rgba(0,122,204,0.08);border:1px solid rgba(0,122,204,0.3);border-left:4px solid #007ACC;border-radius:10px;padding:18px 22px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:13px;color:#C9D1D9;line-height:1.8;">
     <span style="color:#007ACC;font-weight:700;">// SQLTools panel</span><br>
     Connections<br>
     &nbsp;&nbsp;└── <span style="color:#4FC3F7;">Escuela-Postgre</span>  <span style="color:#00FF88;">●</span> connected<br>
@@ -918,29 +825,29 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   .table{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #336791;border-radius:10px;padding:0;overflow:hidden;box-sizing:border-box;}
-  .table .th{display:grid;grid-template-columns:170px 1fr;background:rgba(51,103,145,0.18);padding:10px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
-  .table .tr{display:grid;grid-template-columns:170px 1fr;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13px;align-items:center;}
+  .table .th{display:grid;grid-template-columns:190px 1fr;background:rgba(51,103,145,0.18);padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
+  .table .tr{display:grid;grid-template-columns:190px 1fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:14px;align-items:center;}
   .table .tr:last-child{border-bottom:none;}
-  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:13px;}
   .table .tr .val{color:#F0F4F8;}
-  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
+  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:13px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
 
-  .stepwrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px 20px;box-sizing:border-box;}
-  .stepwrap .sh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .stepwrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:22px 24px;box-sizing:border-box;}
+  .stepwrap .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .stepwrap .sh i{color:#336791;}
-  .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
   .sitem:last-child{margin-bottom:0;}
-  .snum{width:26px;height:26px;border-radius:6px;background:rgba(51,103,145,0.2);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
-  .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.45;}
-  .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .snum{width:28px;height:28px;border-radius:6px;background:rgba(51,103,145,0.2);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
+  .stxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;}
   .stxt em{color:#FFB347;font-style:normal;}
 
-  .note{position:absolute;bottom:48px;left:50px;width:1180px;background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-sizing:border-box;}
-  .note i{color:#2EA44F;font-size:22px;flex-shrink:0;}
-  .note span{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
+  .note{position:absolute;bottom:48px;left:50px;width:1180px;background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:18px 24px;display:flex;align-items:center;gap:16px;box-sizing:border-box;}
+  .note i{color:#2EA44F;font-size:26px;flex-shrink:0;}
+  .note span{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.45;}
   .note b{color:#2EA44F;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
@@ -1041,41 +948,41 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
-  .pipe{position:absolute;top:115px;left:50px;width:820px;display:flex;align-items:stretch;gap:8px;}
-  .pstep{flex:1;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:16px 14px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .pipe{position:absolute;top:115px;left:50px;width:820px;display:flex;align-items:stretch;gap:10px;}
+  .pstep{flex:1;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:20px 14px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;}
   .pstep.p1{border-top:4px solid #4FC3F7;box-shadow:0 4px 20px rgba(79,195,247,0.15);}
   .pstep.p2{border-top:4px solid #336791;box-shadow:0 4px 20px rgba(51,103,145,0.15);}
   .pstep.p3{border-top:4px solid #007ACC;box-shadow:0 4px 20px rgba(0,122,204,0.15);}
   .pstep.p4{border-top:4px solid #2EA44F;box-shadow:0 4px 20px rgba(46,164,79,0.15);}
-  .pstep .pn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#8B949E;margin-bottom:8px;}
-  .pstep .pi{font-size:28px;margin-bottom:10px;}
+  .pstep .pn{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#8B949E;margin-bottom:10px;}
+  .pstep .pi{font-size:38px;margin-bottom:12px;}
   .pstep.p1 .pi{color:#4FC3F7;}
   .pstep.p2 .pi{color:#4FC3F7;}
   .pstep.p3 .pi{color:#007ACC;}
   .pstep.p4 .pi{color:#2EA44F;}
-  .pstep .pt{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#F0F4F8;margin-bottom:6px;}
-  .pstep .pd{font-family:'Roboto',sans-serif;font-size:11.5px;color:#C9D1D9;line-height:1.45;}
-  .pstep .pd code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:11px;}
+  .pstep .pt{font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#F0F4F8;margin-bottom:8px;}
+  .pstep .pd{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;}
+  .pstep .pd code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12px;}
   .arrow{position:absolute;top:50%;right:-14px;transform:translateY(-50%);color:#4FC3F7;font-size:14px;z-index:2;}
 
-  .gold{position:absolute;top:418px;left:50px;width:820px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.35);border-left:5px solid #FF6B35;border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-sizing:border-box;}
-  .gold .gi{font-size:32px;color:#FF6B35;flex-shrink:0;}
-  .gold .gh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#FF6B35;letter-spacing:1.3px;margin-bottom:4px;}
-  .gold .gt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .gold{position:absolute;top:432px;left:50px;width:820px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.35);border-left:5px solid #FF6B35;border-radius:10px;padding:22px 26px;display:flex;align-items:center;gap:20px;box-sizing:border-box;}
+  .gold .gi{font-size:38px;color:#FF6B35;flex-shrink:0;}
+  .gold .gh{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#FF6B35;letter-spacing:1.3px;margin-bottom:6px;}
+  .gold .gt{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.55;}
   .gold .gt b{color:#FF6B35;}
-  .gold .gt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:12.5px;background:rgba(255,107,53,0.12);padding:1px 6px;border-radius:3px;}
+  .gold .gt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:13.5px;background:rgba(255,107,53,0.12);padding:1px 6px;border-radius:3px;}
 
-  .schema{position:absolute;top:115px;left:890px;width:340px;height:480px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:18px 20px;box-sizing:border-box;}
-  .schema .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
-  .schema .sh i{font-size:16px;}
-  .schema .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#C9D1D9;line-height:1.5;margin-bottom:12px;}
-  .schema .stree{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.9;background:rgba(10,14,26,0.6);border:1px solid rgba(79,195,247,0.15);border-radius:6px;padding:12px 14px;}
+  .schema{position:absolute;top:115px;left:890px;width:340px;height:495px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:22px 24px;box-sizing:border-box;}
+  .schema .sh{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .schema .sh i{font-size:17px;}
+  .schema .stxt{font-family:'Roboto',sans-serif;font-size:14px;color:#C9D1D9;line-height:1.55;margin-bottom:14px;}
+  .schema .stree{font-family:'JetBrains Mono',monospace;font-size:13px;color:#C9D1D9;line-height:2;background:rgba(10,14,26,0.6);border:1px solid rgba(79,195,247,0.15);border-radius:6px;padding:14px 16px;}
   .schema .stree .root{color:#4FC3F7;font-weight:700;}
   .schema .stree .it{color:#FFB347;}
   .schema .stree .lbl{color:#8B949E;}
-  .schema .footnote{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8B949E;margin-top:12px;line-height:1.5;font-style:italic;}
+  .schema .footnote{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8B949E;margin-top:14px;line-height:1.55;font-style:italic;}
   .schema .footnote b{color:#4FC3F7;font-style:normal;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
@@ -1183,27 +1090,27 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   /* Folder tree */
-  .tree{background:rgba(13,27,62,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:18px 22px;box-sizing:border-box;}
-  .tree .th{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-  .tree .th i{font-size:15px;}
-  .tree pre{font-family:'JetBrains Mono',monospace;font-size:13px;color:#C9D1D9;line-height:1.85;margin:0;}
+  .tree{background:rgba(13,27,62,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:22px 26px;box-sizing:border-box;}
+  .tree .th{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .tree .th i{font-size:16px;}
+  .tree pre{font-family:'JetBrains Mono',monospace;font-size:14px;color:#C9D1D9;line-height:2;margin:0;}
   .tree pre .root{color:#4FC3F7;font-weight:700;}
   .tree pre .dir{color:#FFB347;}
   .tree pre .file{color:#F0F4F8;}
   .tree pre .cmt{color:#8B949E;}
   .tree pre .ig{color:#00FF88;}
 
-  .gitnote{background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:12px 16px;box-sizing:border-box;font-family:'Roboto',sans-serif;font-size:12px;color:#F0F4F8;line-height:1.45;}
-  .gitnote b{color:#2EA44F;font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+  .gitnote{background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:16px 20px;box-sizing:border-box;font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .gitnote b{color:#2EA44F;font-family:'JetBrains Mono',monospace;font-size:13px;}
 
   /* Commits */
-  .ch{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .ch{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
   .ch.ok{color:#00FF88;}
   .ch.bad{color:#FF4444;}
-  .commit{font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:6px;padding:8px 12px;margin-bottom:6px;line-height:1.4;}
+  .commit{font-family:'JetBrains Mono',monospace;font-size:12.5px;border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:1.45;}
   .commit.good{background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);color:#C9D1D9;}
   .commit.good .ck{color:#00FF88;}
   .commit.good .cm{color:#F0F4F8;}
@@ -1211,9 +1118,9 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   .commit.bad .ck{color:#FF4444;}
   .commit.bad .cm{color:#C9D1D9;}
 
-  .principle{background:rgba(79,195,247,0.06);border:1px dashed rgba(79,195,247,0.4);border-radius:8px;padding:10px 14px;font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;text-align:center;line-height:1.4;}
+  .principle{background:rgba(79,195,247,0.06);border:1px dashed rgba(79,195,247,0.4);border-radius:8px;padding:14px 18px;font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;text-align:center;line-height:1.45;}
   .principle b{color:#4FC3F7;}
-  .principle code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;background:rgba(79,195,247,0.1);padding:1px 6px;border-radius:3px;font-size:11.5px;}
+  .principle code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;background:rgba(79,195,247,0.1);padding:1px 6px;border-radius:3px;font-size:13px;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -1247,7 +1154,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 └── <span class="ig">.gitignore</span>          <span class="cmt">← incluye !*.sql</span></pre>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:430px;left:50px;width:580px;">
+  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:400px;left:50px;width:580px;">
     <i class="fa-solid fa-circle-info" style="color:#2EA44F;margin-right:6px;"></i>
     El <b>.gitignore</b> estándar del curso ya incluye <b>!*.sql</b> — tus scripts quedan rastreados automáticamente.
   </div>
@@ -1302,28 +1209,28 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
-  .rule{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 18px;box-sizing:border-box;display:flex;gap:14px;align-items:flex-start;}
+  .rule{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:20px 22px;box-sizing:border-box;display:flex;gap:16px;align-items:flex-start;}
   .rule.r1{border-left:4px solid #DA3633;box-shadow:0 4px 20px rgba(218,54,51,0.15);}
   .rule.r2{border-left:4px solid #D29922;box-shadow:0 4px 20px rgba(210,153,34,0.15);}
   .rule.r3{border-left:4px solid #4FC3F7;box-shadow:0 4px 20px rgba(79,195,247,0.15);}
   .rule.r4{border-left:4px solid #2EA44F;box-shadow:0 4px 20px rgba(46,164,79,0.15);}
-  .rule .ic{font-size:24px;flex-shrink:0;width:30px;text-align:center;margin-top:2px;}
+  .rule .ic{font-size:30px;flex-shrink:0;width:34px;text-align:center;margin-top:2px;}
   .rule.r1 .ic{color:#DA3633;}
   .rule.r2 .ic{color:#D29922;}
   .rule.r3 .ic{color:#4FC3F7;}
   .rule.r4 .ic{color:#2EA44F;}
-  .rule .rt{font-family:'Roboto',sans-serif;font-size:13.5px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:4px;}
-  .rule .rt code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
+  .rule .rt{font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#F0F4F8;line-height:1.35;margin-bottom:6px;}
+  .rule .rt code{font-family:'JetBrains Mono',monospace;font-size:13.5px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
   .rule.r1 .rt code{color:#DA3633;}
   .rule.r3 .rt code{color:#4FC3F7;}
-  .rule .rd{font-family:'Roboto',sans-serif;font-size:11.5px;color:#C9D1D9;line-height:1.45;}
+  .rule .rd{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;}
 
-  .codeblock{background:#0a0e1a;border:1px solid rgba(51,103,145,0.5);border-left:4px solid #336791;border-radius:10px;padding:16px 20px;box-sizing:border-box;}
-  .codeblock .cbh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#4FC3F7;letter-spacing:1.3px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .codeblock{background:#0a0e1a;border:1px solid rgba(51,103,145,0.5);border-left:4px solid #336791;border-radius:10px;padding:22px 26px;box-sizing:border-box;}
+  .codeblock .cbh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:1.3px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .codeblock .cbh i{color:#336791;}
-  .codeblock pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.85;}
+  .codeblock pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:15px;line-height:2;}
   .codeblock pre .cmt{color:#8B949E;font-style:italic;}
   .codeblock pre .kw{color:#FF6B35;font-weight:700;}
   .codeblock pre .tbl{color:#4FC3F7;}
@@ -1351,7 +1258,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   </div>
 
   <!-- 4 rules grid -->
-  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:108px;left:50px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:108px;left:50px;width:585px;">
     <div class="ic"><i class="fa-solid fa-ban"></i></div>
     <div>
       <div class="rt">NO ejecutes <code>DROP TABLE</code> sin confirmación del equipo</div>
@@ -1359,7 +1266,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:108px;left:645px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:108px;left:645px;width:585px;">
     <div class="ic"><i class="fa-solid fa-broom"></i></div>
     <div>
       <div class="rt">Vacía tus tablas temporales al finalizar</div>
@@ -1367,7 +1274,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:240px;left:50px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:258px;left:50px;width:585px;">
     <div class="ic"><i class="fa-solid fa-scissors"></i></div>
     <div>
       <div class="rt">Prefiere <code>TRUNCATE</code> sobre <code>DELETE</code> sin <code>WHERE</code></div>
@@ -1375,7 +1282,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="rule r4" style="position:absolute;top:240px;left:645px;width:585px;height:115px;">
+  <div data-object="true" data-object-type="textbox" class="rule r4" style="position:absolute;top:258px;left:645px;width:585px;">
     <div class="ic"><i class="fa-solid fa-plug"></i></div>
     <div>
       <div class="rt">Desconéctate al terminar la sesión</div>
@@ -1384,7 +1291,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   </div>
 
   <!-- Code block -->
-  <div data-object="true" data-object-type="textbox" class="codeblock" style="position:absolute;top:380px;left:50px;width:1180px;">
+  <div data-object="true" data-object-type="textbox" class="codeblock" style="position:absolute;top:418px;left:50px;width:1180px;">
     <div class="cbh"><i class="fa-solid fa-terminal"></i>PROTOCOLO DE VACIADO AL FINALIZAR LA SESIÓN</div>
 <pre><span class="cmt">-- Protocolo de vaciado al finalizar la sesión:</span>
 <span class="kw">TRUNCATE TABLE</span> <span class="tbl">cuenta</span>;
@@ -1423,32 +1330,32 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   .table{background:rgba(13,27,62,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;box-sizing:border-box;}
   .table .thead{display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;background:rgba(79,195,247,0.08);border-bottom:1px solid rgba(79,195,247,0.3);}
-  .table .thead .thc{padding:14px 18px;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.7px;display:flex;align-items:center;gap:8px;}
+  .table .thead .thc{padding:18px 22px;font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.7px;display:flex;align-items:center;gap:8px;}
   .table .thead .thc0{color:#8B949E;}
   .table .thead .thc1{color:#FF6B35;border-left:1px solid rgba(255,255,255,0.08);}
   .table .thead .thc2{color:#4FC3F7;border-left:1px solid rgba(255,255,255,0.08);}
-  .table .thead .thc i{font-size:16px;}
+  .table .thead .thc i{font-size:17px;}
 
   .row{display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;border-bottom:1px solid rgba(255,255,255,0.06);}
   .row:last-child{border-bottom:none;}
   .row:nth-child(odd){background:rgba(255,255,255,0.015);}
-  .row .cell{padding:13px 18px;font-family:'Roboto',sans-serif;font-size:13.5px;display:flex;align-items:center;}
+  .row .cell{padding:18px 22px;font-family:'Roboto',sans-serif;font-size:15px;display:flex;align-items:center;}
   .row .cell.label{color:#C9D1D9;font-weight:700;letter-spacing:0.3px;}
   .row .cell.oracle{color:#F0F4F8;border-left:1px solid rgba(255,255,255,0.06);}
   .row .cell.pg{color:#F0F4F8;border-left:1px solid rgba(255,255,255,0.06);}
-  .row .cell code{font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:1px 6px;border-radius:3px;}
+  .row .cell code{font-family:'JetBrains Mono',monospace;font-size:14px;padding:2px 7px;border-radius:3px;}
   .row .cell.oracle code{color:#FF6B35;background:rgba(255,107,53,0.1);}
   .row .cell.pg code{color:#4FC3F7;background:rgba(79,195,247,0.1);}
 
-  .note{background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:8px;padding:16px 22px;display:flex;align-items:center;gap:16px;box-sizing:border-box;}
-  .note i{color:#4FC3F7;font-size:24px;flex-shrink:0;}
-  .note span{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.5;}
+  .note{background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:8px;padding:20px 26px;display:flex;align-items:center;gap:18px;box-sizing:border-box;}
+  .note i{color:#4FC3F7;font-size:28px;flex-shrink:0;}
+  .note span{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.55;}
   .note b{color:#4FC3F7;}
-  .note code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12.5px;background:rgba(79,195,247,0.1);padding:1px 6px;border-radius:3px;}
+  .note code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:14px;background:rgba(79,195,247,0.1);padding:2px 7px;border-radius:3px;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -1713,11 +1620,26 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
   .res{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:5px solid #4FC3F7;border-radius:14px;padding:22px 26px;box-sizing:border-box;}
   .res .rh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:1.4px;margin-bottom:14px;}
   .res .rh i{font-size:18px;}
-  .res .ritem{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
+  .res .ritem{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
   .res .ritem:last-child{border-bottom:none;}
   .res .ricon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
   .res .rname{font-weight:700;color:#F0F4F8;}
-  .res .rurl{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#4FC3F7;display:block;margin-top:2px;}
+  .res .rurl{font-family:'JetBrains Mono',monospace;font-size:12px;color:#4FC3F7;display:block;margin-top:2px;}
+  /* Contact section */
+  .contact-sect{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);}
+  .contact-sect .ch{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#00FF88;letter-spacing:1.4px;margin-bottom:12px;}
+  .contact-sect .ch i{font-size:16px;color:#00FF88;}
+  .citem{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);margin-bottom:8px;text-decoration:none;}
+  .citem:last-child{margin-bottom:0;}
+  .citem.c-email{border-left:3px solid #4FC3F7;}
+  .citem.c-gh{border-left:3px solid #2EA44F;}
+  .citem .ci-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+  .citem.c-email .ci-icon{color:#4FC3F7;}
+  .citem.c-gh .ci-icon{color:#2EA44F;}
+  .citem .ci-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;letter-spacing:0.8px;display:block;margin-bottom:2px;}
+  .citem .ci-val{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;}
+  .citem.c-email .ci-val{color:#4FC3F7;}
+  .citem.c-gh .ci-val{color:#2EA44F;}
 
   /* Closing phrase */
   .closing{position:absolute;bottom:50px;left:50px;width:1180px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(79,195,247,0.7);letter-spacing:1.2px;line-height:1.5;font-style:italic;}
@@ -1767,7 +1689,7 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
     </div>
   </div>
 
-  <!-- Resources (right) -->
+  <!-- Resources + Contact (right) -->
   <div data-object="true" data-object-type="textbox" class="res" style="position:absolute;top:108px;left:650px;width:580px;height:475px;">
     <div class="rh"><i class="fa-solid fa-book-bookmark"></i>RECURSOS</div>
 
@@ -1776,24 +1698,24 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
       <div><span class="rname">PostgreSQL Docs</span><span class="rurl">postgresql.org/docs/</span></div>
     </div>
     <div class="ritem">
-      <span class="ricon">📦</span>
-      <div><span class="rname">Descarga PostgreSQL</span><span class="rurl">postgresql.org/download/</span></div>
-    </div>
-    <div class="ritem">
-      <span class="ricon">🔌</span>
-      <div><span class="rname">SQLTools Marketplace</span><span class="rurl">marketplace.visualstudio.com (buscar SQLTools)</span></div>
-    </div>
-    <div class="ritem">
-      <span class="ricon">🔌</span>
-      <div><span class="rname">Driver PostgreSQL</span><span class="rurl">marketplace.visualstudio.com (SQLTools PostgreSQL Driver)</span></div>
-    </div>
-    <div class="ritem">
       <span class="ricon">💻</span>
-      <div><span class="rname">Guía VS Code Vainilla</span><span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span></div>
+      <div><span class="rname">Guía VS Code Vainilla para MYSD</span><span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span></div>
     </div>
     <div class="ritem">
       <span class="ricon">📖</span>
-      <div><span class="rname">Wiki IS-FUNDAMENTOS</span><span class="rurl">fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/</span></div>
+      <div><span class="rname">Wiki IS-FUNDAMENTOS · Unidad SQL</span><span class="rurl">fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/</span></div>
+    </div>
+
+    <div class="contact-sect">
+      <div class="ch"><i class="fa-solid fa-headset"></i>CONTACTO Y SOPORTE</div>
+      <a class="citem c-email" href="mailto:fis@escuelaing.edu.co">
+        <i class="fa-solid fa-envelope ci-icon"></i>
+        <div><span class="ci-label">CORREO MONITORIA</span><span class="ci-val">fis@escuelaing.edu.co</span></div>
+      </a>
+      <a class="citem c-gh" href="https://github.com/fis-eci/software-foundations-eci/issues" target="_blank" rel="noopener">
+        <i class="fa-brands fa-github ci-icon"></i>
+        <div><span class="ci-label">PREGUNTAS E ISSUES</span><span class="ci-val">github.com/fis-eci — Abrir Issue</span></div>
+      </a>
     </div>
   </div>
 
@@ -1808,227 +1730,9 @@ on:absolute;bottom:0;left:0;width:1280px;height:6px;">
 </div>
 </body>
 </html>
-`,
-      `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<title>Contacto — PostgreSQL en VS Code · MYSD</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html,body{width:1280px;height:720px;overflow:hidden;background:#060b18;font-family:'Roboto',sans-serif;color:#F0F4F8;}
-  .slide{position:relative;width:1280px;height:720px;overflow:hidden;}
-
-  /* Background */
-  .bg-grid{position:absolute;inset:0;
-    background:
-      linear-gradient(rgba(79,195,247,0.05) 1px,transparent 1px) 0 0/48px 48px,
-      linear-gradient(90deg,rgba(79,195,247,0.05) 1px,transparent 1px) 0 0/48px 48px;
-  }
-  .bg-radial{position:absolute;inset:0;
-    background:radial-gradient(ellipse 700px 600px at 50% 50%,rgba(51,103,145,0.16) 0%,transparent 70%);
-  }
-
-  /* Decorative */
-  .ring{position:absolute;border-radius:50%;pointer-events:none;}
-  .r1{width:520px;height:520px;border:1px dashed rgba(79,195,247,0.1);top:-180px;right:-150px;}
-  .r2{width:300px;height:300px;border:1px dashed rgba(0,255,136,0.1);bottom:-100px;left:-80px;}
-  .r3{width:160px;height:160px;border:1px dashed rgba(79,195,247,0.12);top:280px;left:580px;}
-  .gd{position:absolute;border-radius:50%;pointer-events:none;}
-  .gd1{width:10px;height:10px;background:#4FC3F7;box-shadow:0 0 24px 6px rgba(79,195,247,0.5);top:100px;left:60px;}
-  .gd2{width:10px;height:10px;background:#00FF88;box-shadow:0 0 24px 6px rgba(0,255,136,0.4);bottom:180px;right:100px;}
-  .gd3{width:8px;height:8px;background:#FF6B35;box-shadow:0 0 18px 4px rgba(255,107,53,0.4);top:500px;left:600px;}
-
-  /* Header */
-  .hb{position:absolute;top:0;left:0;width:1280px;height:78px;
-    background:rgba(10,20,50,0.92);border-bottom:1px solid rgba(79,195,247,0.2);backdrop-filter:blur(10px);}
-  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#00FF88;
-    background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);padding:5px 13px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;color:#F0F4F8;letter-spacing:0.5px;}
-
-  /* Author hero */
-  .author-hero{position:absolute;top:100px;left:50px;width:560px;}
-  .author-avatar{width:88px;height:88px;border-radius:50%;
-    background:linear-gradient(135deg,#336791,#4FC3F7);
-    display:flex;align-items:center;justify-content:center;
-    font-size:40px;color:#fff;margin-bottom:20px;
-    box-shadow:0 0 40px rgba(79,195,247,0.3),0 0 80px rgba(51,103,145,0.2);}
-  .author-name{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#F0F4F8;
-    text-shadow:0 0 20px rgba(79,195,247,0.3);margin-bottom:6px;}
-  .author-role{font-family:'JetBrains Mono',monospace;font-size:13px;color:#4FC3F7;letter-spacing:1px;margin-bottom:4px;}
-  .author-inst{font-size:13px;color:#8B949E;line-height:1.5;}
-
-  /* Contact cards */
-  .contacts{position:absolute;top:300px;left:50px;width:560px;display:flex;flex-direction:column;gap:12px;}
-  .ccard{display:flex;align-items:center;gap:16px;
-    background:rgba(10,20,50,0.6);backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 20px;
-    text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s;}
-  .ccard:hover{transform:translateX(6px);}
-  .ccard.email{border-left:3px solid #4FC3F7;}
-  .ccard.email:hover{border-color:#4FC3F7;}
-  .ccard.gh1{border-left:3px solid #2EA44F;}
-  .ccard.gh1:hover{border-color:#2EA44F;}
-  .ccard.gh2{border-left:3px solid #58a6ff;}
-  .ccard.gh2:hover{border-color:#58a6ff;}
-  .ccard.web{border-left:3px solid #FF6B35;}
-  .ccard.web:hover{border-color:#FF6B35;}
-  .cc-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-  .email .cc-icon{background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.25);color:#4FC3F7;}
-  .gh1 .cc-icon{background:rgba(46,164,79,0.1);border:1px solid rgba(46,164,79,0.25);color:#2EA44F;}
-  .gh2 .cc-icon{background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.25);color:#58a6ff;}
-  .web .cc-icon{background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.25);color:#FF6B35;}
-  .cc-text{}
-  .cc-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;letter-spacing:1px;margin-bottom:3px;}
-  .cc-value{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;}
-  .email .cc-value{color:#4FC3F7;}
-  .gh1 .cc-value{color:#2EA44F;}
-  .gh2 .cc-value{color:#58a6ff;}
-  .web .cc-value{color:#FF6B35;}
-
-  /* Right panel — Resources & links */
-  .rpanel{position:absolute;top:100px;left:660px;width:570px;}
-  .rpanel-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;color:#F0F4F8;
-    display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-  .rpanel-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);}
-
-  .rlinks{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
-  .rlink{display:flex;align-items:center;gap:14px;
-    background:rgba(10,20,50,0.5);backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;
-    text-decoration:none;}
-  .rlink .rl-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-  .rlink .rl-text{}
-  .rlink .rl-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;letter-spacing:0.8px;margin-bottom:2px;}
-  .rlink .rl-url{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;}
-
-  .rlink.l1 .rl-icon{background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.2);color:#4FC3F7;}
-  .rlink.l1 .rl-url{color:#4FC3F7;}
-  .rlink.l2 .rl-icon{background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.2);color:#FF6B35;}
-  .rlink.l2 .rl-url{color:#FF6B35;}
-  .rlink.l3 .rl-icon{background:rgba(46,164,79,0.1);border:1px solid rgba(46,164,79,0.2);color:#2EA44F;}
-  .rlink.l3 .rl-url{color:#2EA44F;}
-
-  /* Closing quote */
-  .quote{position:absolute;bottom:60px;left:660px;width:570px;
-    background:rgba(79,195,247,0.05);border-left:4px solid rgba(79,195,247,0.4);
-    border-radius:0 8px 8px 0;padding:18px 20px;}
-  .quote p{font-family:'Roboto',sans-serif;font-style:italic;font-size:14px;color:#C9D1D9;line-height:1.6;}
-  .quote p span{color:#4FC3F7;font-style:normal;font-weight:700;}
-
-  /* Footer */
-  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:5px;display:flex;}
-  .tricolor div:nth-child(1){background:#336791;flex:1;}
-  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
-  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
-  .footer-l{position:absolute;bottom:13px;left:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;}
-  .footer-r{position:absolute;bottom:13px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;}
-</style>
-</head>
-<body>
-<div class="slide">
-
-  <div class="bg-grid"></div>
-  <div class="bg-radial"></div>
-  <div class="ring r1"></div>
-  <div class="ring r2"></div>
-  <div class="ring r3"></div>
-  <div class="gd gd1"></div>
-  <div class="gd gd2"></div>
-  <div class="gd gd3"></div>
-  <!-- Header -->
-  <div class="hb"></div>
-  <div style="position:absolute;top:24px;left:50px;"><span class="chip">CONTACTO</span></div>
-  <div style="position:absolute;top:22px;left:168px;width:1px;height:34px;background:rgba(255,255,255,0.12);"></div>
-  <div style="position:absolute;top:26px;left:190px;">
-    <div class="h-title">Monitor Académico &nbsp;·&nbsp; Soporte y Recursos</div>
-  </div>
-
-  <!-- Author hero -->
-  <div class="author-hero">
-    <div class="author-avatar"><i class="fa-solid fa-user-graduate"></i></div>
-    <div class="author-name">Andersson David Sánchez Méndez</div>
-    <div class="author-role">Monitor Académico · MYSD &amp; DOPO · 2026</div>
-    <div class="author-inst">Escuela Colombiana de Ingeniería Julio Garavito<br>Fundamentos de Ingeniería de Software</div>
-  </div>
-
-  <!-- Contact cards -->
-  <div class="contacts">
-    <a class="ccard email" href="mailto:andersson.sanchez-m@mail.escuelaing.edu.co">
-      <div class="cc-icon"><i class="fa-solid fa-envelope"></i></div>
-      <div class="cc-text">
-        <div class="cc-label">CORREO INSTITUCIONAL</div>
-        <div class="cc-value">andersson.sanchez-m@mail.escuelaing.edu.co</div>
-      </div>
-    </a>
-    <a class="ccard gh1" href="https://github.com/fis-eci" target="_blank" rel="noopener">
-      <div class="cc-icon"><i class="fa-brands fa-github"></i></div>
-      <div class="cc-text">
-        <div class="cc-label">ORGANIZACIÓN · MATERIAL DEL CURSO</div>
-        <div class="cc-value">github.com/fis-eci</div>
-      </div>
-    </a>
-    <a class="ccard gh2" href="https://github.com/AnderssonProgramming" target="_blank" rel="noopener">
-      <div class="cc-icon"><i class="fa-brands fa-github"></i></div>
-      <div class="cc-text">
-        <div class="cc-label">PERFIL PERSONAL</div>
-        <div class="cc-value">github.com/AnderssonProgramming</div>
-      </div>
-    </a>
-    <a class="ccard web" href="https://fis-eci.github.io/software-foundations-eci-slides/" target="_blank" rel="noopener">
-      <div class="cc-icon"><i class="fa-solid fa-display"></i></div>
-      <div class="cc-text">
-        <div class="cc-label">PRESENTACIONES EN LÍNEA</div>
-        <div class="cc-value">fis-eci.github.io/software-foundations-eci-slides</div>
-      </div>
-    </a>
-  </div>
-
-  <!-- Right panel -->
-  <div class="rpanel">
-    <div class="rpanel-title"><i class="fa-solid fa-book-open" style="color:#4FC3F7;"></i> Recursos del Curso</div>
-
-    <div class="rlinks">
-      <a class="rlink l1" href="https://fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/" target="_blank" rel="noopener">
-        <div class="rl-icon"><i class="fa-solid fa-book"></i></div>
-        <div class="rl-text">
-          <div class="rl-label">GUÍA COMPLETA</div>
-          <div class="rl-url">Wiki IS-Fundamentos · SQL + PostgreSQL + VS Code</div>
-        </div>
-      </a>
-      <a class="rlink l2" href="https://fis-eci.github.io/software-foundations-eci/VSCode-Vanila/" target="_blank" rel="noopener">
-        <div class="rl-icon"><i class="fa-solid fa-sliders"></i></div>
-        <div class="rl-text">
-          <div class="rl-label">CONFIGURACIÓN</div>
-          <div class="rl-url">Guía VS Code Vainilla para MYSD</div>
-        </div>
-      </a>
-      <a class="rlink l3" href="https://github.com/fis-eci/software-foundations-eci/issues" target="_blank" rel="noopener">
-        <div class="rl-icon"><i class="fa-solid fa-circle-question"></i></div>
-        <div class="rl-text">
-          <div class="rl-label">PREGUNTAS Y ERRORES</div>
-          <div class="rl-url">github.com/fis-eci/software-foundations-eci/issues</div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Closing quote -->
-  <div class="quote">
-    <p>« Scripts versionados, servidor limpio y consultas conscientes —<br>así trabaja un <span>ingeniero responsable</span>. »</p>
-  </div>
-
-  <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
-  <div class="tricolor"><div></div><div></div><div></div></div>
-
-</div>
-</body>
-</html>
 `
     ];
-    var TITLES = ["Portada — PostgreSQL en VS Code · MYSD", "Propósito — PostgreSQL en VS Code · MYSD", "Filosofía Vainilla — MYSD", "Extensiones SQLTools — MYSD", "Conexión Servidor — MYSD", "PostgreSQL Local — MYSD", "Flujo de Trabajo — MYSD", "Gestión con Git — MYSD", "Buenas Prácticas Servidor — MYSD", "Comparativa Oracle vs PostgreSQL — MYSD", "Videos de Práctica — PostgreSQL en VS Code · MYSD", "Verificación y Recursos — MYSD", "Contacto — PostgreSQL en VS Code · MYSD"];
+    var TITLES = ["Portada — PostgreSQL en VS Code · MYSD", "Propósito — PostgreSQL en VS Code · MYSD", "Filosofía Vainilla — MYSD", "Extensiones SQLTools — MYSD", "Conexión Servidor — MYSD", "PostgreSQL Local — MYSD", "Flujo de Trabajo — MYSD", "Gestión con Git — MYSD", "Buenas Prácticas Servidor — MYSD", "Comparativa Oracle vs PostgreSQL — MYSD", "Videos de Práctica — PostgreSQL en VS Code · MYSD", "Verificación y Recursos — MYSD"];
     var TOTAL  = SLIDES.length;
     var NAV_H  = 52 + 3; /* nav bar + progress bar */
 
