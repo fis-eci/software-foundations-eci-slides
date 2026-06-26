@@ -1,135 +1,162 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Videos de Práctica — MYSD</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Videos de Práctica — PostgreSQL en VS Code · MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
-  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:1280px;height:720px;overflow:hidden;background:#060b18;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+
+  .slide{position:relative;width:1280px;height:720px;overflow:hidden;}
+
+  /* Background */
+  .bg-grid{position:absolute;inset:0;
     background:
-      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
-      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
-      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
-      #0a0e1a;
+      linear-gradient(rgba(79,195,247,0.055) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(79,195,247,0.055) 1px,transparent 1px) 0 0/48px 48px;
   }
-  .tc1{position:absolute;width:380px;height:380px;border:1px dashed rgba(79,195,247,0.15);border-radius:50%;top:-130px;right:-110px;}
-  .tc2{position:absolute;width:260px;height:260px;border:1px dashed rgba(255,107,53,0.18);border-radius:50%;bottom:-90px;left:-70px;}
-  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:130px;left:50px;}
-  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#FF6B35;box-shadow:0 0 14px #FF6B35;bottom:180px;right:80px;}
-  .gd3{position:absolute;width:8px;height:8px;border-radius:50%;background:#00D4FF;box-shadow:0 0 14px #00D4FF;top:380px;left:625px;}
+  .bg-radial{position:absolute;inset:0;
+    background:radial-gradient(ellipse 800px 500px at 50% 50%,rgba(51,103,145,0.14) 0%,transparent 70%);
+  }
 
-  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
-  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  /* Decorative */
+  .ring{position:absolute;border-radius:50%;pointer-events:none;}
+  .r1{width:400px;height:400px;border:1px dashed rgba(79,195,247,0.1);top:-140px;right:-100px;}
+  .r2{width:260px;height:260px;border:1px dashed rgba(255,107,53,0.13);bottom:-80px;left:-60px;}
+  .gd{position:absolute;border-radius:50%;pointer-events:none;}
+  .gd1{width:10px;height:10px;background:#4FC3F7;box-shadow:0 0 24px 6px rgba(79,195,247,0.5);top:130px;left:48px;}
+  .gd2{width:10px;height:10px;background:#FF6B35;box-shadow:0 0 24px 6px rgba(255,107,53,0.5);bottom:170px;right:72px;}
+  .gd3{width:8px;height:8px;background:#00D4FF;box-shadow:0 0 18px 4px rgba(0,212,255,0.4);top:380px;left:620px;}
 
-  .vcard{background:linear-gradient(180deg,rgba(13,27,62,0.7) 0%, rgba(10,14,26,0.7) 100%);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:24px 26px;box-sizing:border-box;position:relative;overflow:hidden;}
-  .vcard.v1{border-left:4px solid #4FC3F7;box-shadow:0 8px 32px rgba(79,195,247,0.1);}
-  .vcard.v2{border-left:4px solid #FF6B35;box-shadow:0 8px 32px rgba(255,107,53,0.1);}
+  /* Big bg number */
+  .bg-num{position:absolute;bottom:-20px;right:30px;font-family:'Orbitron',sans-serif;font-size:280px;font-weight:900;
+    color:transparent;-webkit-text-stroke:1px rgba(79,195,247,0.04);line-height:1;pointer-events:none;user-select:none;}
 
-  .vcard::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;filter:blur(60px);opacity:0.25;}
-  .vcard.v1::before{background:#4FC3F7;}
-  .vcard.v2::before{background:#FF6B35;}
+  /* Header */
+  .hb{position:absolute;top:0;left:0;width:1280px;height:78px;
+    background:rgba(10,20,50,0.92);border-bottom:1px solid rgba(79,195,247,0.2);backdrop-filter:blur(10px);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;
+    background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:5px 13px;border-radius:4px;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;color:#F0F4F8;letter-spacing:0.5px;}
 
-  .vhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;}
-  .vthumb{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid;background:rgba(10,14,26,0.6);}
-  .vcard.v1 .vthumb{color:#4FC3F7;border-color:#4FC3F7;box-shadow:0 0 24px rgba(79,195,247,0.4);}
-  .vcard.v2 .vthumb{color:#FF6B35;border-color:#FF6B35;box-shadow:0 0 24px rgba(255,107,53,0.4);}
-  .vtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:5px 12px;border-radius:4px;}
-  .vcard.v1 .vtag{color:#4FC3F7;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.4);}
-  .vcard.v2 .vtag{color:#FF6B35;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.4);}
+  /* Video thumbnail cards */
+  .vcard{position:absolute;border-radius:14px;overflow:hidden;text-decoration:none;display:block;
+    border:2px solid;cursor:pointer;transition:transform 0.2s ease,box-shadow 0.2s ease;}
+  .vcard:hover{transform:translateY(-4px);}
+  .vcard.v1{border-color:rgba(79,195,247,0.5);box-shadow:0 8px 40px rgba(79,195,247,0.15);}
+  .vcard.v1:hover{box-shadow:0 16px 56px rgba(79,195,247,0.3);}
+  .vcard.v2{border-color:rgba(255,107,53,0.5);box-shadow:0 8px 40px rgba(255,107,53,0.15);}
+  .vcard.v2:hover{box-shadow:0 16px 56px rgba(255,107,53,0.3);}
 
-  .vt{font-family:'Roboto',sans-serif;font-size:18px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:10px;position:relative;}
-  .vd{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;margin-bottom:16px;position:relative;}
+  /* Thumbnail image area */
+  .thumb{position:absolute;inset:0;background-size:cover;background-position:center;}
+  .thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,11,24,0.3) 0%,rgba(6,11,24,0.75) 100%);}
 
-  .vtools{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;position:relative;}
-  .vtools span{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#C9D1D9;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 10px;border-radius:4px;}
-  .vcard.v1 .vtools span{border-color:rgba(79,195,247,0.25);}
-  .vcard.v2 .vtools span{border-color:rgba(255,107,53,0.25);}
+  /* Play button */
+  .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);
+    display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .play-icon{width:72px;height:72px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,0,0,0.85);box-shadow:0 0 40px rgba(255,0,0,0.5);
+    transition:transform 0.2s ease;}
+  .vcard:hover .play-icon{transform:scale(1.1);}
+  .play-icon i{font-size:32px;color:#fff;margin-left:4px;}
+  .play-label{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#fff;
+    letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,0.8);}
 
-  .vlink{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(10,14,26,0.7);border:1px dashed;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;position:relative;}
-  .vcard.v1 .vlink{color:#4FC3F7;border-color:rgba(79,195,247,0.4);}
-  .vcard.v2 .vlink{color:#FF6B35;border-color:rgba(255,107,53,0.4);}
-  .vlink i{font-size:14px;}
+  /* Info bar at bottom of card */
+  .vinfo{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;
+    background:linear-gradient(to top,rgba(6,11,24,0.98) 0%,rgba(6,11,24,0.7) 100%);}
+  .vi-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;
+    padding:3px 10px;border-radius:3px;display:inline-block;margin-bottom:6px;}
+  .v1 .vi-tag{color:#4FC3F7;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.35);}
+  .v2 .vi-tag{color:#FF6B35;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.35);}
+  .vi-title{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:8px;}
+  .vi-tools{display:flex;flex-wrap:wrap;gap:5px;}
+  .vi-tools span{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8B949E;
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+    padding:2px 8px;border-radius:3px;}
 
-  .heart{position:absolute;top:430px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(79,195,247,0.5);letter-spacing:2px;text-align:center;width:300px;}
+  /* Part label top-right of card */
+  .vi-part{position:absolute;top:14px;right:14px;
+    font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;
+    padding:5px 12px;border-radius:4px;}
+  .v1 .vi-part{color:#4FC3F7;background:rgba(6,11,24,0.7);border:1px solid rgba(79,195,247,0.4);}
+  .v2 .vi-part{color:#FF6B35;background:rgba(6,11,24,0.7);border:1px solid rgba(255,107,53,0.4);}
 
-  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  /* Footer */
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:5px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
   .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
   .tricolor div:nth-child(3){background:#007ACC;flex:1;}
-  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+  .footer-l{position:absolute;bottom:13px;left:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;}
+  .footer-r{position:absolute;bottom:13px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;}
 </style>
 </head>
 <body>
-<div class="slide-container">
-  <div data-object="true" data-object-type="shape" class="tc1"></div>
-  <div data-object="true" data-object-type="shape" class="tc2"></div>
-  <div data-object="true" data-object-type="shape" class="gd1"></div>
-  <div data-object="true" data-object-type="shape" class="gd2"></div>
-  <div data-object="true" data-object-type="shape" class="gd3"></div>
+<div class="slide">
 
-  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">PRÁCTICA</span></div>
-  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:155px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:180px;">
-    <div class="h-title">🎥 Videos de Práctica Guiada — PostgreSQL en VS Code</div>
+  <div class="bg-grid"></div>
+  <div class="bg-radial"></div>
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="gd gd1"></div>
+  <div class="gd gd2"></div>
+  <div class="gd gd3"></div>
+  <div class="bg-num">11</div>
+
+  <!-- Header -->
+  <div class="hb"></div>
+  <div style="position:absolute;top:24px;left:50px;"><span class="chip">PRÁCTICA</span></div>
+  <div style="position:absolute;top:22px;left:160px;width:1px;height:34px;background:rgba(255,255,255,0.12);"></div>
+  <div style="position:absolute;top:26px;left:182px;">
+    <div class="h-title">Videos de Práctica Guiada &nbsp;·&nbsp; PostgreSQL en VS Code</div>
   </div>
 
-  <!-- Video 1 -->
-  <div data-object="true" data-object-type="textbox" class="vcard v1" style="position:absolute;top:115px;left:50px;width:585px;height:530px;">
-    <div class="vhead">
-      <div class="vthumb"><i class="fa-solid fa-play-circle"></i></div>
-      <span class="vtag">VIDEO 4 • MYSD</span>
+  <!-- Video 1 — clic redirige a YouTube -->
+  <a class="vcard v1" href="https://youtu.be/OtQBMtXYGBw" target="_blank" rel="noopener"
+     style="top:100px;left:50px;width:575px;height:580px;">
+    <div class="thumb" style="background-image:url('https://img.youtube.com/vi/OtQBMtXYGBw/maxresdefault.jpg');"></div>
+    <div class="thumb-overlay"></div>
+    <span class="vi-part">PARTE 1</span>
+    <div class="play-btn">
+      <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+      <div class="play-label">VER VIDEO</div>
     </div>
-    <div class="vt">Configuración de VS Code con SQLTools para PostgreSQL</div>
-    <div class="vd">Instala las extensiones, aplica la configuración <b style="color:#4FC3F7;">Vainilla para MYSD</b> y establece la primera conexión.</div>
-    <div class="vtools">
-      <span>VS Code</span>
-      <span>SQLTools</span>
-      <span>Driver PostgreSQL</span>
-      <span>settings.json</span>
+    <div class="vinfo">
+      <div class="vi-tag">VIDEO 4 · MYSD</div>
+      <div class="vi-title">Configuración de VS Code con SQLTools para PostgreSQL</div>
+      <div class="vi-tools">
+        <span>VS Code</span><span>SQLTools</span><span>Driver PostgreSQL</span><span>settings.json</span>
+      </div>
     </div>
-    <div class="vlink">
-      <i class="fa-brands fa-youtube"></i>
-      <span>https://youtu.be/OtQBMtXYGBw</span>
-    </div>
-    <div style="position:absolute;bottom:22px;left:26px;right:26px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8B949E;letter-spacing:1.2px;display:flex;justify-content:space-between;align-items:center;">
-      <span><i class="fa-solid fa-clock" style="margin-right:6px;"></i>Instalación + Conexión</span>
-      <span style="color:#4FC3F7;">› PARTE 1</span>
-    </div>
-  </div>
+  </a>
 
-  <!-- Video 2 -->
-  <div data-object="true" data-object-type="textbox" class="vcard v2" style="position:absolute;top:115px;left:645px;width:585px;height:530px;">
-    <div class="vhead">
-      <div class="vthumb"><i class="fa-solid fa-play-circle"></i></div>
-      <span class="vtag">VIDEO 5 • MYSD</span>
+  <!-- Video 2 — clic redirige a YouTube -->
+  <a class="vcard v2" href="https://youtu.be/YgQrHChPF0o" target="_blank" rel="noopener"
+     style="top:100px;left:655px;width:575px;height:580px;">
+    <div class="thumb" style="background-image:url('https://img.youtube.com/vi/YgQrHChPF0o/maxresdefault.jpg');"></div>
+    <div class="thumb-overlay"></div>
+    <span class="vi-part">PARTE 2</span>
+    <div class="play-btn">
+      <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+      <div class="play-label">VER VIDEO</div>
     </div>
-    <div class="vt">Consultas SQL Conscientes: Scripts, DDL, DML y Git</div>
-    <div class="vd">Escribe <b style="color:#FF6B35;">DDL</b> y <b style="color:#FF6B35;">DML</b> manualmente, ejecuta con <code style="font-family:'JetBrains Mono',monospace;color:#FF6B35;">Ctrl+Shift+E</code>, versiona con Git y aplica el protocolo de limpieza.</div>
-    <div class="vtools">
-      <span>Scripts .sql</span>
-      <span>SQLTools</span>
-      <span>Git commits atómicos</span>
-      <span>TRUNCATE</span>
+    <div class="vinfo">
+      <div class="vi-tag">VIDEO 5 · MYSD</div>
+      <div class="vi-title">Consultas SQL Conscientes: Scripts, DDL, DML y Git</div>
+      <div class="vi-tools">
+        <span>Scripts .sql</span><span>SQLTools</span><span>Git commits</span><span>TRUNCATE</span>
+      </div>
     </div>
-    <div class="vlink">
-      <i class="fa-brands fa-youtube"></i>
-      <span>https://youtu.be/YgQrHChPF0o</span>
-    </div>
-    <div style="position:absolute;bottom:22px;left:26px;right:26px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8B949E;letter-spacing:1.2px;display:flex;justify-content:space-between;align-items:center;">
-      <span><i class="fa-solid fa-clock" style="margin-right:6px;"></i>Práctica + Git</span>
-      <span style="color:#FF6B35;">› PARTE 2</span>
-    </div>
-  </div>
+  </a>
 
-  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">11 / 12</div>
-  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
-    <div></div><div></div><div></div>
-  </div>
+  <div class="footer-l">MYSD · PostgreSQL en VS Code</div>
+  <div class="footer-r">PostgreSQL · MYSD</div>
+  <div class="tricolor"><div></div><div></div><div></div></div>
+
 </div>
 </body>
 </html>
-

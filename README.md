@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/Licencia-Apache%202.0-blue.svg)](./LICENSE)
 [![HTML](https://img.shields.io/badge/Tecnología-HTML%20%2B%20CSS-orange.svg)](.)
-[![Slides](https://img.shields.io/badge/Diapositivas-60%20slides-blue.svg)](.)
+[![Slides](https://img.shields.io/badge/Diapositivas-61%20slides-blue.svg)](.)
 [![Institución](https://img.shields.io/badge/ECI-Julio%20Garavito-red.svg)](https://www.escuelaing.edu.co)
 
 <br/>
@@ -37,7 +37,7 @@ Este repositorio genera **6 presentaciones de una sola página** (archivos `.htm
 | 1 | [`CVS-presentation.html`](./CVS-presentation.html) | Control de Versiones con Git & GitHub | 16 | MYSD & DOPO |
 | 2 | [`PruebasUnitarias-presentation.html`](./PruebasUnitarias-presentation.html) | Pruebas Unitarias en Java (JUnit + BlueJ) | 9 | DOPO |
 | 3 | [`OracleSQL-presentation.html`](./OracleSQL-presentation.html) | Entornos Oracle SQL Developer | 11 | MYSD |
-| 4 | [`SQL-PostgreVSC-presentation.html`](./SQL-PostgreVSC-presentation.html) | PostgreSQL en VS Code | 12 | MYSD |
+| 4 | [`SQL-PostgreVSC-presentation.html`](./SQL-PostgreVSC-presentation.html) | PostgreSQL en VS Code | 13 | MYSD |
 | 5 | [`Analisis-Eclipse-presentation.html`](./Analisis-Eclipse-presentation.html) | Análisis de Software en Eclipse IDE | 15 | DOPO |
 | 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 13 | DOPO |
 
