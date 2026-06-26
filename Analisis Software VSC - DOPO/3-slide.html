@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Panorama — Los 4 Análisis</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:140px;color:rgba(0,122,204,0.05);z-index:1}
+  .content{position:absolute;top:108px;left:60px;width:1160px;z-index:10}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .row{display:flex;border-bottom:1px solid #30363D;align-items:stretch}
+  .row:last-child{border-bottom:none}
+  .row.head{background:#21262D;font-weight:700;color:#fff;font-size:12px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .row.alt{background:#21262D}
+  .cell{padding:18px 22px;font-size:14px;color:#C9D1D9;display:flex;align-items:center;box-sizing:border-box}
+  .c-tool{flex:0 0 280px;border-right:1px solid #30363D;gap:14px;font-weight:700;font-size:15px}
+  .c-tool .ico{font-size:24px;width:30px;text-align:center}
+  .c-cmd{flex:1;border-right:1px solid #30363D;font-family:'Roboto Mono',monospace;font-size:13px;color:#4FC3F7}
+  .c-result{flex:0 0 340px;font-family:'Roboto Mono',monospace;font-size:13px;color:#C9D1D9}
+  .row.head .cell{color:#fff;font-family:'Roboto Mono',monospace}
+  .ico-sonar{color:#4A90D9}.ico-pmd{color:#F89820}.ico-jacoco{color:#2EA44F}.ico-pit{color:#DA3633}
+  .note{margin-top:24px;background:rgba(0,122,204,0.08);border-left:3px solid #007ACC;padding:14px 18px;font-size:13px;color:#C9D1D9;border-radius:4px;max-width:780px}
+  .note b{color:#4FC3F7}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="03 Panorama">
+  <div class="header"><span class="h-badge">PANORAMA</span><span class="h-title">Los 4 Análisis — Cómo se Ejecutan en VS Code</span></div>
+  <i class="fas fa-layer-group deco"></i>
+
+  <div class="content">
+    <div class="table">
+      <div class="row head">
+        <div class="cell c-tool">Herramienta</div>
+        <div class="cell c-cmd">Cómo ejecutar en VS Code</div>
+        <div class="cell c-result">Ver resultado en</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-sonar"><i class="fas fa-search"></i></span><span>SonarLint</span></div>
+        <div class="cell c-cmd">Automático al escribir/guardar</div>
+        <div class="cell c-result">Vista Problems (Ctrl+Shift+M)</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pmd"><i class="fas fa-shield-halved"></i></span><span>PMD</span></div>
+        <div class="cell c-cmd">Ctrl+Shift+P → PMD: Run</div>
+        <div class="cell c-result">Vista Problems (Ctrl+Shift+M)</div>
+      </div>
+      <div class="row">
+        <div class="cell c-tool"><span class="ico ico-jacoco"><i class="fas fa-chart-bar"></i></span><span>JaCoCo</span></div>
+        <div class="cell c-cmd">Testing 🧪 → Run All Tests → Coverage Gutters: Display Coverage</div>
+        <div class="cell c-result">Líneas coloreadas en el editor</div>
+      </div>
+      <div class="row alt">
+        <div class="cell c-tool"><span class="ico ico-pit"><i class="fas fa-dna"></i></span><span>PIT</span></div>
+        <div class="cell c-cmd">Terminal: mvn pitest:mutationCoverage</div>
+        <div class="cell c-result">target/pit-reports/index.html</div>
+      </div>
+    </div>
+
+    <div class="note"><b>Caso de estudio:</b> clase <b>CuentaBancaria</b> con dos defectos intencionales — el mismo ejemplo de la Unidad 4.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

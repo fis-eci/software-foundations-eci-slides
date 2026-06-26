@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ciclo de Análisis: Las 5 Etapas</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      height: 70px;
+    }
+    .pipeline-step-num {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="13 S4 Protocolo">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">S4 PROTOCOLO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Ciclo de Análisis: Las 5 Etapas para cada Herramienta</span>
+    </div>
+
+    <!-- Pipeline Column (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 680px; z-index: 10;">
+      <!-- Step 1 -->
+      <div class="pipeline-step" style="border-left: 4px solid #58A6FF;">
+        <div class="pipeline-step-num" style="background-color: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.4); color: #58A6FF;">I</div>
+        <i class="fa-solid fa-play" style="color: #58A6FF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Inicial</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Ejecuta la herramienta y registra TODOS los incidentes en una tabla.</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="pipeline-step" style="border-left: 4px solid #F89820;">
+        <div class="pipeline-step-num" style="background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); color: #F89820;">II</div>
+        <i class="fa-solid fa-magnifying-glass" style="color: #F89820; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Interpretación</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Lee cada incidente de software. Clasifícalo de acuerdo con la prioridad.</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pipeline-step" style="border-left: 4px solid #7C5CBF;">
+        <div class="pipeline-step-num" style="background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); color: #7C5CBF;">III</div>
+        <i class="fa-solid fa-bullseye" style="color: #7C5CBF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Selección</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Elige el incidente más relevante. Justifica técnicamente la selección.</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="pipeline-step" style="border-left: 4px solid #2EA44F;">
+        <div class="pipeline-step-num" style="background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); color: #2EA44F;">IV</div>
+        <i class="fa-solid fa-wrench" style="color: #2EA44F; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Solución</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Aplica la corrección en el código Java y documenta el razonamiento.</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="pipeline-step" style="border-left: 4px solid #DA3633; margin-bottom: 0;">
+        <div class="pipeline-step-num" style="background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.4); color: #DA3633;">V</div>
+        <i class="fa-solid fa-chart-line" style="color: #DA3633; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Final</div>
+          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Vuelve a ejecutar la herramienta y compara: Estado Inicial vs Final.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deliverable Column (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 760px; top: 110px; width: 460px; height: 495px; background-color: rgba(88, 166, 255, 0.03); border: 1px solid rgba(88, 166, 255, 0.3); border-radius: 12px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; z-index: 10;">
+      
+      <div>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <i class="fa-solid fa-file-alt" style="font-size: 48px; color: #58A6FF; margin-bottom: 10px;"></i>
+          <h3 style="margin: 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Entregable Esperado</h3>
+        </div>
+        
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+          Para cada una de las cuatro herramientas de análisis deberás consolidar e incluir en tu reporte final:
+        </p>
+
+        <ul style="margin: 0; padding-left: 20px; color: #8B949E; font-size: 13px; line-height: 1.7; font-weight: 300;">
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Tabla Inicial:</strong> Listado y conteo de todos los incidentes detectados antes de realizar cambios.</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Justificación de Selección:</strong> ¿Por qué seleccionaste ese incidente específico para resolver?</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Código Antes/Después:</strong> Evidencia del código fuente previo y el corregido.</li>
+          <li style="margin-bottom: 0;"><strong style="color: #C9D1D9;">Tabla Final:</strong> Reporte que evidencia la reducción o eliminación de fallos.</li>
+        </ul>
+      </div>
+
+      <div style="border-top: 1px solid rgba(88, 166, 255, 0.2); padding-top: 15px; font-size: 12px; color: #8B949E; text-align: center; line-height: 1.4;">
+        📋 Repite este ciclo de forma rigurosa para las cuatro herramientas antes de la fecha de entrega.
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

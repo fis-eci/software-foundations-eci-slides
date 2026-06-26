@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>EclEmma (JaCoCo) — Pruebas de Cobertura</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .color-legend {
+      display: flex;
+      align-items: center;
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .code-sim {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 2px;
+      line-height: 1.4;
+    }
+    .coverage-green {
+      background-color: rgba(46, 164, 79, 0.15);
+      border-left: 4px solid #2EA44F;
+      color: #C9D1D9;
+    }
+    .coverage-red {
+      background-color: rgba(218, 54, 51, 0.15);
+      border-left: 4px solid #DA3633;
+      color: #C9D1D9;
+    }
+    .coverage-yellow {
+      background-color: rgba(210, 153, 34, 0.15);
+      border-left: 4px solid #D29922;
+      color: #FFFFFF;
+    }
+    .metric-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #21262D;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="10 JaCoCo">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 3</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🟢 EclEmma (JaCoCo) — Pruebas de Cobertura</span>
+    </div>
+
+    <!-- Column 1: Ejecución y Leyenda (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #2EA44F; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Ejecución de Cobertura</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; font-size: 13px; line-height: 1.5; margin-bottom: 18px; color: #C9D1D9; font-weight: 300;">
+        1. Clic derecho sobre la clase Test o paquete &rarr; <strong style="color: #FFFFFF;">Coverage As &rarr; JUnit Test</strong>.<br>
+        2. Al finalizar, Eclipse coloreará de forma automatizada el editor de código.
+      </div>
+
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Leyenda de Colores</h3>
+      <div>
+        <div class="color-legend" style="border-left: 5px solid #2EA44F;">
+          <span style="font-weight: 700; width: 90px; color: #2EA44F; font-family: 'Roboto Mono', monospace;">Verde</span>
+          <span style="color: #C9D1D9;">Instrucción totalmente ejecutada por las pruebas unitarias.</span>
+        </div>
+        <div class="color-legend" style="border-left: 5px solid #DA3633;">
+          <span style="font-weight: 700; width: 90px; color: #DA3633; font-family: 'Roboto Mono', monospace;">Rojo</span>
+          <span style="color: #C9D1D9;">Línea NO ejecutada. Cobertura lógica pendiente por verificar.</span>
+        </div>
+        <div class="color-legend" style="border-left: 5px solid #D29922;">
+          <span style="font-weight: 700; width: 90px; color: #D29922; font-family: 'Roboto Mono', monospace;">Amarillo</span>
+          <span style="color: #FFFFFF;">Rama de decisión parcialmente cubierta (ej. 'if' evaluado en true pero no en false).</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2: Simulación y Métricas (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Simulador Visual de Código Coloreado</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px; box-sizing: border-box; margin-bottom: 18px;">
+        <div class="code-sim coverage-green">public void consignar(double monto) {</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;if (monto > 0) {</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saldo = saldo + monto;</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+        <div class="code-sim coverage-green">}</div>
+        <div class="code-sim coverage-green">public void retirar(double monto) {</div>
+        <div class="code-sim coverage-yellow">&nbsp;&nbsp;&nbsp;&nbsp;if (monto > 0 && monto &lt;= saldo) {  // &larr; Rama parcial</div>
+        <div class="code-sim coverage-green">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saldo = saldo - monto;</div>
+        <div class="code-sim coverage-red">&nbsp;&nbsp;&nbsp;&nbsp;}  // &larr; Línea nunca ejecutada por completo</div>
+      </div>
+
+      <!-- Métricas dashboard -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="metric-badge">
+          <span style="font-size: 13px; color: #C9D1D9;">Line Coverage</span>
+          <span style="font-family: 'Roboto Mono', monospace; font-weight: 700; color: #2EA44F; font-size: 15px;">85% &check;</span>
+        </div>
+        <div class="metric-badge" style="border-color: rgba(210, 153, 34, 0.4);">
+          <span style="font-size: 13px; color: #C9D1D9;">Branch Coverage</span>
+          <span style="font-family: 'Roboto Mono', monospace; font-weight: 700; color: #D29922; font-size: 15px;">60% ⚠️</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(46, 164, 79, 0.08); border-left: 4px solid #2EA44F; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #2EA44F; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Identifica visualmente la línea amarilla en el editor antes de que el monitor la señale en la explicación en video. ¿Qué caso de prueba unitaria nos hace falta diseñar para que esa línea se pinte de color verde?
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

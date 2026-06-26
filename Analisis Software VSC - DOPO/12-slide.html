@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Verificación y Recursos</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:130px;color:rgba(0,122,204,0.05);z-index:1}
+  .col-left{position:absolute;top:108px;left:60px;width:580px;z-index:10}
+  .col-right{position:absolute;top:108px;left:680px;width:540px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .mt-q{color:#D29922}
+  .mt-r{color:#007ACC}
+  .question-card{background:linear-gradient(135deg,rgba(210,153,34,0.1),rgba(0,122,204,0.05));border:1px solid #D29922;border-left:4px solid #D29922;border-radius:10px;padding:22px 24px}
+  .q-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:14px}
+  .q-icon{font-size:32px;color:#D29922;margin-bottom:8px}
+  .q-text{font-size:16px;color:#fff;line-height:1.55;font-weight:400}
+  .q-text b{color:#4FC3F7}
+  .q-divider{height:1px;background:#30363D;margin:18px 0}
+  .q-hint{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#8B949E;font-style:italic}
+  .q-hint i{color:#D29922}
+  .resources{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .res-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid #30363D;gap:14px}
+  .res-row:last-child{border-bottom:none}
+  .res-row:nth-child(even){background:#21262D}
+  .res-ico{flex-shrink:0;width:28px;text-align:center;font-size:16px}
+  .res-ico.guide{color:#007ACC}
+  .res-ico.doc{color:#4FC3F7}
+  .res-ico.wiki{color:#2EA44F}
+  .res-body{flex:1;min-width:0}
+  .res-name{font-size:13px;color:#fff;font-weight:700}
+  .res-url{font-size:11px;color:#8B949E;font-family:'Roboto Mono',monospace;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="12 Verificación">
+  <div class="header"><span class="h-badge">CIERRE</span><span class="h-title">Verificación Final y Recursos</span></div>
+  <i class="fas fa-clipboard-check deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title mt-q"><i class="fas fa-circle-question"></i> PREGUNTA DE VERIFICACIÓN</div>
+    <div class="question-card">
+      <span class="q-tag">RETO FINAL</span>
+      <div class="q-icon"><i class="fas fa-lightbulb"></i></div>
+      <div class="q-text">Tienes la configuración Vainilla activa pero VS Code sigue mostrando <b>sugerencias de métodos Java</b>. ¿Qué ajuste en <b>settings.json</b> es específico para Java?</div>
+      <div class="q-divider"></div>
+      <div class="q-hint"><i class="fas fa-key"></i>Pista: busca claves que empiecen por <b style="color:#4FC3F7">"java."</b> relacionadas con completion/suggestions.</div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title mt-r"><i class="fas fa-book-bookmark"></i> RECURSOS</div>
+    <div class="resources">
+      <div class="res-row">
+        <div class="res-ico guide"><i class="fas fa-laptop-code"></i></div>
+        <div class="res-body">
+          <div class="res-name">Guía VS Code Vainilla</div>
+          <div class="res-url">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">Extension Pack for Java</div>
+          <div class="res-url">marketplace.visualstudio.com — vscjava.vscode-java-pack</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">Coverage Gutters</div>
+          <div class="res-url">marketplace.visualstudio.com — ryanluker.vscode-coverage-gutters</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">PMD para VS Code</div>
+          <div class="res-url">marketplace.visualstudio.com — pmd</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">PIT Mutation Testing</div>
+          <div class="res-url">pitest.org</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico doc"><i class="fas fa-book"></i></div>
+        <div class="res-body">
+          <div class="res-name">JaCoCo</div>
+          <div class="res-url">jacoco.org</div>
+        </div>
+      </div>
+      <div class="res-row">
+        <div class="res-ico wiki"><i class="fas fa-book-open"></i></div>
+        <div class="res-body">
+          <div class="res-name">Wiki del curso</div>
+          <div class="res-url">fis-eci.github.io/software-foundations-eci/Unidad-Analisis-VSC/</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

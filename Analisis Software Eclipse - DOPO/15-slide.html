@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificación Final y Recursos</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .resource-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #C9D1D9;
+      font-weight: 300;
+    }
+    .resource-item i {
+      color: #58A6FF;
+      font-size: 16px;
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="15 Cierre">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">CIERRE</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Verificación Final y Recursos</span>
+    </div>
+
+    <!-- Column 1: Pregunta de Verificación (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #D29922; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Desafío de Verificación</h3>
+      <div style="background-color: rgba(210, 153, 34, 0.05); border: 1px solid rgba(210, 153, 34, 0.3); border-left: 4px solid #D29922; border-radius: 0 12px 12px 0; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <i class="fa-solid fa-question-circle" style="color: #D29922; font-size: 24px; margin-right: 15px;"></i>
+            <h4 style="margin: 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Caso: Mutante Superviviente</h4>
+          </div>
+          <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+            Tras ejecutar la prueba de mutación con PIT, observas que el mutante <strong style="color: #DA3633; font-family: 'Roboto Mono', monospace; font-size: 13px;">saldo &gt; 0 &rarr; saldo &gt;= 0</strong> dentro del método <strong style="color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 13px;">retirar()</strong> sobrevivió de forma exitosa.
+          </p>
+          <p style="margin: 0; font-size: 14px; color: #8B949E; line-height: 1.5; font-weight: 300;">
+            ¿Qué prueba unitaria exacta codificarías para capturarlo y eliminarlo? Escríbela completa utilizando la estructura BDD (<strong style="color: #FFFFFF;">Given / When / Then</strong>) y la nomenclatura estándar <strong style="color: #FFFFFF; font-family: 'Roboto Mono', monospace; font-size:12px;">shouldXWhenY</strong>.
+          </p>
+        </div>
+
+        <div style="font-size: 12px; color: #8B949E; font-family: 'Roboto Mono', monospace; border-top: 1px solid rgba(210, 153, 34, 0.15); padding-top: 15px;">
+          💬 Resuélvelo y compáralo con el análisis de CuentaBancaria.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Column 2: Recursos (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #58A6FF; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Enlaces y Referencias</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div class="resource-item">
+            <i class="fa-solid fa-download"></i>
+            <div>Eclipse IDE: <strong style="color: #FFFFFF; font-family: 'Roboto Mono', monospace; font-size: 13px;">eclipse.org/downloads</strong></div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>SonarLint Marketplace: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (SonarLint)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>PMD Plugin: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (PMD Eclipse Plugin)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>EclEmma: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (EclEmma)</div>
+          </div>
+          <div class="resource-item">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            <div>Pitclipse: <span style="font-family: 'Roboto Mono', monospace; font-size: 13px; color: #8B949E;">marketplace.eclipse.org</span> (Pitclipse)</div>
+          </div>
+          <div class="resource-item" style="margin-bottom: 0;">
+            <i class="fa-solid fa-book"></i>
+            <div>Wiki IS-FUNDAMENTOS: <strong style="color: #58A6FF; font-family: 'Roboto Mono', monospace; font-size: 13px;">fis-eci.github.io/software-foundations-eci/Unidad-Analisis-Eclipse/</strong></div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #30363D; padding-top: 15px; text-align: center; font-style: italic; font-size: 13px; color: #8B949E; line-height: 1.4;">
+          "Los resultados del análisis apoyan la toma de decisiones, pero no sustituyen el juicio del ingeniero de software."
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

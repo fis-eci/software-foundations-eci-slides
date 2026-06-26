@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Filosofía Vainilla — MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc1{position:absolute;width:340px;height:340px;border:1px dashed rgba(79,195,247,0.15);border-radius:50%;top:-100px;right:-90px;}
+  .tc2{position:absolute;width:200px;height:200px;border:1px dashed rgba(255,107,53,0.18);border-radius:50%;bottom:-60px;right:380px;}
+  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:130px;left:50px;}
+  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#FF6B35;box-shadow:0 0 14px #FF6B35;top:480px;left:600px;}
+
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+
+  .core{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:20px 24px;display:flex;align-items:center;gap:20px;box-sizing:border-box;}
+  .core i{font-size:42px;color:#4FC3F7;flex-shrink:0;}
+  .core .ctxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .core .ctxt b{color:#4FC3F7;font-weight:700;}
+
+  .rule{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px 18px;box-sizing:border-box;}
+  .rule .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .rule.r1{border-left:4px solid #4FC3F7;}
+  .rule.r1 .dot{background:#4FC3F7;box-shadow:0 0 10px #4FC3F7;}
+  .rule.r2{border-left:4px solid #FF6B35;}
+  .rule.r2 .dot{background:#FF6B35;box-shadow:0 0 10px #FF6B35;}
+  .rule.r3{border-left:4px solid #2EA44F;}
+  .rule.r3 .dot{background:#2EA44F;box-shadow:0 0 10px #2EA44F;}
+  .rule .rt{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
+  .rule .rt b{font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .rule.r1 .rt b{color:#4FC3F7;}
+  .rule.r2 .rt b{color:#FF6B35;}
+  .rule.r3 .rt b{color:#2EA44F;}
+
+  .avoid{background:rgba(255,68,68,0.05);border:1px solid rgba(255,68,68,0.2);border-radius:10px;padding:18px 22px;box-sizing:border-box;}
+  .avoid .ah{font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#FF4444;margin-bottom:12px;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;}
+  .avoid .ah i{font-size:16px;}
+  .avoid ul{margin:0;padding:0;list-style:none;}
+  .avoid li{display:flex;align-items:flex-start;gap:10px;font-family:'Roboto',sans-serif;font-size:12.5px;color:#C9D1D9;padding:6px 0;line-height:1.4;}
+  .avoid li i{color:#FF4444;font-size:13px;margin-top:2px;}
+
+  .ref{position:absolute;bottom:48px;left:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;background:rgba(255,255,255,0.04);border:1px dashed rgba(79,195,247,0.3);padding:6px 12px;border-radius:4px;}
+  .ref b{color:#4FC3F7;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc2"></div>
+  <div data-object="true" data-object-type="shape" class="gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd2"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">FILOSOFÍA</span></div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:170px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:195px;">
+    <div class="h-title">La Filosofía Vainilla: Programación Consciente</div>
+  </div>
+
+  <!-- Core principle -->
+  <div data-object="true" data-object-type="textbox" class="core" style="position:absolute;top:108px;left:50px;width:1180px;">
+    <i class="fa-solid fa-brain"></i>
+    <div class="ctxt">En <b>IS-FUNDAMENTOS</b>, VS Code se configura para <b>DESACTIVAR</b> la asistencia automática de IA.<br>
+    El objetivo: aprender a escribir SQL <b>línea a línea</b> con comprensión total de cada instrucción.</div>
+  </div>
+
+  <!-- Left: 3 rules -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:265px;left:50px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.5px;">3 REGLAS VAINILLA PARA MYSD</div>
+
+  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:295px;left:50px;width:680px;">
+    <div class="dot"></div>
+    <div class="rt"><b>Sin autocompletado SQL avanzado</b> — Desactivar en la configuración de SQLTools</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:362px;left:50px;width:680px;">
+    <div class="dot"></div>
+    <div class="rt"><b>Sin asistentes visuales de consultas</b> — No usar generadores de queries</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:429px;left:50px;width:680px;">
+    <div class="dot"></div>
+    <div class="rt"><b>Ejecución siempre manual</b> — Ctrl+Shift+E, nunca "ejecutar todo"</div>
+  </div>
+
+  <!-- Right: avoid -->
+  <div data-object="true" data-object-type="textbox" class="avoid" style="position:absolute;top:265px;left:750px;width:480px;">
+    <div class="ah"><i class="fa-solid fa-ban"></i>LO QUE NO SE HACE</div>
+    <ul>
+      <li><i class="fa-solid fa-times-circle"></i><span>GitHub Copilot generando el SELECT</span></li>
+      <li><i class="fa-solid fa-times-circle"></i><span>Botón "Run All" sin revisar las sentencias</span></li>
+      <li><i class="fa-solid fa-times-circle"></i><span>Asistentes de construcción de tablas visuales</span></li>
+      <li><i class="fa-solid fa-times-circle"></i><span>Autocompletado agresivo de nombres de columnas</span></li>
+    </ul>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="ref" style="position:absolute;bottom:48px;left:50px;">
+    <i class="fa-solid fa-book-open"></i>&nbsp; Configuración completa: <b>Guía VS Code Vainilla → sección MYSD (PostgreSQL)</b>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">03 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

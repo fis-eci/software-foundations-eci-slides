@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>S4 — Protocolo de 5 Etapas</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(0,122,204,0.05);z-index:1}
+  .pipeline{position:absolute;top:100px;left:60px;width:1160px;z-index:10}
+  .stage{display:flex;align-items:center;gap:18px;margin-bottom:11px;background:#161B22;border:1px solid #30363D;border-radius:8px;padding:13px 18px;border-left:4px solid}
+  .stage.s1{border-left-color:#4A90D9}
+  .stage.s2{border-left-color:#F89820}
+  .stage.s3{border-left-color:#D29922}
+  .stage.s4{border-left-color:#2EA44F}
+  .stage.s5{border-left-color:#007ACC}
+  .stage-num{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;font-family:'Roboto Mono',monospace;color:#fff}
+  .stage.s1 .stage-num{background:#4A90D9}
+  .stage.s2 .stage-num{background:#F89820}
+  .stage.s3 .stage-num{background:#D29922}
+  .stage.s4 .stage-num{background:#2EA44F}
+  .stage.s5 .stage-num{background:#007ACC}
+  .stage-ico{flex-shrink:0;width:42px;text-align:center;font-size:22px}
+  .stage.s1 .stage-ico{color:#4A90D9}
+  .stage.s2 .stage-ico{color:#F89820}
+  .stage.s3 .stage-ico{color:#D29922}
+  .stage.s4 .stage-ico{color:#2EA44F}
+  .stage.s5 .stage-ico{color:#007ACC}
+  .stage-body{flex:1}
+  .stage-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+  .stage-desc{font-size:12.5px;color:#C9D1D9;line-height:1.4}
+  .stage-tag{flex-shrink:0;font-size:10.5px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;background:#21262D;padding:5px 10px;border-radius:4px;border:1px solid #30363D}
+  .deliverable{position:absolute;bottom:50px;left:60px;width:1160px;background:rgba(0,122,204,0.1);border:1px solid #007ACC;border-radius:8px;padding:13px 20px;display:flex;align-items:center;gap:16px;z-index:10}
+  .del-ico{font-size:28px;color:#007ACC;flex-shrink:0}
+  .del-text{flex:1}
+  .del-title{font-size:11px;font-weight:700;color:#007ACC;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .del-desc{font-size:13px;color:#C9D1D9;margin-top:2px;line-height:1.4}
+  .del-desc b{color:#fff}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="09 Protocolo 5 etapas">
+  <div class="header"><span class="h-badge">S4 PROTOCOLO</span><span class="h-title">Ciclo de Análisis: Las 5 Etapas para cada Herramienta</span></div>
+  <i class="fas fa-list-check deco"></i>
+
+  <div class="pipeline">
+    <div class="stage s1">
+      <div class="stage-num">1</div>
+      <div class="stage-ico"><i class="fas fa-magnifying-glass"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Identificar</div>
+        <div class="stage-desc">Ejecuta la herramienta y revisa la vista de resultados. Selecciona el incidente más relevante.</div>
+      </div>
+      <div class="stage-tag">EXPLORAR</div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-num">2</div>
+      <div class="stage-ico"><i class="fas fa-book-open-reader"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Comprender</div>
+        <div class="stage-desc">Lee la regla violada. Entiende qué principio se está rompiendo y por qué importa.</div>
+      </div>
+      <div class="stage-tag">ESTUDIAR</div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-num">3</div>
+      <div class="stage-ico"><i class="fas fa-pen-to-square"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Documentar</div>
+        <div class="stage-desc">Registra: ¿Qué se detectó? ¿Por qué es relevante? ¿Qué principio viola?</div>
+      </div>
+      <div class="stage-tag">REGISTRAR</div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-num">4</div>
+      <div class="stage-ico"><i class="fas fa-wrench"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Aplicar Corrección</div>
+        <div class="stage-desc">Modifica el código o las pruebas para resolver el incidente identificado.</div>
+      </div>
+      <div class="stage-tag">CORREGIR</div>
+    </div>
+
+    <div class="stage s5">
+      <div class="stage-num">5</div>
+      <div class="stage-ico"><i class="fas fa-circle-check"></i></div>
+      <div class="stage-body">
+        <div class="stage-title">Verificar</div>
+        <div class="stage-desc">Re-ejecuta la herramienta. Confirma que el incidente desapareció y no se generaron nuevos problemas.</div>
+      </div>
+      <div class="stage-tag">VALIDAR</div>
+    </div>
+  </div>
+
+  <div class="deliverable">
+    <div class="del-ico"><i class="fas fa-file-arrow-down"></i></div>
+    <div class="del-text">
+      <div class="del-title">Entregable esperado</div>
+      <div class="del-desc">Reporte que documenta <b>al menos 1 incidente resuelto por cada una de las 4 herramientas</b> siguiendo las 5 etapas — con evidencia visual (capturas de VS Code).</div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

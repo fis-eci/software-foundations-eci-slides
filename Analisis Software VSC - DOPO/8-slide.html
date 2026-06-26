@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>S4 — Abrir Proyecto en VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#7C5CBF;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(124,92,191,0.05);z-index:1}
+  .col-left{position:absolute;top:108px;left:60px;width:540px;z-index:10}
+  .col-right{position:absolute;top:108px;left:640px;width:580px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;color:#7C5CBF;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+  .step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;background:#161B22;border:1px solid #30363D;border-radius:6px;padding:12px 14px}
+  .step-num{flex-shrink:0;width:30px;height:30px;background:#7C5CBF;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-family:'Roboto Mono',monospace}
+  .step-txt{font-size:13px;color:#C9D1D9;line-height:1.45;padding-top:5px}
+  .step-txt b{color:#fff}
+  .step-txt code{background:#0D1117;color:#4FC3F7;padding:1px 6px;border-radius:3px;font-family:'Roboto Mono',monospace;font-size:12px}
+  .note{margin-top:14px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:11px 14px;font-size:12px;color:#C9D1D9;border-radius:4px;line-height:1.5}
+  .note b{color:#DA3633}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden;margin-bottom:14px}
+  .row{display:flex;border-bottom:1px solid #30363D}
+  .row:last-child{border-bottom:none}
+  .row.head{background:#21262D;font-weight:700;color:#fff;font-size:11px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
+  .row.alt{background:#21262D}
+  .cell{padding:11px 16px;font-size:13px;color:#C9D1D9}
+  .cell.c1{flex:0 0 130px;color:#4FC3F7;font-weight:700;border-right:1px solid #30363D}
+  .row.head .cell.c1{color:#fff}
+  .cell.c2{flex:1;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .code-block{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .cb-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .cb-body{padding:11px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.6}
+  .cb-body .key{color:#569CD6}
+  .cb-body .cls{color:#4EC9B0}
+  .cb-body .com{color:#6A9955}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="08 S4 Proyecto">
+  <div class="header"><span class="h-badge">S4 PRÁCTICA</span><span class="h-title">Cierre del Proyecto: Abrir y Verificar en VS Code</span></div>
+  <i class="fas fa-folder-open deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title">Abrir el Proyecto</div>
+    <div class="step"><div class="step-num">1</div><div class="step-txt"><b>File → Open Folder</b> → carpeta raíz del proyecto</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-txt">VS Code detecta el proyecto Java automáticamente (Extension Pack for Java)</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-txt"><code>Ctrl+Shift+M</code> — verifica que la vista <b>Problems</b> no tenga errores rojos</div></div>
+
+    <div class="note"><b><i class="fas fa-exclamation-triangle"></i> Importante:</b> Si VS Code no detecta el proyecto, asegúrate de que la carpeta contenga los <code style="color:#4FC3F7;font-family:'Roboto Mono'">.java</code> o la estructura <code style="color:#4FC3F7;font-family:'Roboto Mono'">src/com/tupackage/</code></div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title">Tabla de Operaciones</div>
+    <div class="table">
+      <div class="row head"><div class="cell c1">Acción</div><div class="cell c2">Cómo hacerlo en VS Code</div></div>
+      <div class="row"><div class="cell c1">Compilar</div><div class="cell c2">Automático al guardar (<span style="color:#4FC3F7">java.autobuild.enabled: true</span>)</div></div>
+      <div class="row alt"><div class="cell c1">Documentar</div><div class="cell c2">Terminal: <span style="color:#4FC3F7">javadoc -d docs src/*.java</span></div></div>
+      <div class="row"><div class="cell c1">Ejecutar</div><div class="cell c2" style="font-family:'Roboto',sans-serif;font-size:12.5px">Clic <b style="color:#2EA44F">▶ Run</b> sobre el método main, o presiona <b style="color:#4FC3F7">F5</b></div></div>
+      <div class="row alt"><div class="cell c1">Probar</div><div class="cell c2" style="font-family:'Roboto',sans-serif;font-size:12.5px">Panel <b>Testing 🧪</b> → Run All Tests</div></div>
+    </div>
+
+    <div class="mini-title" style="margin-top:4px">Si falta el método main</div>
+    <div class="code-block">
+      <div class="cb-tab">Main.java</div>
+      <div class="cb-body">
+        <span class="key">public static void</span> main(String[] args) {<br>
+        &nbsp;&nbsp;&nbsp;<span class="cls">Contest</span> contest = <span class="key">new</span> <span class="cls">Contest</span>();<br>
+        &nbsp;&nbsp;&nbsp;contest.simular();<br>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

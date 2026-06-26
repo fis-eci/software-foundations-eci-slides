@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Buenas Prácticas Servidor — MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc1{position:absolute;width:280px;height:280px;border:1px dashed rgba(218,54,51,0.18);border-radius:50%;top:-90px;right:-80px;}
+  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#DA3633;box-shadow:0 0 14px #DA3633;top:130px;left:50px;}
+  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#D29922;box-shadow:0 0 14px #D29922;top:340px;right:60px;}
+
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+
+  .rule{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 18px;box-sizing:border-box;display:flex;gap:14px;align-items:flex-start;}
+  .rule.r1{border-left:4px solid #DA3633;}
+  .rule.r2{border-left:4px solid #D29922;}
+  .rule.r3{border-left:4px solid #4FC3F7;}
+  .rule.r4{border-left:4px solid #2EA44F;}
+  .rule .ic{font-size:24px;flex-shrink:0;width:30px;text-align:center;margin-top:2px;}
+  .rule.r1 .ic{color:#DA3633;}
+  .rule.r2 .ic{color:#D29922;}
+  .rule.r3 .ic{color:#4FC3F7;}
+  .rule.r4 .ic{color:#2EA44F;}
+  .rule .rt{font-family:'Roboto',sans-serif;font-size:13.5px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:4px;}
+  .rule .rt code{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
+  .rule.r1 .rt code{color:#DA3633;}
+  .rule.r3 .rt code{color:#4FC3F7;}
+  .rule .rd{font-family:'Roboto',sans-serif;font-size:11.5px;color:#C9D1D9;line-height:1.45;}
+
+  .codeblock{background:#0a0e1a;border:1px solid rgba(51,103,145,0.5);border-left:4px solid #336791;border-radius:10px;padding:16px 20px;box-sizing:border-box;}
+  .codeblock .cbh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#4FC3F7;letter-spacing:1.3px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .codeblock .cbh i{color:#336791;}
+  .codeblock pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.85;}
+  .codeblock pre .cmt{color:#8B949E;font-style:italic;}
+  .codeblock pre .kw{color:#FF6B35;font-weight:700;}
+  .codeblock pre .tbl{color:#4FC3F7;}
+  .codeblock pre .casc{color:#D29922;}
+  .codeblock pre .act{color:#00FF88;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc1"></div>
+  <div data-object="true" data-object-type="shape" class="gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd2"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">BUENAS PRÁCTICAS</span></div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:215px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:240px;">
+    <div class="h-title">Protocolo de Trabajo en el Servidor Compartido</div>
+  </div>
+
+  <!-- 4 rules grid -->
+  <div data-object="true" data-object-type="textbox" class="rule r1" style="position:absolute;top:108px;left:50px;width:585px;height:115px;">
+    <div class="ic"><i class="fa-solid fa-ban"></i></div>
+    <div>
+      <div class="rt">NO ejecutes <code>DROP TABLE</code> sin confirmación del equipo</div>
+      <div class="rd">El servidor es compartido. Una tabla eliminada afecta a todos los estudiantes.</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="rule r2" style="position:absolute;top:108px;left:645px;width:585px;height:115px;">
+    <div class="ic"><i class="fa-solid fa-broom"></i></div>
+    <div>
+      <div class="rt">Vacía tus tablas temporales al finalizar</div>
+      <div class="rd">Usa <code style="color:#D29922;">TRUNCATE TABLE</code> al terminar cada sesión para liberar espacio.</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="rule r3" style="position:absolute;top:240px;left:50px;width:585px;height:115px;">
+    <div class="ic"><i class="fa-solid fa-scissors"></i></div>
+    <div>
+      <div class="rt">Prefiere <code>TRUNCATE</code> sobre <code>DELETE</code> sin <code>WHERE</code></div>
+      <div class="rd">TRUNCATE es más eficiente para limpiar datos de prueba. DELETE sin WHERE es peligroso.</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="rule r4" style="position:absolute;top:240px;left:645px;width:585px;height:115px;">
+    <div class="ic"><i class="fa-solid fa-plug"></i></div>
+    <div>
+      <div class="rt">Desconéctate al terminar la sesión</div>
+      <div class="rd">SQLTools mantiene conexiones activas. Clic derecho → <b style="color:#2EA44F;">Disconnect</b> desde el panel lateral.</div>
+    </div>
+  </div>
+
+  <!-- Code block -->
+  <div data-object="true" data-object-type="textbox" class="codeblock" style="position:absolute;top:380px;left:50px;width:1180px;">
+    <div class="cbh"><i class="fa-solid fa-terminal"></i>PROTOCOLO DE VACIADO AL FINALIZAR LA SESIÓN</div>
+<pre><span class="cmt">-- Protocolo de vaciado al finalizar la sesión:</span>
+<span class="kw">TRUNCATE TABLE</span> <span class="tbl">cuenta</span>;
+<span class="kw">TRUNCATE TABLE</span> <span class="tbl">cliente</span> <span class="casc">CASCADE</span>;
+<span class="cmt">-- Luego: clic derecho sobre la conexión → <span class="act">Disconnect</span></span></pre>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">09 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

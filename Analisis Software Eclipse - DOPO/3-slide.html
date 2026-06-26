@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>De BlueJ a Eclipse</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="03 Transición">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">CONTEXTO</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">De BlueJ a Eclipse: La Transición Profesional</span>
+    </div>
+
+    <!-- BlueJ Card -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 490px; height: 420px; background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 30px; box-sizing: border-box; z-index: 10;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fa-solid fa-graduation-cap" style="font-size: 48px; color: #8B949E; margin-bottom: 10px;"></i>
+        <h3 style="margin: 0; font-size: 24px; color: #8B949E; font-weight: 700;">BlueJ</h3>
+      </div>
+      <ul style="margin: 0; padding-left: 20px; color: #C9D1D9; font-size: 16px; line-height: 1.8; font-weight: 300;">
+        <li style="margin-bottom: 10px;">Diseñado para enseñanza e introducción a la programación.</li>
+        <li style="margin-bottom: 10px;">Sin plugins integrados para análisis de código ni reportes.</li>
+        <li style="margin-bottom: 10px;">Enfoque en proyectos simples y representación visual básica.</li>
+        <li style="margin-bottom: 10px;">Excelente para aprender OOP inicial, pero limitado en producción.</li>
+      </ul>
+      <div style="position: absolute; bottom: 30px; left: 30px; width: calc(100% - 60px); text-align: center;">
+        <span style="padding: 4px 12px; background-color: rgba(139, 148, 158, 0.1); border: 1px solid rgba(139, 148, 158, 0.3); border-radius: 4px; color: #8B949E; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em;">ENTORNO ANTERIOR</span>
+      </div>
+    </div>
+
+    <!-- Arrow Center -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 570px; top: 280px; width: 140px; text-align: center; z-index: 10;">
+      <i class="fa-solid fa-arrow-right" style="font-size: 42px; color: #F89820;"></i>
+      <div style="margin-top: 10px; font-family: 'Roboto Mono', monospace; font-size: 12px; color: #F89820; font-weight: 700;">Ahora en DOPO</div>
+    </div>
+
+    <!-- Eclipse IDE Card -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 730px; top: 120px; width: 490px; height: 420px; background-color: rgba(248, 152, 32, 0.03); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 12px; padding: 30px; box-sizing: border-box; z-index: 10; box-shadow: 0 10px 30px rgba(248, 152, 32, 0.05);">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fa-solid fa-tools" style="font-size: 48px; color: #F89820; margin-bottom: 10px;"></i>
+        <h3 style="margin: 0; font-size: 24px; color: #F89820; font-weight: 700;">Eclipse IDE</h3>
+      </div>
+      <ul style="margin: 0; padding-left: 20px; color: #FFFFFF; font-size: 16px; line-height: 1.8; font-weight: 300;">
+        <li style="margin-bottom: 10px;">Entorno de producción industrial real utilizado por ingenieros.</li>
+        <li style="margin-bottom: 10px;">Marketplace masivo con potentes herramientas de análisis.</li>
+        <li style="margin-bottom: 10px;">Gestión avanzada de compilación, classpath y dependencias.</li>
+        <li style="margin-bottom: 10px;">Integración nativa con <strong style="color: #F89820;">SonarLint</strong>, <strong style="color: #F89820;">PMD</strong>, <strong style="color: #F89820;">JaCoCo</strong> y <strong style="color: #F89820;">PIT</strong>.</li>
+      </ul>
+      <div style="position: absolute; bottom: 30px; left: 30px; width: calc(100% - 60px); text-align: center;">
+        <span style="padding: 4px 12px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em;">ENTORNO PROFESIONAL</span>
+      </div>
+    </div>
+
+    <!-- Bottom Note -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(88, 166, 255, 0.06); border-top: 1px solid #58A6FF; border-radius: 4px; padding: 12px 24px; box-sizing: border-box; text-align: center; font-size: 14px; color: #C9D1D9;">
+        💡 <strong style="color: #58A6FF;">Esta transición es el S3 del curso:</strong> llevar tu proyecto académico de BlueJ a un entorno real y medirlo rigurosamente con herramientas de la industria de software.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>PIT con Maven</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#DA3633;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(218,54,51,0.05);z-index:1}
+  .col-left{position:absolute;top:96px;left:60px;width:560px;z-index:10}
+  .col-right{position:absolute;top:96px;left:660px;width:560px;z-index:10}
+  .mini-title{font-size:11px;font-weight:700;color:#DA3633;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+  .code-block{background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:12px 14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#D4D4D4;line-height:1.55}
+  .code-block .tag{color:#569CD6}
+  .code-block .attr{color:#9CDCFE}
+  .code-block .val{color:#CE9178}
+  .code-block .com{color:#6A9955}
+  .note-sm{margin-top:8px;font-size:11.5px;color:#8B949E;font-style:italic}
+  .terminal{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .term-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .term-body{padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11.5px;line-height:1.55}
+  .term-body .prompt{color:#2EA44F}
+  .term-body .cmd{color:#fff}
+  .term-body .info{color:#4FC3F7}
+  .term-body .ok{color:#2EA44F;font-weight:700}
+  .term-body .num{color:#D29922}
+  .result-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .rt-row{display:flex;padding:7px 12px;font-size:12px;border-bottom:1px solid #30363D;align-items:center}
+  .rt-row:last-child{border-bottom:none}
+  .rt-row.alt{background:#21262D}
+  .rt-label{flex:0 0 90px;font-weight:700;color:#fff;font-family:'Roboto Mono',monospace;font-size:11.5px}
+  .rt-ico{flex:0 0 28px;font-size:14px;text-align:center}
+  .rt-ico.g{color:#2EA44F}.rt-ico.r{color:#DA3633}
+  .rt-val{flex:1;color:#C9D1D9;font-size:11.5px}
+  .mutant{background:#161B22;border:1px solid #30363D;border-left:3px solid #DA3633;border-radius:6px;padding:9px 14px;margin-bottom:10px;font-family:'Roboto Mono',monospace;font-size:12px;color:#C9D1D9}
+  .mutant b{color:#DA3633}
+  .mutant .arrow{color:#F89820;margin:0 8px}
+  .solution-code{background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#D4D4D4;line-height:1.6}
+  .solution-code .key{color:#569CD6}
+  .solution-code .ann{color:#DCDCAA}
+  .solution-code .str{color:#CE9178}
+  .activity{margin-top:10px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:10px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#DA3633}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="07 PIT Maven">
+  <div class="header"><span class="h-badge">ANÁLISIS 4</span><span class="h-title">🔴 PIT con Maven — Pruebas de Mutación</span></div>
+  <i class="fas fa-dna deco"></i>
+
+  <div class="col-left">
+    <div class="mini-title">Configurar pom.xml</div>
+    <div class="code-block">
+<span class="tag">&lt;plugin&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;groupId&gt;</span>org.pitest<span class="tag">&lt;/groupId&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;artifactId&gt;</span>pitest-maven<span class="tag">&lt;/artifactId&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;version&gt;</span>1.15.0<span class="tag">&lt;/version&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;configuration&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;targetClasses&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;param&gt;</span>com.tupackage.*<span class="tag">&lt;/param&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/targetClasses&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;targetTests&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;param&gt;</span>com.tupackage.*Test<span class="tag">&lt;/param&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/targetTests&gt;</span><br>
+&nbsp;&nbsp;<span class="tag">&lt;/configuration&gt;</span><br>
+<span class="tag">&lt;/plugin&gt;</span>
+    </div>
+    <div class="note-sm"><i class="fas fa-info-circle"></i> Este bloque va dentro de <code style="color:#4FC3F7">&lt;build&gt;&lt;plugins&gt;...&lt;/plugins&gt;&lt;/build&gt;</code></div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title">Ejecución e interpretación</div>
+    <div class="terminal">
+      <div class="term-tab"><i class="fas fa-terminal"></i> TERMINAL — bash</div>
+      <div class="term-body">
+        <span class="prompt">$</span> <span class="cmd">mvn pitest:mutationCoverage</span><br>
+        <span class="info">[INFO]</span> Scanning for projects...<br>
+        <span class="info">[INFO]</span> Generated <span class="num">12</span> mutations<br>
+        <span class="info">[INFO]</span> <span class="ok">10 mutations killed (83%)</span><br>
+        <span class="info">[INFO]</span> <span class="ok">BUILD SUCCESS</span>
+      </div>
+    </div>
+
+    <div class="result-table">
+      <div class="rt-row"><div class="rt-label">Killed</div><div class="rt-ico g"><i class="fas fa-circle"></i></div><div class="rt-val">10/12 — pruebas eficaces</div></div>
+      <div class="rt-row alt"><div class="rt-label">Survived</div><div class="rt-ico r"><i class="fas fa-circle"></i></div><div class="rt-val">2/12 — pruebas débiles ← acción requerida</div></div>
+    </div>
+
+    <div class="mutant"><b>Survived:</b> &nbsp;<code>monto &gt; 0</code><span class="arrow">→</span><code>monto &gt;= 0</code> &nbsp;❌ ninguna prueba falló</div>
+
+    <div class="solution-code">
+<span class="ann">@Test</span><br>
+<span class="key">public void</span> shouldNotConsignarWhenMontoCero() {<br>
+&nbsp;&nbsp;cuenta.consignar(<span class="str">0.0</span>);<br>
+&nbsp;&nbsp;assertEquals(<span class="str">0.0</span>, cuenta.getSaldo(), <span class="str">0.01</span>);<br>
+}
+    </div>
+
+    <div class="activity"><b>⏸️ Cuando veas</b> un mutante Survived, pausa y escribe la prueba que lo mataría.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Verificación y Recursos — MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc1{position:absolute;width:380px;height:380px;border:1px dashed rgba(210,153,34,0.18);border-radius:50%;top:-130px;right:-110px;}
+  .tc2{position:absolute;width:240px;height:240px;border:1px dashed rgba(79,195,247,0.18);border-radius:50%;bottom:-80px;left:-60px;}
+  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#D29922;box-shadow:0 0 14px #D29922;top:130px;left:50px;}
+  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:420px;right:60px;}
+  .gd3{position:absolute;width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 14px #00FF88;bottom:160px;left:540px;}
+
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+
+  /* Verification card */
+  .verif{background:rgba(210,153,34,0.06);backdrop-filter:blur(10px);border:1px solid rgba(210,153,34,0.3);border-left:5px solid #D29922;border-radius:14px;padding:24px 26px;box-sizing:border-box;}
+  .verif .vh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#D29922;letter-spacing:1.4px;margin-bottom:14px;}
+  .verif .vh i{font-size:18px;}
+  .verif .scenario{background:rgba(10,14,26,0.6);border:1px solid rgba(210,153,34,0.25);border-radius:8px;padding:14px 16px;margin-bottom:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.6;}
+  .verif .scenario .danger{color:#FF4444;font-weight:700;}
+  .verif .scenario b{color:#D29922;}
+  .verif .q{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.55;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;}
+  .verif .q i{color:#D29922;font-size:14px;margin-top:3px;flex-shrink:0;}
+
+  /* Resources card */
+  .res{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:5px solid #4FC3F7;border-radius:14px;padding:22px 26px;box-sizing:border-box;}
+  .res .rh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:1.4px;margin-bottom:14px;}
+  .res .rh i{font-size:18px;}
+  .res .ritem{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
+  .res .ritem:last-child{border-bottom:none;}
+  .res .ricon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+  .res .rname{font-weight:700;color:#F0F4F8;}
+  .res .rurl{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#4FC3F7;display:block;margin-top:2px;}
+
+  /* Closing phrase */
+  .closing{position:absolute;bottom:50px;left:50px;width:1180px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(79,195,247,0.7);letter-spacing:1.2px;line-height:1.5;font-style:italic;}
+  .closing b{color:#4FC3F7;font-style:normal;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc2"></div>
+  <div data-object="true" data-object-type="shape" class="gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd2"></div>
+  <div data-object="true" data-object-type="shape" class="gd3"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">CIERRE</span></div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:135px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:160px;">
+    <div class="h-title">Verificación Final y Recursos</div>
+  </div>
+
+  <!-- Verification (left) -->
+  <div data-object="true" data-object-type="textbox" class="verif" style="position:absolute;top:108px;left:50px;width:580px;height:475px;">
+    <div class="vh"><i class="fa-solid fa-circle-question"></i>PREGUNTA DE VERIFICACIÓN</div>
+    <div class="scenario">
+      <span style="color:#8B949E;">-- En el servidor compartido:</span><br>
+      <span class="danger">DELETE FROM</span> <b>clientes</b>;
+      <span style="color:#8B949E;">-- ⚠ sin WHERE</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>En PostgreSQL, un compañero ejecuta <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">DELETE FROM clientes;</b> sin cláusula <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">WHERE</b> en el servidor compartido.</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Qué <b style="color:#D29922;">consecuencia</b> tiene esto para el resto del equipo?</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Cómo se podría haber <b style="color:#D29922;">evitado</b> con un buen uso de control de versiones y <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">commits atómicos</b>?</span>
+    </div>
+  </div>
+
+  <!-- Resources (right) -->
+  <div data-object="true" data-object-type="textbox" class="res" style="position:absolute;top:108px;left:650px;width:580px;height:475px;">
+    <div class="rh"><i class="fa-solid fa-book-bookmark"></i>RECURSOS</div>
+
+    <div class="ritem">
+      <span class="ricon">🐘</span>
+      <div><span class="rname">PostgreSQL Docs</span><span class="rurl">postgresql.org/docs/</span></div>
+    </div>
+    <div class="ritem">
+      <span class="ricon">📦</span>
+      <div><span class="rname">Descarga PostgreSQL</span><span class="rurl">postgresql.org/download/</span></div>
+    </div>
+    <div class="ritem">
+      <span class="ricon">🔌</span>
+      <div><span class="rname">SQLTools Marketplace</span><span class="rurl">marketplace.visualstudio.com (buscar SQLTools)</span></div>
+    </div>
+    <div class="ritem">
+      <span class="ricon">🔌</span>
+      <div><span class="rname">Driver PostgreSQL</span><span class="rurl">marketplace.visualstudio.com (SQLTools PostgreSQL Driver)</span></div>
+    </div>
+    <div class="ritem">
+      <span class="ricon">💻</span>
+      <div><span class="rname">Guía VS Code Vainilla</span><span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span></div>
+    </div>
+    <div class="ritem">
+      <span class="ricon">📖</span>
+      <div><span class="rname">Wiki IS-FUNDAMENTOS</span><span class="rurl">fis-eci.github.io/software-foundations-eci/Unidad-SQL-Postgre-VSC/</span></div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="closing" style="position:absolute;bottom:50px;left:50px;width:1180px;">
+    « <b>Scripts versionados</b>, <b>servidor limpio</b> y <b>consultas conscientes</b> — así trabaja un ingeniero responsable. »
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">12 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Flujo de Trabajo — MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc1{position:absolute;width:320px;height:320px;border:1px dashed rgba(79,195,247,0.15);border-radius:50%;top:-100px;right:-90px;}
+  .tc2{position:absolute;width:200px;height:200px;border:1px dashed rgba(255,107,53,0.18);border-radius:50%;bottom:-60px;left:-50px;}
+  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:130px;right:60px;}
+  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#FF6B35;box-shadow:0 0 14px #FF6B35;bottom:160px;left:540px;}
+
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+
+  .pipe{position:absolute;top:115px;left:50px;width:820px;display:flex;align-items:stretch;gap:8px;}
+  .pstep{flex:1;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:16px 14px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .pstep.p1{border-top:3px solid #4FC3F7;}
+  .pstep.p2{border-top:3px solid #336791;}
+  .pstep.p3{border-top:3px solid #007ACC;}
+  .pstep.p4{border-top:3px solid #2EA44F;}
+  .pstep .pn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#8B949E;margin-bottom:8px;}
+  .pstep .pi{font-size:28px;margin-bottom:10px;}
+  .pstep.p1 .pi{color:#4FC3F7;}
+  .pstep.p2 .pi{color:#4FC3F7;}
+  .pstep.p3 .pi{color:#007ACC;}
+  .pstep.p4 .pi{color:#2EA44F;}
+  .pstep .pt{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#F0F4F8;margin-bottom:6px;}
+  .pstep .pd{font-family:'Roboto',sans-serif;font-size:11.5px;color:#C9D1D9;line-height:1.45;}
+  .pstep .pd code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:11px;}
+  .arrow{position:absolute;top:50%;right:-14px;transform:translateY(-50%);color:#4FC3F7;font-size:14px;z-index:2;}
+
+  .gold{position:absolute;top:418px;left:50px;width:820px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.35);border-left:5px solid #FF6B35;border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-sizing:border-box;}
+  .gold .gi{font-size:32px;color:#FF6B35;flex-shrink:0;}
+  .gold .gh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#FF6B35;letter-spacing:1.3px;margin-bottom:4px;}
+  .gold .gt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
+  .gold .gt b{color:#FF6B35;}
+  .gold .gt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:12.5px;background:rgba(255,107,53,0.12);padding:1px 6px;border-radius:3px;}
+
+  .schema{position:absolute;top:115px;left:890px;width:340px;height:480px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:18px 20px;box-sizing:border-box;}
+  .schema .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+  .schema .sh i{font-size:16px;}
+  .schema .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#C9D1D9;line-height:1.5;margin-bottom:12px;}
+  .schema .stree{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.9;background:rgba(10,14,26,0.6);border:1px solid rgba(79,195,247,0.15);border-radius:6px;padding:12px 14px;}
+  .schema .stree .root{color:#4FC3F7;font-weight:700;}
+  .schema .stree .it{color:#FFB347;}
+  .schema .stree .lbl{color:#8B949E;}
+  .schema .footnote{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8B949E;margin-top:12px;line-height:1.5;font-style:italic;}
+  .schema .footnote b{color:#4FC3F7;font-style:normal;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc2"></div>
+  <div data-object="true" data-object-type="shape" class="gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd2"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">FLUJO DE TRABAJO</span></div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:215px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:240px;">
+    <div class="h-title">C. Escribir y Ejecutar Consultas en VS Code</div>
+  </div>
+
+  <!-- Pipeline -->
+  <div data-object="true" data-object-type="textbox" class="pipe" style="position:absolute;top:115px;left:50px;width:820px;">
+    <div class="pstep p1">
+      <div class="pn">PASO 01</div>
+      <div class="pi"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="pt">Abre el .sql</div>
+      <div class="pd">File existente o <code>Ctrl+N</code> → guarda como <code>.sql</code></div>
+      <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    </div>
+    <div class="pstep p2">
+      <div class="pn">PASO 02</div>
+      <div class="pi"><i class="fa-solid fa-keyboard"></i></div>
+      <div class="pt">Escribe la consulta</div>
+      <div class="pd">Sin autocompletado. Línea a línea, <b style="color:#4FC3F7;">consciente</b>.</div>
+      <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    </div>
+    <div class="pstep p3">
+      <div class="pn">PASO 03</div>
+      <div class="pi"><i class="fa-solid fa-mouse-pointer"></i></div>
+      <div class="pt">Selecciona el texto</div>
+      <div class="pd">Solo la consulta a ejecutar, <b style="color:#007ACC;">no todo el archivo</b></div>
+      <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    </div>
+    <div class="pstep p4">
+      <div class="pn">PASO 04</div>
+      <div class="pi"><i class="fa-solid fa-play"></i></div>
+      <div class="pt">Ejecuta</div>
+      <div class="pd"><code>Ctrl+Shift+E</code> o clic derecho → <b style="color:#2EA44F;">Run Selected Query</b></div>
+    </div>
+  </div>
+
+  <!-- Golden rule -->
+  <div data-object="true" data-object-type="textbox" class="gold" style="position:absolute;top:418px;left:50px;width:820px;">
+    <i class="fa-solid fa-exclamation-triangle gi"></i>
+    <div>
+      <div class="gh">⚡ REGLA DORADA</div>
+      <div class="gt"><b>NUNCA</b> uses <code>ejecutar todo</code> sin revisar línea por línea lo que va a correr en el servidor compartido.</div>
+    </div>
+  </div>
+
+  <!-- Schema explorer (right) -->
+  <div data-object="true" data-object-type="textbox" class="schema" style="position:absolute;top:115px;left:890px;width:340px;height:480px;">
+    <div class="sh"><i class="fa-solid fa-sitemap"></i>EXPLORAR EL ESQUEMA</div>
+    <div class="stxt">En el panel lateral de SQLTools, expande tu conexión para ver:</div>
+    <div class="stree">
+      <span class="root">▼ Escuela-Postgre</span><br>
+      &nbsp;&nbsp;<span class="it">▸ Tablas</span> <span class="lbl">— disponibles</span><br>
+      &nbsp;&nbsp;<span class="it">▸ Columnas</span> <span class="lbl">— y tipos</span><br>
+      &nbsp;&nbsp;<span class="it">▸ Funciones</span><br>
+      &nbsp;&nbsp;<span class="it">▸ Vistas</span>
+    </div>
+    <div class="footnote">Esto reemplaza el <b>Object Navigator</b> de Oracle SQL Developer.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">07 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

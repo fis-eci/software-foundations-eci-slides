@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Propósito — PostgreSQL en VS Code · MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc{position:absolute;border-radius:50%;border-style:dashed;pointer-events:none;}
+  .tc1{width:380px;height:380px;border:1px dashed rgba(79,195,247,0.13);top:-130px;right:-110px;}
+  .tc2{width:240px;height:240px;border:1px dashed rgba(51,103,145,0.18);bottom:-80px;left:-60px;}
+  .gd{position:absolute;width:8px;height:8px;border-radius:50%;}
+  .gd1{background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:140px;left:40px;}
+  .gd2{background:#FF6B35;box-shadow:0 0 14px #FF6B35;bottom:140px;right:80px;}
+
+  /* Header bar */
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);display:flex;align-items:center;padding:0 50px;box-sizing:border-box;gap:18px;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-divider{width:1px;height:30px;background:rgba(255,255,255,0.15);}
+
+  /* Cards grid */
+  .grid{position:absolute;top:115px;left:50px;width:1180px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;height:400px;}
+  .card{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:22px 26px;position:relative;overflow:hidden;}
+  .card.c1{border-top:3px solid #4FC3F7;}
+  .card.c2{border-top:3px solid #2EA44F;}
+  .card.c3{border-top:3px solid #007ACC;}
+  .card.c4{border-top:3px solid #FF6B35;}
+  .card .ci{font-size:34px;margin-bottom:10px;}
+  .card.c1 .ci{color:#4FC3F7;}
+  .card.c2 .ci{color:#2EA44F;}
+  .card.c3 .ci{color:#007ACC;}
+  .card.c4 .ci{color:#FF6B35;}
+  .card .ct{font-family:'Roboto',sans-serif;font-size:20px;font-weight:700;color:#F0F4F8;margin-bottom:8px;}
+  .card .cd{font-family:'Roboto',sans-serif;font-size:14px;color:#C9D1D9;line-height:1.5;}
+
+  /* Bottom highlight */
+  .hl{position:absolute;left:50px;bottom:50px;width:1180px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:8px;padding:16px 24px;display:flex;align-items:center;gap:18px;box-sizing:border-box;}
+  .hl i{color:#4FC3F7;font-size:26px;}
+  .hl span{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.4;}
+  .hl b{color:#4FC3F7;font-weight:700;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer{position:absolute;bottom:14px;left:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc tc2"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd gd2"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;">
+    <span class="chip">PROPÓSITO</span>
+  </div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:175px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:200px;">
+    <div class="h-title">¿Por Qué PostgreSQL con VS Code para MYSD?</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="card c1" style="position:absolute;top:115px;left:50px;width:581px;height:191px;">
+    <div class="ci"><i class="fa-solid fa-layer-group"></i></div>
+    <div class="ct">Entorno Unificado</div>
+    <div class="cd">Gestiona scripts <b style="color:#4FC3F7;font-family:'JetBrains Mono',monospace;">.sql</b>, código Java y control de versiones desde una sola ventana de VS Code.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="card c2" style="position:absolute;top:115px;left:649px;width:581px;height:191px;">
+    <div class="ci"><i class="fa-solid fa-code-branch"></i></div>
+    <div class="ct">Integración con Git</div>
+    <div class="cd">Los archivos <b style="color:#2EA44F;font-family:'JetBrains Mono',monospace;">.sql</b> conviven con el proyecto y se versionan con las buenas prácticas de la Unidad CVS.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="card c3" style="position:absolute;top:324px;left:50px;width:581px;height:191px;">
+    <div class="ci"><i class="fa-solid fa-brain"></i></div>
+    <div class="ct">Aprendizaje Consciente</div>
+    <div class="cd">SQLTools está configurado para ejecución manual. <b style="color:#007ACC;">Sin asistentes</b> ni generadores automáticos de consultas.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="card c4" style="position:absolute;top:324px;left:649px;width:581px;height:191px;">
+    <div class="ci"><i class="fa-solid fa-globe"></i></div>
+    <div class="ct">Portabilidad</div>
+    <div class="cd">PostgreSQL corre en Windows, Mac y Linux. La versión local es <b style="color:#FF6B35;">gratuita</b> — equivalente a Oracle XE.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="hl" style="position:absolute;left:50px;bottom:50px;width:1180px;">
+    <i class="fa-solid fa-database"></i>
+    <span>PostgreSQL es uno de los <b>motores de bases de datos relacionales</b> más adoptados en la industria moderna.</span>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer" style="position:absolute;bottom:14px;left:50px;">MYSD • PostgreSQL • VS Code</div>
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">02 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

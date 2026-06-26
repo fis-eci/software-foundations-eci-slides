@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SonarLint en VS Code</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#4A90D9;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:21px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(74,144,217,0.05);z-index:1}
+  .col-left{position:absolute;top:100px;left:60px;width:560px;z-index:10}
+  .col-right{position:absolute;top:100px;left:660px;width:560px;z-index:10}
+  .intro{font-size:13px;color:#C9D1D9;line-height:1.5;background:#161B22;border-left:3px solid #4A90D9;padding:12px 14px;border-radius:4px}
+  .steps{margin-top:14px}
+  .step{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+  .step-num{flex-shrink:0;width:26px;height:26px;background:#4A90D9;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:'Roboto Mono',monospace}
+  .step-txt{font-size:12.5px;color:#C9D1D9;line-height:1.45;padding-top:3px}
+  .mini-title{font-size:11px;font-weight:700;color:#4FC3F7;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:18px;margin-bottom:8px}
+  .mini-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .mt-row{display:flex;padding:8px 12px;font-size:12px;color:#C9D1D9;border-bottom:1px solid #30363D}
+  .mt-row:last-child{border-bottom:none}
+  .mt-row:nth-child(even){background:#21262D}
+  .mt-num{flex-shrink:0;width:22px;color:#4A90D9;font-weight:700;font-family:'Roboto Mono',monospace}
+  .editor{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .ed-tab{background:#252526;padding:7px 14px;font-size:11px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
+  .ed-tab .red-dot{display:inline-block;width:8px;height:8px;background:#DA3633;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .problem{padding:10px 14px;font-family:'Roboto Mono',monospace;font-size:11.5px;color:#D29922;border-bottom:1px solid #30363D;background:#1E1E1E}
+  .problem .err{color:#DA3633;font-weight:700}
+  .problem .file{color:#4FC3F7}
+  .problem .line{color:#8B949E}
+  .code{padding:12px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.7}
+  .code .err-underline{border-bottom:2px dotted #DA3633;padding-bottom:1px}
+  .code .ok{color:#2EA44F}
+  .code .key{color:#569CD6}
+  .code .label{font-size:10px;color:#8B949E;display:block;margin-top:4px;font-family:'Roboto Mono',monospace}
+  .arrow{text-align:center;color:#4FC3F7;font-size:16px;margin:4px 0}
+  .activity{margin-top:14px;background:rgba(248,152,32,0.08);border-left:3px solid #F89820;padding:11px 14px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .activity b{color:#F89820}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="04 SonarLint">
+  <div class="header"><span class="h-badge">ANÁLISIS 1</span><span class="h-title">🔵 SonarLint — Análisis de Diseño en Tiempo Real</span></div>
+  <i class="fas fa-search deco"></i>
+
+  <div class="col-left">
+    <div class="intro">SonarLint analiza <b>automáticamente</b> al escribir y guardar. No requiere ejecutar ningún comando.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-txt">Los problemas aparecen <b>subrayados</b> en el editor según severidad</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-txt"><b>Ctrl+Shift+M</b> abre la vista Problems con todos los incidentes por archivo</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-txt">Clic sobre el incidente → navega a la línea afectada</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-txt">El panel de SonarLint describe la regla y sugiere corrección</div></div>
+    </div>
+
+    <div class="mini-title">Flujo de Resolución</div>
+    <div class="mini-table">
+      <div class="mt-row"><div class="mt-num">1</div>Identifica incidente de mayor severidad en Problems</div>
+      <div class="mt-row"><div class="mt-num">2</div>Navega → lee la regla violada</div>
+      <div class="mt-row"><div class="mt-num">3</div>Documenta: ¿Por qué es relevante? ¿Qué principio viola?</div>
+      <div class="mt-row"><div class="mt-num">4</div>Aplica → verifica que el subrayado desaparece</div>
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="mini-title" style="margin-top:0">Demo: Vista Problems</div>
+    <div class="editor">
+      <div class="ed-tab"><span class="red-dot"></span>PROBLEMS — 1</div>
+      <div class="problem"><span class="err">●</span> <span class="file">CuentaBancaria.java</span> <span class="line">[line 8]</span><br>SonarLint: "Use '<b style="color:#fff">&amp;&amp;</b>' instead of non short-circuit operator '<b style="color:#DA3633">&amp;</b>'"</div>
+      <div class="code">
+        <span class="label">// Código original</span>
+        <span class="key">if</span> (monto &gt; 0 <span class="err-underline">&amp;</span> monto &lt;= saldo) {<br>
+        <span class="label" style="color:#DA3633">↑ subrayado en rojo</span>
+      </div>
+    </div>
+
+    <div class="arrow">↓ corrección</div>
+
+    <div class="editor">
+      <div class="ed-tab" style="color:#2EA44F"><i class="fas fa-check"></i> CORRECCIÓN APLICADA</div>
+      <div class="code">
+        <span class="key">if</span> (monto &gt; 0 <span class="ok">&amp;&amp;</span> monto &lt;= saldo) { <span class="ok">✓</span>
+      </div>
+    </div>
+
+    <div class="activity"><b>⏸️ Pausa</b> cuando veas el subrayado. ¿Puedes escribir la corrección antes de que el monitor lo haga?</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

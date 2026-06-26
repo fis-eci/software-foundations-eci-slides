@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Video de Práctica Guiada</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:140px;right:90px;font-size:160px;color:rgba(0,122,204,0.05);z-index:1}
+  .deco2{position:absolute;bottom:120px;left:60px;font-size:140px;color:rgba(46,164,79,0.04);z-index:1}
+  .video-card{position:absolute;top:120px;left:130px;width:1020px;background:rgba(0,122,204,0.08);border:1px solid #007ACC;border-radius:14px;padding:32px 50px;box-sizing:border-box;z-index:10;box-shadow:0 0 80px rgba(0,122,204,0.15)}
+  .vc-row{display:flex;gap:32px;align-items:center}
+  .vc-play{flex:0 0 130px;text-align:center}
+  .vc-play i{font-size:100px;color:#007ACC;filter:drop-shadow(0 0 18px rgba(0,122,204,0.4))}
+  .vc-body{flex:1}
+  .vc-tag{display:inline-block;background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:10px}
+  .vc-title{font-size:24px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
+  .vc-title .accent{color:#4FC3F7}
+  .vc-desc{font-size:13.5px;color:#C9D1D9;line-height:1.5;margin-bottom:14px}
+  .vc-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .vc-tool{font-family:'Roboto Mono',monospace;font-size:11px;padding:5px 10px;border-radius:4px;background:#161B22;border:1px solid #30363D;color:#C9D1D9}
+  .vc-tool .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .vc-tool.t1 .dot{background:#4A90D9}
+  .vc-tool.t2 .dot{background:#F89820}
+  .vc-tool.t3 .dot{background:#2EA44F}
+  .vc-tool.t4 .dot{background:#DA3633}
+  .vc-link{background:#0D1117;border:1px solid #007ACC;border-radius:6px;padding:9px 14px;font-family:'Roboto Mono',monospace;font-size:13px;color:#4FC3F7;display:inline-flex;align-items:center;gap:10px}
+  .vc-link i{color:#007ACC}
+  .cross-ref{position:absolute;left:130px;bottom:80px;width:1020px;background:#161B22;border:1px solid #30363D;border-left:3px solid #F89820;border-radius:6px;padding:13px 18px;display:flex;align-items:center;gap:14px;z-index:10;box-sizing:border-box}
+  .cr-ico{font-size:22px;color:#F89820;flex-shrink:0}
+  .cr-text{flex:1;font-size:13px;color:#C9D1D9}
+  .cr-text b{color:#fff}
+  .cr-link{font-family:'Roboto Mono',monospace;color:#4FC3F7;margin-left:6px}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="11 Video">
+  <div class="header"><span class="h-badge">PRÁCTICA</span><span class="h-title">🎥 Video de Práctica Guiada</span></div>
+  <i class="fas fa-circle-play deco"></i>
+  <i class="fas fa-code deco2"></i>
+
+  <div class="video-card">
+    <div class="vc-row">
+      <div class="vc-play"><i class="fas fa-circle-play"></i></div>
+      <div class="vc-body">
+        <span class="vc-tag">VIDEO 3 • DOPO</span>
+        <div class="vc-title">Los 4 Análisis en Acción en <span class="accent">VS Code</span>: SonarLint, PMD, JaCoCo y PIT</div>
+        <div class="vc-desc">Abrimos el proyecto <b>CuentaBancaria</b>, ejecutamos los cuatro análisis y resolvemos los incidentes encontrados, siguiendo el protocolo de 5 etapas en cada herramienta.</div>
+        <div class="vc-tools">
+          <span class="vc-tool t1"><span class="dot"></span>SonarLint</span>
+          <span class="vc-tool t2"><span class="dot"></span>PMD: Run</span>
+          <span class="vc-tool t3"><span class="dot"></span>Coverage Gutters</span>
+          <span class="vc-tool t4"><span class="dot"></span>mvn pitest:mutationCoverage</span>
+        </div>
+        <div class="vc-link"><i class="fab fa-youtube"></i>https://youtu.be/N29OODjHMUE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cross-ref">
+    <div class="cr-ico"><i class="fas fa-exchange-alt"></i></div>
+    <div class="cr-text"><b>¿Prefieres Eclipse?</b> Ver el <b>Video 2</b> (Análisis en Eclipse):<span class="cr-link">https://youtu.be/t2J1zNvKKKU</span></div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

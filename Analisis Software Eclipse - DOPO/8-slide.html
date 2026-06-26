@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SonarLint — Análisis de Diseño</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .sonar-step {
+      font-size: 13px;
+      color: #C9D1D9;
+      padding: 10px 0;
+      border-bottom: 1px solid #21262D;
+      font-weight: 300;
+    }
+    .sonar-step:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="08 SonarLint">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(74, 144, 217, 0.15); border: 1px solid rgba(74, 144, 217, 0.4); border-radius: 4px; color: #4A90D9; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS 1</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">🔵 SonarLint — Análisis de Diseño en Tiempo Real</span>
+    </div>
+
+    <!-- Column 1: Config & Flow (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #4A90D9; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Activar y utilizar la vista</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 20px; box-sizing: border-box; margin-bottom: 20px;">
+        <div style="font-size: 14px; color: #FFFFFF; line-height: 1.5; font-weight: 300;">
+          1. Ve al menú superior: <strong style="color: #4A90D9;">Window &rarr; Show View &rarr; Other...</strong><br>
+          2. Selecciona: <strong style="color: #4A90D9;">SonarLint &rarr; On-The-Fly Issues</strong>.<br>
+          3. La pestaña se abrirá mostrando los incidentes ordenados por severidad y tipo.
+        </div>
+      </div>
+
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #8B949E; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Flujo de Resolución</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 15px 25px; box-sizing: border-box;">
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">1.</strong> Identifica el incidente con mayor severidad de la lista.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">2.</strong> Haz doble clic: Eclipse te llevará exactamente a la línea afectada.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">3.</strong> Abre la regla de SonarLint para entender por qué es una mala práctica.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">4.</strong> Aplica la corrección oportuna o documenta tu justificación técnica.</div>
+        <div class="sonar-step"><strong style="color: #F89820; font-family:'Roboto Mono', monospace;">5.</strong> Guarda la clase (<kbd style="background: #21262D; border: 1px solid #30363D; padding: 1px 4px; border-radius: 3px; font-size:10px;">Ctrl+S</kbd>) y comprueba que el aviso desaparezca.</div>
+      </div>
+    </div>
+
+    <!-- Column 2: Caso de Estudio (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #DA3633; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Caso de Estudio: CuentaBancaria</h3>
+      
+      <!-- Bad Code Block -->
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 8px 8px 0 0; padding: 20px; box-sizing: border-box; position: relative;">
+        <div style="position: absolute; right: 20px; top: 15px; font-size: 11px; font-family: 'Roboto Mono', monospace; color: #DA3633; background: rgba(218, 54, 51, 0.1); border: 1px solid rgba(218, 54, 51, 0.3); padding: 2px 8px; border-radius: 4px;">REGLA VIOLADA</div>
+        <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; line-height: 1.5;">
+<span style="color: #F89820;">public void</span> <span style="color: #58A6FF;">retirar</span>(<span style="color: #F89820;">double</span> monto) {
+    <span style="color: #F89820;">if</span> (monto &gt; 0 <strong style="color: #DA3633; background-color: rgba(218, 54, 51, 0.2); padding: 2px 4px; border-radius: 3px;">&amp;</strong> monto &lt;= saldo) {  <span style="color: #8B949E;">// &larr; Alerta</span>
+        saldo = saldo - monto;
+    }
+}</pre>
+        <div style="margin-top: 10px; font-size: 12px; color: #DA3633; font-family: 'Roboto Mono', monospace;"><i class="fa-solid fa-circle-xmark" style="margin-right: 6px;"></i>Use "&&" instead of "&" (Logical vs Bitwise AND)</div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="text-align: center; margin: 10px 0;">
+        <i class="fa-solid fa-arrow-down" style="font-size: 20px; color: #2EA44F;"></i>
+        <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; font-weight: 700; margin-left: 10px;">CORRECCIÓN DE DISEÑO</span>
+      </div>
+
+      <!-- Fixed Code Block -->
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 0 0 8px 8px; padding: 20px; box-sizing: border-box; border-top: none;">
+        <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #C9D1D9; line-height: 1.5;">
+<span style="color: #F89820;">public void</span> <span style="color: #58A6FF;">retirar</span>(<span style="color: #F89820;">double</span> monto) {
+    <span style="color: #F89820;">if</span> (monto &gt; 0 <strong style="color: #2EA44F; background-color: rgba(46, 164, 79, 0.2); padding: 2px 4px; border-radius: 3px;">&amp;&amp;</strong> monto &lt;= saldo) { <span style="color: #2EA44F;">// &check; AND lógico</span>
+        saldo = saldo - monto;
+    }
+}</pre>
+      </div>
+    </div>
+
+    <!-- Active Pause Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 570px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(248, 152, 32, 0.08); border-left: 4px solid #F89820; border-radius: 0 8px 8px 0; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
+        <span style="font-size: 20px; margin-right: 15px; filter: grayscale(0);">⏸️</span>
+        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
+          <strong style="color: #F89820; font-family: 'Roboto Mono', monospace;">ACTIVIDAD DE PAUSA:</strong> Cuando estés viendo la guía del monitor, pausa el video inmediatamente al observar el primer subrayado de advertencia de SonarLint. ¿Eres capaz de predecir cuál es la solución adecuada antes de verla?
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

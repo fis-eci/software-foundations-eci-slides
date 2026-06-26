@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Prerrequisitos y Extensiones</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+<style>
+  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
+  .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
+  .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
+  .h-title{font-size:22px;font-weight:700;color:#fff}
+  .deco{position:absolute;top:130px;right:60px;font-size:140px;color:rgba(0,122,204,0.05);z-index:1}
+  .content{position:absolute;top:110px;left:60px;width:1160px;z-index:10}
+  .prereqs{display:flex;gap:18px;margin-bottom:22px}
+  .preq{flex:1;background:#161B22;border:1px solid #30363D;border-top:3px solid;border-radius:8px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+  .preq.p1{border-top-color:#2EA44F}
+  .preq.p2{border-top-color:#007ACC}
+  .preq .ico{font-size:28px;flex-shrink:0;margin-top:2px}
+  .preq.p1 .ico{color:#2EA44F}
+  .preq.p2 .ico{color:#007ACC}
+  .preq .title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+  .preq .desc{font-size:13px;color:#C9D1D9;line-height:1.4}
+  .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
+  .table .row{display:flex;border-bottom:1px solid #30363D}
+  .table .row:last-child{border-bottom:none}
+  .table .row.head{background:#21262D;font-weight:700;color:#fff;font-size:13px;font-family:'Roboto Mono',monospace;letter-spacing:1px;text-transform:uppercase}
+  .table .row.alt{background:#21262D}
+  .table .cell{padding:11px 18px;font-size:13px;color:#C9D1D9}
+  .table .cell.c1{flex:0 0 320px;color:#4FC3F7;font-weight:700;font-family:'Roboto Mono',monospace;border-right:1px solid #30363D}
+  .table .row.head .cell.c1{color:#fff}
+  .table .cell.c2{flex:1}
+  .note{margin-top:14px;background:rgba(0,122,204,0.08);border-left:3px solid #007ACC;padding:10px 16px;font-size:12px;color:#C9D1D9;border-radius:4px}
+  .note i{color:#4FC3F7;margin-right:8px}
+  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+  .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
+  .bottom-bar div{flex:1}
+  .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="02 Prerrequisitos">
+  <div class="header"><span class="h-badge">PRERREQUISITOS</span><span class="h-title">Antes de Empezar: Extensiones Requeridas</span></div>
+  <i class="fas fa-puzzle-piece deco"></i>
+
+  <div class="content">
+    <div class="prereqs">
+      <div class="preq p1">
+        <div class="ico"><i class="fas fa-check-circle"></i></div>
+        <div>
+          <div class="title">Teoría completada</div>
+          <div class="desc">Has estudiado la Unidad 4 principal: los 4 análisis y el ejemplo CuentaBancaria.</div>
+        </div>
+      </div>
+      <div class="preq p2">
+        <div class="ico"><i class="fas fa-sliders"></i></div>
+        <div>
+          <div class="title">VS Code Vainilla configurado</div>
+          <div class="desc">Tienes el settings.json aplicado según la Guía VS Code Vainilla del curso.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="row head"><div class="cell c1">Extensión</div><div class="cell c2">Propósito en esta unidad</div></div>
+      <div class="row"><div class="cell c1">Extension Pack for Java</div><div class="cell c2">Compilación, ejecución y gestión del proyecto</div></div>
+      <div class="row alt"><div class="cell c1">Java Test Runner</div><div class="cell c2">Ejecución de pruebas JUnit desde VS Code</div></div>
+      <div class="row"><div class="cell c1">JaCoCo (externa)</div><div class="cell c2">Generación del reporte de cobertura</div></div>
+      <div class="row alt"><div class="cell c1">Coverage Gutters</div><div class="cell c2">Visualización de cobertura en el editor</div></div>
+      <div class="row"><div class="cell c1">PMD</div><div class="cell c2">Análisis estático de calidad</div></div>
+      <div class="row alt"><div class="cell c1">SonarLint</div><div class="cell c2">Análisis de diseño en tiempo real</div></div>
+    </div>
+
+    <div class="note"><i class="fas fa-info-circle"></i>Si alguna extensión falta, instálala desde el panel de extensiones (<b>Ctrl+Shift+X</b>) siguiendo la Guía VS Code Vainilla.</div>
+  </div>
+
+  <div class="footer">DOPO • Análisis de Software • VS Code</div>
+  <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalación de Plugins</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .plugin-card {
+      background-color: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 20px;
+      box-sizing: border-box;
+      height: 220px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="05 Plugins">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">PLUGINS</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Paso 2: Instalar Plugins via Eclipse Marketplace</span>
+    </div>
+
+    <!-- Instruction Bar -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 100px; width: 1160px; z-index: 10;">
+      <div style="font-family: 'Roboto Mono', monospace; font-size: 15px; color: #58A6FF; background-color: rgba(88, 166, 255, 0.05); border: 1px dashed rgba(88, 166, 255, 0.3); padding: 10px 20px; border-radius: 6px;">
+        <i class="fa-solid fa-circle-info" style="margin-right: 10px;"></i>Ruta de instalación: <strong style="color: #FFFFFF;">Help</strong> &rarr; <strong style="color: #FFFFFF;">Eclipse Marketplace...</strong> &rarr; Busca cada plugin &rarr; <strong style="color: #FFFFFF;">Install</strong> &rarr; <strong style="color: #FFFFFF;">Restart Now</strong> (uno a uno)
+      </div>
+    </div>
+
+    <!-- Plugin 1: SonarLint -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 175px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #4A90D9;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-search" style="color: #4A90D9; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">SonarLint</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(74, 144, 217, 0.15); border: 1px solid rgba(74, 144, 217, 0.3); border-radius: 4px; color: #4A90D9; font-family: 'Roboto Mono', monospace; font-size: 11px;">ESTÁTICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">SonarLint</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Análisis de diseño en tiempo real</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Subraya problemas en el editor mientras escribes, sin ejecutar comandos adicionales. Detecta bugs, vulnerabilidades y code smells de diseño OOP al instante.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 2: PMD -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 175px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #F89820;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-shield-halved" style="color: #F89820; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">PMD Eclipse Plugin</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.3); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 11px;">ESTÁTICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">PMD Eclipse Plugin</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Análisis de calidad y malas prácticas</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Analiza el árbol de sintaxis abstracta para identificar código muerto, bloques catch vacíos, parámetros no utilizados, variables sobreescritas y violación de estándares.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 3: JaCoCo -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 415px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #2EA44F;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-chart-bar" style="color: #2EA44F; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">EclEmma / JaCoCo</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.3); border-radius: 4px; color: #2EA44F; font-family: 'Roboto Mono', monospace; font-size: 11px;">DINÁMICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">EclEmma</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Pruebas de cobertura integradas</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Colorea tu base de código en tiempo de ejecución (verde, rojo, amarillo) para mapear qué instrucciones y ramificaciones lógicas están siendo realmente ejercitadas por tus pruebas JUnit.
+        </p>
+      </div>
+    </div>
+
+    <!-- Plugin 4: PIT -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 415px; width: 560px; z-index: 10;">
+      <div class="plugin-card" style="border-top: 4px solid #DA3633;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-dna" style="color: #DA3633; font-size: 24px; margin-right: 12px;"></i>
+            <span style="font-size: 18px; font-weight: 700; color: #FFFFFF;">Pitclipse / PIT</span>
+          </div>
+          <span style="padding: 2px 8px; background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.3); border-radius: 4px; color: #DA3633; font-family: 'Roboto Mono', monospace; font-size: 11px;">DINÁMICO</span>
+        </div>
+        <div style="font-size: 13px; font-family: 'Roboto Mono', monospace; color: #8B949E; margin-bottom: 8px;">
+          Término de búsqueda: <strong style="color: #FFFFFF; background-color: #21262D; padding: 2px 6px; border-radius: 4px;">Pitclipse</strong>
+        </div>
+        <div style="font-weight: 700; font-size: 14px; color: #C9D1D9; margin-bottom: 6px;">Pruebas de mutación y robustez</div>
+        <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4; font-weight: 300;">
+          Introduce sutiles fallos artificiales de forma automatizada (mutantes) en tu código para verificar que tus pruebas unitarias son capaces de capturar y matar dichos errores de forma oportuna.
+        </p>
+      </div>
+    </div>
+
+    <!-- Alert footer inside workspace -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 650px; width: 1160px; text-align: center; z-index: 10;">
+      <span style="font-size: 13px; color: #D29922; font-weight: 700;">
+        ⚠️ Recuerda: Es fundamental reiniciar Eclipse después de la instalación de cada plugin para evitar conflictos de runtime.
+      </span>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panorama de los Cuatro Análisis</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .quadrant {
+      border: 1px solid #30363D;
+      border-radius: 12px;
+      padding: 30px;
+      box-sizing: border-box;
+      height: 235px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="07 Panorama">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); border-radius: 4px; color: #F89820; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">ANÁLISIS</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Los Cuatro Pilares del Análisis de Software</span>
+    </div>
+
+    <!-- Quadrant 1: SonarLint -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(74, 144, 217, 0.03); border-color: rgba(74, 144, 217, 0.3); border-top: 4px solid #4A90D9;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #4A90D9; font-weight: 700;">ESTÁTICO 1</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">SonarLint</h3>
+          </div>
+          <i class="fa-solid fa-search" style="font-size: 40px; color: #4A90D9; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿El software cumple los principios de buen diseño?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Inspección continua de malas prácticas y acoplamiento en el diseño de clases.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 2: PMD -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(248, 152, 32, 0.03); border-color: rgba(248, 152, 32, 0.3); border-top: 4px solid #F89820;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #F89820; font-weight: 700;">ESTÁTICO 2</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">PMD</h3>
+          </div>
+          <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: #F89820; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿El código no presenta defectos ni malas prácticas?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Escaneo automatizado de código muerto, duplicación y violaciones de estándares de calidad.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 3: JaCoCo -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 385px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(46, 164, 79, 0.03); border-color: rgba(46, 164, 79, 0.3); border-top: 4px solid #2EA44F;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #2EA44F; font-weight: 700;">DINÁMICO 1</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">JaCoCo</h3>
+          </div>
+          <i class="fa-solid fa-chart-bar" style="font-size: 40px; color: #2EA44F; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿Qué código está realmente siendo probado?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Mapeo de cobertura lógica y de sentencias ejecutadas durante las pruebas unitarias.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quadrant 4: PIT -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 385px; width: 560px; z-index: 10;">
+      <div class="quadrant" style="background-color: rgba(218, 54, 51, 0.03); border-color: rgba(218, 54, 51, 0.3); border-top: 4px solid #DA3633;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #DA3633; font-weight: 700;">DINÁMICO 2</span>
+            <h3 style="margin: 4px 0 0 0; font-size: 22px; color: #FFFFFF; font-weight: 700;">PIT</h3>
+          </div>
+          <i class="fa-solid fa-dna" style="font-size: 40px; color: #DA3633; opacity: 0.8;"></i>
+        </div>
+        <div style="margin-top: 15px;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 14px; color: #C9D1D9; font-weight: 700; line-height: 1.4;">
+            ¿Las pruebas realmente detectan errores?
+          </div>
+          <p style="margin: 6px 0 0 0; font-size: 13px; color: #8B949E; line-height: 1.3;">
+            Pruebas de mutación automatizadas que inyectan fallas para desafiar tus asserts JUnit.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Badge Case of Study -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 540px; top: 310px; width: 200px; height: 100px; background-color: #161B22; border: 2px solid #30363D; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 20;">
+      <div style="text-align: center;">
+        <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #F89820; font-weight: 700;">CASO DE ESTUDIO</div>
+        <div style="font-weight: 700; font-size: 15px; color: #FFFFFF; margin-top: 4px;">CuentaBancaria</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>

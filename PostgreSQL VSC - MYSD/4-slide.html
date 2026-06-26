@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Extensiones SQLTools — MYSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#0a0e1a;font-family:'Roboto',sans-serif;color:#F0F4F8;}
+  .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;
+    background:
+      linear-gradient(rgba(10,14,26,0.88),rgba(10,14,26,0.94)),
+      linear-gradient(rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(79,195,247,0.1) 1px, transparent 1px) 0 0/40px 40px,
+      #0a0e1a;
+  }
+  .tc1{position:absolute;width:340px;height:340px;border:1px dashed rgba(79,195,247,0.15);border-radius:50%;top:-110px;right:-100px;}
+  .tc2{position:absolute;width:200px;height:200px;border:1px dashed rgba(51,103,145,0.22);border-radius:50%;bottom:-60px;left:-50px;}
+  .gd1{position:absolute;width:8px;height:8px;border-radius:50%;background:#4FC3F7;box-shadow:0 0 14px #4FC3F7;top:130px;right:60px;}
+  .gd2{position:absolute;width:8px;height:8px;border-radius:50%;background:#336791;box-shadow:0 0 14px #336791;bottom:130px;left:540px;}
+
+  .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
+  .h-title{font-family:'Roboto',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+
+  .extcard{background:rgba(13,27,62,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:24px 26px;box-sizing:border-box;position:relative;}
+  .extcard.e1{border-left:4px solid #4FC3F7;}
+  .extcard.e2{border-left:4px solid #336791;}
+  .extcard .ic{font-size:50px;margin-bottom:10px;}
+  .extcard.e1 .ic{color:#4FC3F7;}
+  .extcard.e2 .ic{color:#4FC3F7;}
+  .extcard .tag{position:absolute;top:18px;right:20px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.3px;padding:4px 10px;border-radius:3px;}
+  .extcard.e1 .tag{color:#4FC3F7;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.4);}
+  .extcard.e2 .tag{color:#FFB347;background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.4);}
+  .extcard .t{font-family:'Roboto',sans-serif;font-size:19px;font-weight:700;color:#F0F4F8;margin:8px 0 6px 0;}
+  .extcard .t b{font-family:'JetBrains Mono',monospace;}
+  .extcard.e1 .t b{color:#4FC3F7;}
+  .extcard.e2 .t b{color:#4FC3F7;}
+  .extcard .d{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;}
+  .extcard .author{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;margin-top:8px;}
+
+  .steps{position:absolute;top:430px;left:50px;width:1180px;display:flex;align-items:stretch;gap:0;}
+  .step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 8px;}
+  .step .num{width:34px;height:34px;border-radius:50%;background:rgba(79,195,247,0.15);border:1px solid #4FC3F7;color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .step .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
+  .step .stxt b{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12px;}
+  .connector{position:absolute;top:17px;right:-50%;width:100%;height:1px;background:linear-gradient(90deg,rgba(79,195,247,0.5),rgba(79,195,247,0.1));z-index:-1;}
+  .step:last-child .connector{display:none;}
+
+  .note{position:absolute;bottom:50px;left:50px;width:1180px;background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.3);border-left:4px solid #D29922;border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-sizing:border-box;}
+  .note i{color:#D29922;font-size:22px;flex-shrink:0;}
+  .note span{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
+  .note b{color:#D29922;}
+
+  .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
+  .tricolor div:nth-child(1){background:#336791;flex:1;}
+  .tricolor div:nth-child(2){background:#4FC3F7;flex:1;}
+  .tricolor div:nth-child(3){background:#007ACC;flex:1;}
+  .footer-r{position:absolute;bottom:14px;right:50px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="slide-container">
+  <div data-object="true" data-object-type="shape" class="tc1"></div>
+  <div data-object="true" data-object-type="shape" class="tc2"></div>
+  <div data-object="true" data-object-type="shape" class="gd1"></div>
+  <div data-object="true" data-object-type="shape" class="gd2"></div>
+
+  <div data-object="true" data-object-type="shape" class="hb" style="position:absolute;top:0;left:0;width:1280px;height:80px;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:30px;left:50px;"><span class="chip">EXTENSIONES</span></div>
+  <div data-object="true" data-object-type="shape" style="position:absolute;top:25px;left:185px;width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:28px;left:210px;">
+    <div class="h-title">Instalar SQLTools + Driver PostgreSQL</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="extcard e1" style="position:absolute;top:110px;left:50px;width:570px;height:285px;">
+    <span class="tag">BASE</span>
+    <div class="ic"><i class="fa-solid fa-database"></i></div>
+    <div class="t"><b>SQLTools</b></div>
+    <div class="author">por Matheus Teixeira</div>
+    <div class="d" style="margin-top:14px;">Gestión de conexiones, escritura y ejecución manual de consultas SQL en VS Code. Es la base sobre la que se monta el driver de PostgreSQL.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="extcard e2" style="position:absolute;top:110px;left:660px;width:570px;height:285px;">
+    <span class="tag">COMPLEMENTO</span>
+    <div class="ic"><i class="fa-solid fa-plug"></i></div>
+    <div class="t"><b>SQLTools PostgreSQL/Cockroach Driver</b></div>
+    <div class="author">extiende SQLTools</div>
+    <div class="d" style="margin-top:14px;">Habilita la conexión específica con bases de datos PostgreSQL desde SQLTools. Sin este driver, SQLTools no reconoce el motor.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="steps" style="position:absolute;top:430px;left:50px;width:1180px;">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="stxt"><b>Ctrl+Shift+X</b><br>abre el panel de extensiones</div>
+      <div class="connector"></div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="stxt">Busca <b>"SQLTools"</b><br>instala el de <b>Matheus Teixeira</b></div>
+      <div class="connector"></div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="stxt">Busca <b>"SQLTools PostgreSQL"</b><br>instala el driver</div>
+      <div class="connector"></div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="stxt"><b>Recarga VS Code</b><br>cuando lo solicite</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;bottom:50px;left:50px;width:1180px;">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span>Antes de continuar, aplica la <b>configuración Vainilla para MYSD</b> según la Guía VS Code Vainilla del curso.</span>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;">04 / 12</div>
+  <div data-object="true" data-object-type="shape" class="tricolor" style="position:absolute;bottom:0;left:0;width:1280px;height:6px;">
+    <div></div><div></div><div></div>
+  </div>
+</div>
+</body>
+</html>
+

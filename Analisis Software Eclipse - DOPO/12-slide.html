@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Importar Proyecto y Compilar</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1117;
+      color: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    .slide-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background-color: #0D1117;
+      background-image: 
+        linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: rgba(124, 92, 191, 0.15);
+      border: 1px solid rgba(124, 92, 191, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7C5CBF;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 15px;
+      margin-top: 2px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: #C9D1D9;
+      font-weight: 300;
+    }
+    .check-item i {
+      color: #2EA44F;
+      font-size: 18px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container" data-screen-label="12 S4 Importar">
+    <!-- Header bar -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; top: 0; width: 1280px; height: 80px; background-color: #161B22; border-bottom: 1px solid #30363D; display: flex; align-items: center; padding: 0 40px; box-sizing: border-box; z-index: 10;">
+      <span style="padding: 4px 10px; background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); border-radius: 4px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; font-size: 12px; font-weight: 700; margin-right: 15px; letter-spacing: 0.05em;">S4 PRÁCTICA</span>
+      <span style="font-size: 24px; font-weight: 700; color: #FFFFFF;">Cierre del Proyecto: Importar de BlueJ a Eclipse</span>
+    </div>
+
+    <!-- Column 1: Importar (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #7C5CBF; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Importación del Proyecto</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px;">
+        
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">File &rarr; Import...</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Selecciona la opción <strong style="color: #C9D1D9;">General &rarr; Existing Projects into Workspace</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Seleccionar directorio</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Haz clic en <strong style="color: #C9D1D9;">Browse</strong>, busca la ruta raíz del proyecto original de BlueJ y selecciona <strong style="color: #C9D1D9;">Finish</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Verificar pestaña Problems</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Comprueba que no se reporten errores rojos en la barra inferior de compilación de Eclipse.</p>
+          </div>
+        </div>
+
+        <div class="step-item" style="margin-bottom: 0;">
+          <div class="step-num">4</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 16px; color: #FFFFFF; font-weight: 700;">Ajustar JDK de ser necesario</h4>
+            <p style="margin: 0; font-size: 13px; color: #8B949E; line-height: 1.4;">Si hay errores: <strong style="color: #C9D1D9;">Preferences &rarr; Java &rarr; Installed JREs</strong> y añade tu JDK 11/17.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Column 2: Verificar Entorno (Right) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 660px; top: 110px; width: 560px; z-index: 10;">
+      <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #2EA44F; font-family: 'Roboto Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Verificación del Entorno</h3>
+      <div style="background-color: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 25px; box-sizing: border-box; height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Proyecto importado correctamente sin fallos de dependencias.</div>
+          </div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Clase principal ejecutable (<strong style="color: #FFFFFF;">Run As &rarr; Java Application</strong>).</div>
+          </div>
+          <div class="check-item">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Pruebas JUnit funcionando y pasando en verde (<strong style="color: #FFFFFF;">JUnit Test</strong>).</div>
+          </div>
+          <div class="check-item" style="margin-bottom: 0;">
+            <i class="fa-regular fa-square-check"></i>
+            <div>Javadoc estructurado y generado (<strong style="color: #FFFFFF;">Project &rarr; Generate Javadoc...</strong>).</div>
+          </div>
+        </div>
+
+        <div style="background-color: #0D1117; border: 1px solid #30363D; border-radius: 6px; padding: 15px; box-sizing: border-box;">
+          <div style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #8B949E; margin-bottom: 6px;">CÓDIGO SI FALTA EL MAIN EN TU PROYECTO</div>
+          <pre style="margin: 0; font-family: 'Roboto Mono', monospace; font-size: 12px; color: #C9D1D9; line-height: 1.4;">
+<span style="color: #F89820;">public static void</span> <span style="color: #58A6FF;">main</span>(String[] args) {
+    Contest contest = <span style="color: #F89820;">new</span> Contest();
+    contest.simular();
+}</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Instruction Note -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 550px; width: 1160px; z-index: 10;">
+      <div style="background-color: rgba(124, 92, 191, 0.05); border: 1px solid rgba(124, 92, 191, 0.3); border-radius: 8px; padding: 16px 24px; box-sizing: border-box; text-align: center; font-size: 14px; color: #C9D1D9; font-weight: 300;">
+        ⚠️ <strong style="color: #7C5CBF;">Regla de oro:</strong> Únicamente cuando el entorno de Eclipse compile de forma exitosa y pase JUnit en verde, procede con la ejecución secuencial de las cuatro herramientas de análisis.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+      <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
+        DOPO • Análisis de Software • Eclipse IDE
+      </span>
+    </div>
+
+    <!-- Barra bottom tricolor -->
+    <div data-object="true" data-object-type="shape" style="position: absolute; left: 0; bottom: 0; width: 1280px; height: 6px; display: flex; z-index: 20;">
+      <div style="flex: 1; background-color: #F89820;"></div>
+      <div style="flex: 1; background-color: #7C5CBF;"></div>
+      <div style="flex: 1; background-color: #58A6FF;"></div>
+    </div>
+  </div>
+</body>
+</html>
