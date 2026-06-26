@@ -24,26 +24,40 @@
   .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   .table{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #336791;border-radius:10px;padding:0;overflow:hidden;box-sizing:border-box;}
-  .table .th{display:grid;grid-template-columns:190px 1fr;background:rgba(51,103,145,0.18);padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
-  .table .tr{display:grid;grid-template-columns:190px 1fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:14px;align-items:center;}
+  .table .th{display:grid;grid-template-columns:180px 1fr;background:rgba(51,103,145,0.18);padding:12px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
+  .table .tr{display:grid;grid-template-columns:180px 1fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13.5px;align-items:center;}
   .table .tr:last-child{border-bottom:none;}
-  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
   .table .tr .val{color:#F0F4F8;}
-  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:13px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
+  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12.5px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
 
-  .stepwrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:22px 24px;box-sizing:border-box;}
-  .stepwrap .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .verifyblock{background:rgba(13,27,62,0.55);border:1px solid rgba(79,195,247,0.18);border-left:4px solid #4FC3F7;border-radius:8px;padding:16px 20px;box-sizing:border-box;}
+  .verifyblock .vh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.3px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .verifyblock .vh i{color:#4FC3F7;}
+  .verifyblock pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.75;margin:0;}
+  .verifyblock pre .cmd{color:#4FC3F7;}
+  .verifyblock pre .cmt{color:#8B949E;}
+
+  .stepwrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px 22px;box-sizing:border-box;}
+  .stepwrap .sh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .stepwrap .sh i{color:#336791;}
-  .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+  .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:11px;}
   .sitem:last-child{margin-bottom:0;}
-  .snum{width:28px;height:28px;border-radius:6px;background:rgba(51,103,145,0.2);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
-  .stxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
-  .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  .snum{width:26px;height:26px;border-radius:6px;background:rgba(51,103,145,0.2);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
+  .stxt{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.45;}
+  .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
   .stxt em{color:#FFB347;font-style:normal;}
 
-  .note{position:absolute;bottom:48px;left:50px;width:1180px;background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:18px 24px;display:flex;align-items:center;gap:16px;box-sizing:border-box;}
-  .note i{color:#2EA44F;font-size:26px;flex-shrink:0;}
-  .note span{font-family:'Roboto',sans-serif;font-size:15px;color:#F0F4F8;line-height:1.45;}
+  .successbox{background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-left:4px solid #00FF88;border-radius:8px;padding:14px 20px;box-sizing:border-box;}
+  .successbox .sbh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#00FF88;letter-spacing:1.2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .successbox .sbh i{font-size:14px;}
+  .successbox pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.75;margin:0;}
+  .successbox pre .ok{color:#00FF88;}
+  .successbox pre .hl{color:#4FC3F7;}
+
+  .note{background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:14px 22px;display:flex;align-items:center;gap:16px;box-sizing:border-box;}
+  .note i{color:#2EA44F;font-size:22px;flex-shrink:0;}
+  .note span{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.45;}
   .note b{color:#2EA44F;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
@@ -58,7 +72,6 @@
   <div data-object="true" data-object-type="shape" class="tc1"></div>
   <div data-object="true" data-object-type="shape" class="gd1"></div>
   <div data-object="true" data-object-type="shape" class="gd2"></div>
-
   <div data-object="true" data-object-type="textbox" class="watermark" style="position:absolute;right:60px;bottom:140px;">
     CREATE DATABASE mi_proyecto;<br>
     \c mi_proyecto<br>
@@ -72,11 +85,13 @@
     <div class="h-title">B. Trabajo en Local — PostgreSQL Instalado en tu Máquina</div>
   </div>
 
-  <!-- Left: local params -->
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:108px;left:50px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;">
+  <!-- Left col label -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:94px;left:50px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;">
     <i class="fa-solid fa-hard-drive" style="color:#336791;margin-right:8px;"></i>PARÁMETROS LOCALES
   </div>
-  <div data-object="true" data-object-type="table" class="table" style="position:absolute;top:138px;left:50px;width:580px;">
+
+  <!-- Left: local params table -->
+  <div data-object="true" data-object-type="table" class="table" style="position:absolute;top:122px;left:50px;width:590px;">
     <div class="th"><span>Campo</span><span>Valor</span></div>
     <div class="tr"><span class="field">Server / Host</span><span class="val"><code>localhost</code></span></div>
     <div class="tr"><span class="field">Port</span><span class="val"><code>5432</code></span></div>
@@ -85,32 +100,60 @@
     <div class="tr"><span class="field">Password</span><span class="val">La que asignaste al instalar</span></div>
   </div>
 
-  <!-- Right: install steps -->
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:108px;left:650px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;">
+  <!-- Left: verification block -->
+  <div data-object="true" data-object-type="textbox" class="verifyblock" style="position:absolute;top:420px;left:50px;width:590px;">
+    <div class="vh"><i class="fa-solid fa-terminal"></i>VERIFICAR QUE EL SERVICIO ESTÁ ACTIVO</div>
+    <pre><span class="cmt"># Windows — buscar en Servicios:</span>
+services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span class="cmd">En ejecución</span>
+
+<span class="cmt"># Línea de comandos (psql):</span>
+<span class="cmd">psql -U postgres</span>          <span class="cmt">← debe mostrar prompt postgres=#</span>
+<span class="cmd">psql -U postgres -l</span>       <span class="cmt">← lista todas las bases de datos</span></pre>
+  </div>
+
+  <!-- Right col label -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:94px;left:660px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;">
     <i class="fa-solid fa-download" style="color:#4FC3F7;margin-right:8px;"></i>INSTALAR POSTGRESQL LOCAL
   </div>
-  <div data-object="true" data-object-type="textbox" class="stepwrap" style="position:absolute;top:138px;left:650px;width:580px;">
+
+  <!-- Right: install steps -->
+  <div data-object="true" data-object-type="textbox" class="stepwrap" style="position:absolute;top:122px;left:660px;width:570px;">
     <div class="sitem">
       <div class="snum">1</div>
-      <div class="stxt">Descargar de <b>postgresql.org/download</b> (multiplataforma)</div>
+      <div class="stxt">Descargar de <b>postgresql.org/download</b> (versión 16 o 17, multiplataforma)</div>
     </div>
     <div class="sitem">
       <div class="snum">2</div>
-      <div class="stxt">Ejecutar el instalador → <em>anotar la contraseña</em> del usuario <b>postgres</b></div>
+      <div class="stxt">Ejecutar el instalador → <em>anotar la contraseña</em> del usuario <b>postgres</b> (no la pierdas)</div>
     </div>
     <div class="sitem">
       <div class="snum">3</div>
-      <div class="stxt">Verificar servicio activo: <b>services.msc</b> → <b>postgresql-x64-XX</b> en <em>Running</em> (Windows)</div>
+      <div class="stxt">Verificar el servicio: <b>services.msc</b> → <b>postgresql-x64-XX</b> en estado <em>Running</em></div>
     </div>
     <div class="sitem">
       <div class="snum">4</div>
-      <div class="stxt">Crear la conexión en <b>SQLTools</b> con los parámetros de la tabla</div>
+      <div class="stxt">Crear la conexión en <b>SQLTools</b> con los parámetros de la tabla izquierda</div>
+    </div>
+    <div class="sitem">
+      <div class="snum">5</div>
+      <div class="stxt">Crear tu BD de práctica: <b>CREATE DATABASE mi_proyecto;</b></div>
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;bottom:48px;left:50px;width:1180px;">
+  <!-- Right: success state box -->
+  <div data-object="true" data-object-type="textbox" class="successbox" style="position:absolute;top:420px;left:660px;width:570px;">
+    <div class="sbh"><i class="fa-solid fa-circle-check"></i>ESTADO ESPERADO EN VS CODE</div>
+    <pre>Connections
+  └── <span class="hl">localhost-Postgre</span>&nbsp;&nbsp;<span class="ok">●</span> connected
+        └── databases
+              └── <span class="hl">mi_proyecto</span>  &nbsp;<span class="ok">← tu base de datos</span>
+              └── <span class="hl">postgres</span>     &nbsp;<span class="ok">← base por defecto</span></pre>
+  </div>
+
+  <!-- Bottom note (full width) -->
+  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;top:594px;left:50px;width:1180px;">
     <i class="fa-solid fa-flask"></i>
-    <span>La conexión local es tu <b>laboratorio personal</b>. Úsala para practicar sin afectar el servidor compartido de la Escuela.</span>
+    <span>La conexión local es tu <b>laboratorio personal</b>. Úsala para practicar sin afectar el servidor compartido de la Escuela. Puedes borrar y recrear tu BD libremente.</span>
   </div>
 
   <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>

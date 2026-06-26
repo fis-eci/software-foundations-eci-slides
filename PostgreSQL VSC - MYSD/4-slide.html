@@ -21,35 +21,44 @@
 
   .hb{position:absolute;top:0;left:0;width:1280px;height:80px;background:rgba(13,27,62,0.9);border-bottom:1px solid rgba(79,195,247,0.2);}
   .chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#4FC3F7;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);padding:6px 14px;border-radius:4px;}
-  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:22px;color:#F0F4F8;}
+  .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
-  .extcard{background:rgba(13,27,62,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:24px 26px;box-sizing:border-box;position:relative;}
-  .extcard.e1{border-left:4px solid #4FC3F7;}
-  .extcard.e2{border-left:4px solid #336791;}
-  .extcard .ic{font-size:50px;margin-bottom:10px;}
+  .extcard{background:rgba(13,27,62,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:22px 24px;box-sizing:border-box;position:relative;}
+  .extcard.e1{border-top:4px solid #4FC3F7;}
+  .extcard.e2{border-top:4px solid #336791;}
+  .extcard .ic{font-size:44px;margin-bottom:8px;}
   .extcard.e1 .ic{color:#4FC3F7;}
   .extcard.e2 .ic{color:#4FC3F7;}
-  .extcard .tag{position:absolute;top:18px;right:20px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.3px;padding:4px 10px;border-radius:3px;}
-  .extcard.e1 .tag{color:#4FC3F7;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.4);}
-  .extcard.e2 .tag{color:#FFB347;background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.4);}
-  .extcard .t{font-family:'Roboto',sans-serif;font-size:19px;font-weight:700;color:#F0F4F8;margin:8px 0 6px 0;}
-  .extcard .t b{font-family:'JetBrains Mono',monospace;}
-  .extcard.e1 .t b{color:#4FC3F7;}
-  .extcard.e2 .t b{color:#4FC3F7;}
-  .extcard .d{font-family:'Roboto',sans-serif;font-size:13px;color:#C9D1D9;line-height:1.5;}
-  .extcard .author{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;margin-top:8px;}
+  .extcard .etag{position:absolute;top:16px;right:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.3px;padding:4px 10px;border-radius:3px;}
+  .extcard.e1 .etag{color:#4FC3F7;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.4);}
+  .extcard.e2 .etag{color:#FFB347;background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.4);}
+  .extcard .t{font-family:'Roboto',sans-serif;font-size:18px;font-weight:700;color:#F0F4F8;margin:6px 0 3px 0;}
+  .extcard .t b{font-family:'JetBrains Mono',monospace;color:#4FC3F7;}
+  .extcard .author{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8B949E;margin-bottom:10px;}
+  .extcard .d{font-family:'Roboto',sans-serif;font-size:13.5px;color:#C9D1D9;line-height:1.5;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.07);}
+  .extcard .feats{list-style:none;margin:0;padding:0;}
+  .extcard .feats li{display:flex;align-items:center;gap:8px;font-family:'Roboto',sans-serif;font-size:12.5px;color:#C9D1D9;padding:5px 0;line-height:1.3;}
+  .extcard.e1 .feats li i{color:#4FC3F7;font-size:11px;flex-shrink:0;}
+  .extcard.e2 .feats li i{color:#FFB347;font-size:11px;flex-shrink:0;}
 
-  .steps{position:absolute;top:430px;left:50px;width:1180px;display:flex;align-items:stretch;gap:0;}
+  .steps{display:flex;align-items:stretch;gap:0;}
   .step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 8px;}
-  .step .num{width:34px;height:34px;border-radius:50%;background:rgba(79,195,247,0.15);border:1px solid #4FC3F7;color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
-  .step .stxt{font-family:'Roboto',sans-serif;font-size:12.5px;color:#F0F4F8;line-height:1.4;}
+  .step .num{width:36px;height:36px;border-radius:50%;background:rgba(79,195,247,0.15);border:1px solid #4FC3F7;color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .step .stxt{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.45;}
   .step .stxt b{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12px;}
-  .connector{position:absolute;top:17px;right:-50%;width:100%;height:1px;background:linear-gradient(90deg,rgba(79,195,247,0.5),rgba(79,195,247,0.1));z-index:-1;}
+  .connector{position:absolute;top:18px;right:-50%;width:100%;height:1px;background:linear-gradient(90deg,rgba(79,195,247,0.5),rgba(79,195,247,0.1));z-index:-1;}
   .step:last-child .connector{display:none;}
 
-  .note{position:absolute;bottom:50px;left:50px;width:1180px;background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.3);border-left:4px solid #D29922;border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-sizing:border-box;}
+  .result{background:rgba(13,27,62,0.6);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #2EA44F;border-radius:8px;padding:14px 20px;box-sizing:border-box;display:flex;align-items:center;gap:20px;}
+  .result .rh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#2EA44F;letter-spacing:1.2px;white-space:nowrap;flex-shrink:0;}
+  .result .rh i{margin-right:6px;}
+  .result pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;margin:0;line-height:1.7;}
+  .result pre .ok{color:#2EA44F;}
+  .result pre .nm{color:#4FC3F7;}
+
+  .note{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.3);border-left:4px solid #D29922;border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:14px;box-sizing:border-box;}
   .note i{color:#D29922;font-size:22px;flex-shrink:0;}
-  .note span{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;line-height:1.4;}
+  .note span{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.4;}
   .note b{color:#D29922;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
@@ -73,23 +82,38 @@
     <div class="h-title">Instalar SQLTools + Driver PostgreSQL</div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="extcard e1" style="position:absolute;top:110px;left:50px;width:570px;height:285px;">
-    <span class="tag">BASE</span>
+  <!-- Extension card 1: SQLTools -->
+  <div data-object="true" data-object-type="textbox" class="extcard e1" style="position:absolute;top:100px;left:50px;width:575px;">
+    <span class="etag">BASE</span>
     <div class="ic"><i class="fa-solid fa-database"></i></div>
     <div class="t"><b>SQLTools</b></div>
     <div class="author">por Matheus Teixeira</div>
-    <div class="d" style="margin-top:14px;">Gestión de conexiones, escritura y ejecución manual de consultas SQL en VS Code. Es la base sobre la que se monta el driver de PostgreSQL.</div>
+    <div class="d">Gestión de conexiones, escritura y ejecución manual de consultas SQL en VS Code. Base sobre la que se monta el driver de PostgreSQL.</div>
+    <ul class="feats">
+      <li><i class="fa-solid fa-check"></i>Conexiones guardadas y reutilizables por proyecto</li>
+      <li><i class="fa-solid fa-check"></i>Editor SQL con resaltado de sintaxis PostgreSQL</li>
+      <li><i class="fa-solid fa-check"></i>Panel de resultados integrado (grid + raw)</li>
+      <li><i class="fa-solid fa-check"></i>Historial de consultas ejecutadas</li>
+    </ul>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="extcard e2" style="position:absolute;top:110px;left:660px;width:570px;height:285px;">
-    <span class="tag">COMPLEMENTO</span>
+  <!-- Extension card 2: Driver -->
+  <div data-object="true" data-object-type="textbox" class="extcard e2" style="position:absolute;top:100px;left:655px;width:575px;">
+    <span class="etag">COMPLEMENTO</span>
     <div class="ic"><i class="fa-solid fa-plug"></i></div>
     <div class="t"><b>SQLTools PostgreSQL/Cockroach Driver</b></div>
     <div class="author">extiende SQLTools</div>
-    <div class="d" style="margin-top:14px;">Habilita la conexión específica con bases de datos PostgreSQL desde SQLTools. Sin este driver, SQLTools no reconoce el motor.</div>
+    <div class="d">Habilita la conexión específica con bases de datos PostgreSQL. Sin este driver, SQLTools no reconoce el motor pg.</div>
+    <ul class="feats">
+      <li><i class="fa-solid fa-check"></i>Protocolo nativo pg_protocol (libpq compatible)</li>
+      <li><i class="fa-solid fa-check"></i>Soporte para conexiones SSL/TLS</li>
+      <li><i class="fa-solid fa-check"></i>Compatible con PostgreSQL 12–17</li>
+      <li><i class="fa-solid fa-check"></i>Exploración de esquemas, tablas y columnas</li>
+    </ul>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="steps" style="position:absolute;top:430px;left:50px;width:1180px;">
+  <!-- Installation steps (horizontal) -->
+  <div data-object="true" data-object-type="textbox" class="steps" style="position:absolute;top:408px;left:50px;width:1180px;">
     <div class="step">
       <div class="num">1</div>
       <div class="stxt"><b>Ctrl+Shift+X</b><br>abre el panel de extensiones</div>
@@ -102,18 +126,26 @@
     </div>
     <div class="step">
       <div class="num">3</div>
-      <div class="stxt">Busca <b>"SQLTools PostgreSQL"</b><br>instala el driver</div>
+      <div class="stxt">Busca <b>"SQLTools PostgreSQL"</b><br>instala el driver complementario</div>
       <div class="connector"></div>
     </div>
     <div class="step">
       <div class="num">4</div>
-      <div class="stxt"><b>Recarga VS Code</b><br>cuando lo solicite</div>
+      <div class="stxt"><b>Recarga VS Code</b><br>cuando lo solicite el sistema</div>
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;bottom:50px;left:50px;width:1180px;">
+  <!-- Result panel -->
+  <div data-object="true" data-object-type="textbox" class="result" style="position:absolute;top:538px;left:50px;width:1180px;">
+    <div class="rh"><i class="fa-solid fa-circle-check"></i>RESULTADO</div>
+    <pre>Extensiones instaladas  <span class="ok">✓</span>
+<span class="nm">SQLTools</span>  v0.29.x  &nbsp;<span class="ok">● Activado</span>   &nbsp;&nbsp; <span class="nm">SQLTools PostgreSQL/Cockroach Driver</span>  <span class="ok">● Activado</span></pre>
+  </div>
+
+  <!-- Note bar -->
+  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;top:610px;left:50px;width:1180px;">
     <i class="fa-solid fa-triangle-exclamation"></i>
-    <span>Antes de continuar, aplica la <b>configuración Vainilla para MYSD</b> según la Guía VS Code Vainilla del curso.</span>
+    <span>Antes de continuar, aplica la <b>configuración Vainilla para MYSD</b> según la Guía VS Code Vainilla del curso — desactiva el autocompletado SQL avanzado.</span>
   </div>
 
   <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>

@@ -23,34 +23,47 @@
   .h-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:25px;color:#F0F4F8;}
 
   /* Folder tree */
-  .tree{background:rgba(13,27,62,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:22px 26px;box-sizing:border-box;}
-  .tree .th{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .tree .th i{font-size:16px;}
-  .tree pre{font-family:'JetBrains Mono',monospace;font-size:14px;color:#C9D1D9;line-height:2;margin:0;}
+  .tree{background:rgba(13,27,62,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:20px 24px;box-sizing:border-box;}
+  .tree .th{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#4FC3F7;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .tree .th i{font-size:15px;}
+  .tree pre{font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#C9D1D9;line-height:2;margin:0;}
   .tree pre .root{color:#4FC3F7;font-weight:700;}
   .tree pre .dir{color:#FFB347;}
   .tree pre .file{color:#F0F4F8;}
   .tree pre .cmt{color:#8B949E;}
   .tree pre .ig{color:#00FF88;}
 
-  .gitnote{background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:16px 20px;box-sizing:border-box;font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.5;}
-  .gitnote b{color:#2EA44F;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  /* Git ignore block */
+  .gitnote{background:rgba(46,164,79,0.08);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:14px 20px;box-sizing:border-box;}
+  .gitnote .gnh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#2EA44F;letter-spacing:1.2px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .gitnote .gnh i{font-size:13px;}
+  .gitnote pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.9;margin:0;}
+  .gitnote pre .g-hl{color:#00FF88;}
+  .gitnote pre .g-cm{color:#8B949E;}
 
   /* Commits */
-  .ch{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .ch{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
   .ch.ok{color:#00FF88;}
   .ch.bad{color:#FF4444;}
-  .commit{font-family:'JetBrains Mono',monospace;font-size:12.5px;border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:1.45;}
-  .commit.good{background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);color:#C9D1D9;}
+  .commit{font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:6px;padding:9px 12px;margin-bottom:7px;line-height:1.4;}
+  .commit:last-of-type{margin-bottom:0;}
+  .commit.good{background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);}
   .commit.good .ck{color:#00FF88;}
   .commit.good .cm{color:#F0F4F8;}
-  .commit.bad{background:rgba(255,68,68,0.06);border:1px solid rgba(255,68,68,0.25);color:#C9D1D9;}
+  .commit.bad{background:rgba(255,68,68,0.06);border:1px solid rgba(255,68,68,0.25);}
   .commit.bad .ck{color:#FF4444;}
   .commit.bad .cm{color:#C9D1D9;}
 
-  .principle{background:rgba(79,195,247,0.06);border:1px dashed rgba(79,195,247,0.4);border-radius:8px;padding:14px 18px;font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;text-align:center;line-height:1.45;}
+  .principle{background:rgba(79,195,247,0.06);border:1px dashed rgba(79,195,247,0.4);border-radius:8px;padding:12px 18px;font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;text-align:center;line-height:1.45;}
   .principle b{color:#4FC3F7;}
-  .principle code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;background:rgba(79,195,247,0.1);padding:1px 6px;border-radius:3px;font-size:13px;}
+  .principle code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;background:rgba(79,195,247,0.1);padding:1px 6px;border-radius:3px;font-size:12.5px;}
+
+  .workflow{background:rgba(13,27,62,0.55);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #336791;border-radius:8px;padding:14px 18px;box-sizing:border-box;}
+  .workflow .wh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.2px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .workflow .wh i{color:#336791;}
+  .workflow pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;line-height:1.9;margin:0;}
+  .workflow pre .w-cmd{color:#4FC3F7;}
+  .workflow pre .w-cmt{color:#8B949E;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -72,41 +85,59 @@
     <div class="h-title">Versionando tus Scripts .sql con Git</div>
   </div>
 
-  <!-- Left: tree -->
-  <div data-object="true" data-object-type="textbox" class="tree" style="position:absolute;top:110px;left:50px;width:580px;">
-    <div class="th"><i class="fa-solid fa-folder-tree"></i>ESTRUCTURA DEL PROYECTO</div>
+  <!-- Left: folder tree -->
+  <div data-object="true" data-object-type="textbox" class="tree" style="position:absolute;top:100px;left:50px;width:580px;">
+    <div class="th"><i class="fa-solid fa-folder-tree"></i>ESTRUCTURA RECOMENDADA DEL PROYECTO</div>
 <pre><span class="root">mi-proyecto/</span>
 ├── <span class="dir">src/</span>
-│   └── <span class="file">*.java</span>          <span class="cmt">← código Java</span>
+│   └── <span class="file">*.java</span>          <span class="cmt">← código Java del proyecto</span>
 ├── <span class="dir">scripts/</span>
-│   ├── <span class="file">esquema.sql</span>     <span class="cmt">← DDL: CREATE TABLE</span>
-│   └── <span class="file">datos.sql</span>       <span class="cmt">← DML: INSERT, SELECT</span>
-└── <span class="ig">.gitignore</span>          <span class="cmt">← incluye !*.sql</span></pre>
+│   ├── <span class="file">esquema.sql</span>     <span class="cmt">← DDL: CREATE TABLE, ALTER</span>
+│   ├── <span class="file">datos.sql</span>       <span class="cmt">← DML: INSERT, seed data</span>
+│   └── <span class="file">consultas.sql</span>   <span class="cmt">← SELECT y reportes</span>
+├── <span class="ig">.gitignore</span>          <span class="cmt">← excluye .class, target/</span>
+└── <span class="file">README.md</span>          <span class="cmt">← descripción del proyecto</span></pre>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:400px;left:50px;width:580px;">
-    <i class="fa-solid fa-circle-info" style="color:#2EA44F;margin-right:6px;"></i>
-    El <b>.gitignore</b> estándar del curso ya incluye <b>!*.sql</b> — tus scripts quedan rastreados automáticamente.
+  <!-- Left: gitignore block -->
+  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:362px;left:50px;width:580px;">
+    <div class="gnh"><i class="fa-solid fa-shield-halved"></i>.GITIGNORE — PLANTILLA RECOMENDADA</div>
+    <pre><span class="g-cm"># Compilados Java</span>
+*.class  *.jar  <span class="g-cm">target/</span>
+<span class="g-cm"># Forzar rastreo de SQL</span>
+<span class="g-hl">!*.sql</span>           <span class="g-cm">← los scripts siempre se versionan</span>
+<span class="g-cm"># Logs y temporales</span>
+*.log  .env  *.tmp</pre>
   </div>
 
-  <!-- Right: commits -->
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:110px;left:650px;width:580px;">
+  <!-- Right: good commits -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:100px;left:650px;width:580px;">
     <div class="ch ok"><i class="fa-solid fa-circle-check"></i>COMMITS CORRECTOS</div>
     <div class="commit good"><span class="ck">git commit -m</span> <span class="cm">"feat: añade esquema inicial con claves foráneas"</span></div>
     <div class="commit good"><span class="ck">git commit -m</span> <span class="cm">"fix: corrige restricción NOT NULL en tabla cliente"</span></div>
     <div class="commit good"><span class="ck">git commit -m</span> <span class="cm">"feat: agrega datos de prueba para cliente y cuenta"</span></div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:325px;left:650px;width:580px;">
+  <!-- Right: bad commits -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;top:275px;left:650px;width:580px;">
     <div class="ch bad"><i class="fa-solid fa-circle-xmark"></i>COMMITS INCORRECTOS</div>
     <div class="commit bad"><span class="ck">git commit -m</span> <span class="cm">"cambios sql"</span></div>
     <div class="commit bad"><span class="ck">git commit -m</span> <span class="cm">"listo"</span></div>
     <div class="commit bad"><span class="ck">git commit -m</span> <span class="cm">"correcciones"</span></div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="principle" style="position:absolute;top:540px;left:650px;width:580px;">
+  <!-- Right: principle -->
+  <div data-object="true" data-object-type="textbox" class="principle" style="position:absolute;top:448px;left:650px;width:580px;">
     <i class="fa-solid fa-key" style="color:#4FC3F7;margin-right:6px;"></i>
-    <b>Principio:</b> Un <code>commit</code> = un cambio atómico con propósito claro.
+    <b>Principio:</b> Un <code>commit</code> = un cambio atómico con propósito claro y mensaje descriptivo.
+  </div>
+
+  <!-- Right: workflow code -->
+  <div data-object="true" data-object-type="textbox" class="workflow" style="position:absolute;top:512px;left:650px;width:580px;">
+    <div class="wh"><i class="fa-brands fa-git-alt"></i>FLUJO COMPLETO POR ENTREGA</div>
+    <pre><span class="w-cmd">git add</span> scripts/esquema.sql      <span class="w-cmt"># solo el archivo relevante</span>
+<span class="w-cmd">git commit -m</span> <span class="" style="color:#F0F4F8;">"feat: CREATE TABLE clientes"</span>
+<span class="w-cmd">git push</span> origin main             <span class="w-cmt"># sube al repositorio</span></pre>
   </div>
 
   <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>

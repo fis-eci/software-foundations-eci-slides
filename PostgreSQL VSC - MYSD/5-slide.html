@@ -24,27 +24,35 @@
 
   .table{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-left:4px solid #4FC3F7;border-radius:10px;padding:0;overflow:hidden;box-sizing:border-box;}
   .table .th{display:grid;grid-template-columns:190px 1fr;background:rgba(79,195,247,0.08);padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.2px;color:#4FC3F7;border-bottom:1px solid rgba(79,195,247,0.2);}
-  .table .tr{display:grid;grid-template-columns:190px 1fr;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:14px;align-items:center;}
+  .table .tr{display:grid;grid-template-columns:190px 1fr;padding:13px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-family:'Roboto',sans-serif;font-size:13.5px;align-items:center;}
   .table .tr:last-child{border-bottom:none;}
-  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  .table .tr .field{color:#8B949E;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
   .table .tr .val{color:#F0F4F8;}
-  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:13px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
+  .table .tr .val code{font-family:'JetBrains Mono',monospace;color:#4FC3F7;font-size:12.5px;background:rgba(79,195,247,0.08);padding:1px 6px;border-radius:3px;}
 
-  .diff{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);border-left:4px solid #FF6B35;border-radius:10px;padding:20px 24px;box-sizing:border-box;}
-  .diff .dh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:15px;font-weight:700;color:#FF6B35;margin-bottom:10px;letter-spacing:0.4px;}
-  .diff .dh i{font-size:19px;}
-  .diff .dtxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.6;}
+  .diff{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);border-left:4px solid #FF6B35;border-radius:10px;padding:18px 22px;box-sizing:border-box;}
+  .diff .dh{display:flex;align-items:center;gap:10px;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#FF6B35;margin-bottom:10px;letter-spacing:0.4px;}
+  .diff .dh i{font-size:18px;}
+  .diff .dtxt{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.6;}
   .diff .dtxt b{color:#FF6B35;}
-  .diff .dtxt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:12.5px;background:rgba(255,107,53,0.1);padding:1px 5px;border-radius:3px;}
+  .diff .dtxt code{font-family:'JetBrains Mono',monospace;color:#FF6B35;font-size:12px;background:rgba(255,107,53,0.1);padding:1px 5px;border-radius:3px;}
 
-  .stepslist{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 22px;box-sizing:border-box;}
-  .stepslist .sh{font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:14px;}
-  .stepslist .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .stepslist{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px 22px;box-sizing:border-box;}
+  .stepslist .sh{font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;color:#8B949E;letter-spacing:1.4px;margin-bottom:12px;}
+  .stepslist .sitem{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
   .stepslist .sitem:last-child{margin-bottom:0;}
   .stepslist .snum{width:26px;height:26px;border-radius:50%;background:rgba(79,195,247,0.15);color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(79,195,247,0.4);}
-  .stepslist .stxt{font-family:'Roboto',sans-serif;font-size:14px;color:#F0F4F8;line-height:1.45;}
-  .stepslist .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:13px;}
-  .stepslist .stxt em{color:#00FF88;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
+  .stepslist .stxt{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.45;}
+  .stepslist .stxt b{color:#4FC3F7;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
+  .stepslist .stxt em{color:#00FF88;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+  .codebox{background:rgba(13,27,62,0.65);border:1px solid rgba(0,122,204,0.3);border-left:4px solid #007ACC;border-radius:10px;padding:16px 20px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#C9D1D9;line-height:1.8;}
+
+  .bottomnote{background:rgba(46,164,79,0.07);border:1px solid rgba(46,164,79,0.3);border-left:4px solid #2EA44F;border-radius:8px;padding:14px 22px;display:flex;align-items:center;gap:14px;box-sizing:border-box;}
+  .bottomnote i{color:#2EA44F;font-size:20px;flex-shrink:0;}
+  .bottomnote span{font-family:'Roboto',sans-serif;font-size:13.5px;color:#F0F4F8;line-height:1.45;}
+  .bottomnote b{color:#2EA44F;}
+  .bottomnote code{font-family:'JetBrains Mono',monospace;color:#2EA44F;font-size:12.5px;background:rgba(46,164,79,0.1);padding:1px 5px;border-radius:3px;}
 
   .tricolor{position:absolute;bottom:0;left:0;width:1280px;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -67,7 +75,7 @@
   </div>
 
   <!-- Left: parameters table -->
-  <div data-object="true" data-object-type="table" class="table" style="position:absolute;top:108px;left:50px;width:680px;">
+  <div data-object="true" data-object-type="table" class="table" style="position:absolute;top:100px;left:50px;width:680px;">
     <div class="th"><span>Campo</span><span>Valor</span></div>
     <div class="tr"><span class="field">Connection Name</span><span class="val"><code>Escuela-Postgre</code> (nombre descriptivo)</span></div>
     <div class="tr"><span class="field">Server / Host</span><span class="val">Dirección proporcionada por el profesor</span></div>
@@ -78,17 +86,16 @@
   </div>
 
   <!-- Left bottom: diff vs Oracle -->
-  <div data-object="true" data-object-type="textbox" class="diff" style="position:absolute;top:430px;left:50px;width:680px;">
+  <div data-object="true" data-object-type="textbox" class="diff" style="position:absolute;top:424px;left:50px;width:680px;">
     <div class="dh"><i class="fa-solid fa-lightbulb"></i>DIFERENCIA CLAVE VS. ORACLE</div>
     <div class="dtxt">
-      En PostgreSQL <b>NO existe el concepto de SID</b> como en Oracle.<br>
-      La base de datos se identifica directamente por su <b>NOMBRE</b> (campo <code>Database</code>).<br>
-      Cada estudiante trabaja dentro de su propio <b>esquema</b>.
+      En PostgreSQL <b>NO existe el concepto de SID</b> como en Oracle. La base de datos se identifica directamente por su <b>NOMBRE</b> (campo <code>Database</code>).<br>
+      Cada estudiante trabaja dentro de su propio <b>esquema</b> — no en bases de datos separadas.
     </div>
   </div>
 
   <!-- Right: steps -->
-  <div data-object="true" data-object-type="textbox" class="stepslist" style="position:absolute;top:108px;left:750px;width:480px;">
+  <div data-object="true" data-object-type="textbox" class="stepslist" style="position:absolute;top:100px;left:750px;width:480px;">
     <div class="sh">5 PASOS PARA CREAR LA CONEXIÓN</div>
     <div class="sitem">
       <div class="snum">1</div>
@@ -96,28 +103,36 @@
     </div>
     <div class="sitem">
       <div class="snum">2</div>
-      <div class="stxt">Seleccionar <b>PostgreSQL</b> en la lista de drivers</div>
+      <div class="stxt">Seleccionar <b>PostgreSQL</b> en la lista de drivers disponibles</div>
     </div>
     <div class="sitem">
       <div class="snum">3</div>
-      <div class="stxt">Completar el formulario con los parámetros de la tabla</div>
+      <div class="stxt">Completar el formulario con los parámetros de la tabla izquierda</div>
     </div>
     <div class="sitem">
       <div class="snum">4</div>
-      <div class="stxt"><b>Test Connection</b> → <em>"Connected successfully"</em></div>
+      <div class="stxt"><b>Test Connection</b> → espera el mensaje <em>"Connected successfully"</em></div>
     </div>
     <div class="sitem">
       <div class="snum">5</div>
-      <div class="stxt"><b>Save Connection</b></div>
+      <div class="stxt"><b>Save Connection</b> — queda guardada para próximas sesiones</div>
     </div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" style="position:absolute;top:430px;left:750px;width:480px;background:rgba(0,122,204,0.08);border:1px solid rgba(0,122,204,0.3);border-left:4px solid #007ACC;border-radius:10px;padding:18px 22px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:13px;color:#C9D1D9;line-height:1.8;">
-    <span style="color:#007ACC;font-weight:700;">// SQLTools panel</span><br>
+  <!-- Right: panel de árbol SQLTools -->
+  <div data-object="true" data-object-type="textbox" class="codebox" style="position:absolute;top:422px;left:750px;width:480px;">
+    <span style="color:#007ACC;font-weight:700;">// Panel lateral de SQLTools</span><br>
     Connections<br>
-    &nbsp;&nbsp;└── <span style="color:#4FC3F7;">Escuela-Postgre</span>  <span style="color:#00FF88;">●</span> connected<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── schemas<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── tu_usuario
+    &nbsp;&nbsp;└── <span style="color:#4FC3F7;">Escuela-Postgre</span>&nbsp;&nbsp;<span style="color:#00FF88;">●</span> connected<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:#FFB347;">schemas</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span style="color:#F0F4F8;">tu_usuario</span>&nbsp;&nbsp;<span style="color:#8B949E;">← tu esquema</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color:#F0F4F8;">public</span>
+  </div>
+
+  <!-- Bottom note (full width) -->
+  <div data-object="true" data-object-type="textbox" class="bottomnote" style="position:absolute;top:604px;left:50px;width:1180px;">
+    <i class="fa-solid fa-circle-info"></i>
+    <span>Si la conexión falla, verifica que estés en la <b>red de la Escuela</b> o conectado via <b>VPN institucional</b>. El servidor no es accesible desde redes externas sin VPN. El puerto es siempre <code>5432</code>.</span>
   </div>
 
   <div data-object="true" data-object-type="textbox" class="footer-r" style="position:absolute;bottom:14px;right:50px;"></div>
