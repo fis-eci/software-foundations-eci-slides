@@ -189,32 +189,32 @@
   .institution i{color:#4FC3F7;font-size:14px;}
   .institution span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:#C9D1D9;}
   /* Main title */
-  .title-block{position:absolute;top:140px;left:64px;}
+  .title-block{position:absolute;top:130px;left:64px;}
   .t1{font-family:'Roboto',sans-serif;font-weight:900;font-size:56px;letter-spacing:2px;color:#F0F4F8;line-height:1;margin:0;}
   .t2{font-family:'Roboto',sans-serif;font-weight:900;font-size:72px;letter-spacing:1px;color:#4FC3F7;line-height:1.05;margin:6px 0 4px 0;text-shadow:0 0 30px rgba(79,195,247,0.4);}
   .t3{font-family:'Roboto',sans-serif;font-weight:300;font-size:40px;color:#F0F4F8;line-height:1.1;margin:0;}
-  .subtitle{position:absolute;top:430px;left:64px;font-family:'JetBrains Mono',monospace;font-size:14px;color:#8B949E;letter-spacing:0.8px;}
+  .subtitle{font-family:'JetBrains Mono',monospace;font-size:14px;color:#8B949E;letter-spacing:0.8px;}
   /* Info items */
-  .info-items{position:absolute;top:482px;left:64px;display:flex;flex-direction:column;gap:11px;}
-  .info-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);padding:9px 16px;border-radius:5px;width:520px;}
+  .info-items{display:flex;flex-direction:column;gap:14px;}
+  .info-item{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);padding:12px 20px;border-radius:6px;width:590px;box-sizing:border-box;}
   .info-item.b1{border-left:3px solid #4FC3F7;}
   .info-item.b2{border-left:3px solid #00FF88;}
   .info-item.b3{border-left:3px solid #FF6B35;}
-  .info-item i{font-size:14px;width:18px;text-align:center;}
+  .info-item i{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
   .info-item .ic1{color:#4FC3F7;}
   .info-item .ic2{color:#00FF88;}
   .info-item .ic3{color:#FF6B35;}
-  .info-item span{font-family:'Roboto',sans-serif;font-size:13px;color:#F0F4F8;font-weight:400;}
+  .info-item span{font-family:'Roboto',sans-serif;font-size:16px;color:#F0F4F8;font-weight:400;line-height:1.35;}
   /* Floating cards */
-  .fcard{position:absolute;right:60px;width:280px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:18px 20px;}
-  .fcard1{top:160px;border-left:3px solid #4FC3F7;box-shadow:0 8px 28px rgba(79,195,247,0.08);}
-  .fcard2{top:300px;border-left:3px solid #FF6B35;box-shadow:0 8px 28px rgba(255,107,53,0.08);}
-  .fcard .fc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-  .fcard .fc-head i{font-size:18px;}
+  .fcard{position:absolute;right:60px;width:310px;background:rgba(13,27,62,0.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:20px 22px;}
+  .fcard1{top:148px;border-left:3px solid #4FC3F7;box-shadow:0 8px 28px rgba(79,195,247,0.08);}
+  .fcard2{top:318px;border-left:3px solid #FF6B35;box-shadow:0 8px 28px rgba(255,107,53,0.08);}
+  .fcard .fc-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .fcard .fc-head i{font-size:22px;}
   .fcard1 .fc-head i{color:#4FC3F7;}
   .fcard2 .fc-head i{color:#FF6B35;}
-  .fcard .fc-title{font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;color:#F0F4F8;letter-spacing:0.5px;}
-  .fcard .fc-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:#C9D1D9;}
+  .fcard .fc-title{font-family:'Roboto',sans-serif;font-size:18px;font-weight:700;color:#F0F4F8;letter-spacing:0.5px;}
+  .fcard .fc-val{font-family:'JetBrains Mono',monospace;font-size:15px;color:#C9D1D9;}
   /* Bottom tricolor */
   .tricolor{position:absolute;bottom:0;left:0;right:0;height:6px;display:flex;}
   .tricolor div:nth-child(1){background:#336791;flex:1;}
@@ -254,22 +254,22 @@
     <div class="t3">en Visual Studio Code</div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="subtitle" style="position:absolute;top:432px;left:64px;">
+  <div data-object="true" data-object-type="textbox" class="subtitle" style="position:absolute;top:322px;left:64px;">
     Entorno Moderno para MYSD — Consultas Conscientes sin IA
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="info-items" style="position:absolute;top:482px;left:64px;">
+  <div data-object="true" data-object-type="textbox" class="info-items" style="position:absolute;top:368px;left:64px;">
     <div class="info-item b1"><i class="fa-solid fa-database ic1"></i><span>Fundamentos de Ingeniería de Software</span></div>
     <div class="info-item b2"><i class="fa-solid fa-check-circle ic2"></i><span>Unidad de Aprendizaje</span></div>
-    <div class="info-item b3"><i class="fa-solid fa-user ic3"></i><span>Andersson David Sánchez Méndez — Monitor MYSD & DOPO</span></div>
+    <div class="info-item b3"><i class="fa-solid fa-user ic3"></i><span>Andersson David Sánchez Méndez — Monitor MYSD &amp; DOPO</span></div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="fcard fcard1" style="position:absolute;top:160px;right:60px;width:280px;">
+  <div data-object="true" data-object-type="textbox" class="fcard fcard1" style="position:absolute;top:148px;right:60px;width:310px;">
     <div class="fc-head"><i class="fa-solid fa-server"></i><div class="fc-title">SERVIDOR ESCUELA</div></div>
     <div class="fc-val">Host:5432/postgres</div>
   </div>
 
-  <div data-object="true" data-object-type="textbox" class="fcard fcard2" style="position:absolute;top:300px;right:60px;width:280px;">
+  <div data-object="true" data-object-type="textbox" class="fcard fcard2" style="position:absolute;top:318px;right:60px;width:310px;">
     <div class="fc-head"><i class="fa-solid fa-hard-drive"></i><div class="fc-title">LOCAL</div></div>
     <div class="fc-val">localhost:5432/postgres</div>
   </div>
@@ -281,35 +281,6 @@
 </div>
 </body>
 </html>
-
-on:absolute;bottom:0;left:0;width:1280px;height:6px;">
-    <div></div><div></div><div></div>
-  </div>
-</div>
-</body>
-</html>
-
-on:absolute;bottom:0;left:0;width:1280px;height:6px;">
-    <div></div><div></div><div></div>
-  </div>
-</div>
-</body>
-</html>
-
-on:absolute;bottom:0;left:0;width:1280px;height:6px;">
-    <div></div><div></div><div></div>
-  </div>
-</div>
-</body>
-</html>
-
-on:absolute;bottom:0;left:0;width:1280px;height:6px;">
-    <div></div><div></div><div></div>
-  </div>
-</div>
-</body>
-</html>
-
 `,
       `<!doctype html>
 <html lang="es">
@@ -1009,7 +980,7 @@ services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span cla
   </div>
 
   <!-- Bottom note (full width) -->
-  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;top:594px;left:50px;width:1180px;">
+  <div data-object="true" data-object-type="textbox" class="note" style="position:absolute;top:622px;left:50px;width:1180px;">
     <i class="fa-solid fa-flask"></i>
     <span>La conexión local es tu <b>laboratorio personal</b>. Úsala para practicar sin afectar el servidor compartido de la Escuela. Puedes borrar y recrear tu BD libremente.</span>
   </div>
@@ -1151,8 +1122,8 @@ services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span cla
     </div>
   </div>
 
-  <!-- Golden rule (moved up, right after pipeline) -->
-  <div data-object="true" data-object-type="textbox" class="gold" style="position:absolute;top:330px;left:50px;width:820px;">
+  <!-- Golden rule -->
+  <div data-object="true" data-object-type="textbox" class="gold" style="position:absolute;top:348px;left:50px;width:820px;">
     <i class="fa-solid fa-exclamation-triangle gi"></i>
     <div>
       <div class="gh">⚡ REGLA DORADA</div>
@@ -1161,7 +1132,7 @@ services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span cla
   </div>
 
   <!-- Tips section (below golden rule on left) -->
-  <div data-object="true" data-object-type="textbox" class="tips" style="position:absolute;top:440px;left:50px;width:820px;">
+  <div data-object="true" data-object-type="textbox" class="tips" style="position:absolute;top:456px;left:50px;width:820px;">
     <div class="th"><i class="fa-solid fa-bolt"></i>TIPS DE EFICIENCIA EN VS CODE</div>
     <div class="tip"><i class="fa-solid fa-angle-right"></i><span>Usa <code>Ctrl+\`</code> para abrir el terminal integrado mientras tienes el editor SQL abierto</span></div>
     <div class="tip"><i class="fa-solid fa-angle-right"></i><span>Puedes tener múltiples pestañas <code>.sql</code> abiertas — una por entidad o funcionalidad</span></div>
@@ -1294,7 +1265,7 @@ services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span cla
   </div>
 
   <!-- Left: gitignore block -->
-  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:362px;left:50px;width:580px;">
+  <div data-object="true" data-object-type="textbox" class="gitnote" style="position:absolute;top:422px;left:50px;width:580px;">
     <div class="gnh"><i class="fa-solid fa-shield-halved"></i>.GITIGNORE — PLANTILLA RECOMENDADA</div>
     <pre><span class="g-cm"># Compilados Java</span>
 *.class  *.jar  <span class="g-cm">target/</span>
@@ -1832,15 +1803,23 @@ services.msc  →  <span class="cmd">postgresql-x64-17</span>  estado: <span cla
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>En PostgreSQL, un compañero ejecuta <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">DELETE FROM clientes;</b> sin cláusula <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">WHERE</b> en el servidor compartido.</span>
+      <span>Un compañero ejecuta <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">DELETE FROM clientes;</b> sin <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">WHERE</b> en el servidor compartido de la Escuela.</span>
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>¿Qué <b style="color:#D29922;">consecuencia</b> tiene esto para el resto del equipo?</span>
+      <span>¿Qué <b style="color:#D29922;">consecuencia inmediata</b> tiene esto para el resto del equipo que trabaja en el mismo servidor?</span>
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>¿Cómo se podría haber <b style="color:#D29922;">evitado</b> con un buen uso de control de versiones y <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">commits atómicos</b>?</span>
+      <span>¿En cuál entorno es más grave el error: <b style="color:#D29922;">servidor compartido de la Escuela</b> o <b style="color:#D29922;">localhost</b>? ¿Por qué?</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Cómo habrías usado una <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">transacción</b> (<b style="font-family:'JetBrains Mono',monospace;color:#D29922;">BEGIN / ROLLBACK</b>) para protegerte antes de ejecutar?</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Cómo se podría <b style="color:#D29922;">recuperar</b> el estado anterior con <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">commits atómicos</b> y scripts versionados en Git?</span>
     </div>
   </div>
 

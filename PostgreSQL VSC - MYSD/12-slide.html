@@ -95,15 +95,23 @@
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>En PostgreSQL, un compañero ejecuta <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">DELETE FROM clientes;</b> sin cláusula <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">WHERE</b> en el servidor compartido.</span>
+      <span>Un compañero ejecuta <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">DELETE FROM clientes;</b> sin <b style="color:#FF6B35;font-family:'JetBrains Mono',monospace;">WHERE</b> en el servidor compartido de la Escuela.</span>
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>¿Qué <b style="color:#D29922;">consecuencia</b> tiene esto para el resto del equipo?</span>
+      <span>¿Qué <b style="color:#D29922;">consecuencia inmediata</b> tiene esto para el resto del equipo que trabaja en el mismo servidor?</span>
     </div>
     <div class="q">
       <i class="fa-solid fa-angle-right"></i>
-      <span>¿Cómo se podría haber <b style="color:#D29922;">evitado</b> con un buen uso de control de versiones y <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">commits atómicos</b>?</span>
+      <span>¿En cuál entorno es más grave el error: <b style="color:#D29922;">servidor compartido de la Escuela</b> o <b style="color:#D29922;">localhost</b>? ¿Por qué?</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Cómo habrías usado una <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">transacción</b> (<b style="font-family:'JetBrains Mono',monospace;color:#D29922;">BEGIN / ROLLBACK</b>) para protegerte antes de ejecutar?</span>
+    </div>
+    <div class="q">
+      <i class="fa-solid fa-angle-right"></i>
+      <span>¿Cómo se podría <b style="color:#D29922;">recuperar</b> el estado anterior con <b style="font-family:'JetBrains Mono',monospace;color:#D29922;">commits atómicos</b> y scripts versionados en Git?</span>
     </div>
   </div>
 
