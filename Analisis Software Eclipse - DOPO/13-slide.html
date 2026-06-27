@@ -31,22 +31,22 @@
       background-color: #161B22;
       border: 1px solid #30363D;
       border-radius: 8px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       margin-bottom: 8px;
       box-sizing: border-box;
-      height: 70px;
+      height: 80px;
     }
     .pipeline-step-num {
       flex-shrink: 0;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Roboto Mono', monospace;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 15px;
       margin-right: 15px;
     }
   </style>
@@ -66,8 +66,8 @@
         <div class="pipeline-step-num" style="background-color: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.4); color: #58A6FF;">I</div>
         <i class="fa-solid fa-play" style="color: #58A6FF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Inicial</div>
-          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Ejecuta la herramienta y registra TODOS los incidentes en una tabla.</div>
+          <div style="font-weight: 700; font-size: 16px; color: #FFFFFF;">Análisis Inicial</div>
+          <div style="font-size: 14px; color: #8B949E; margin-top: 2px;">Ejecuta la herramienta y registra TODOS los incidentes en una tabla.</div>
         </div>
       </div>
 
@@ -76,8 +76,8 @@
         <div class="pipeline-step-num" style="background-color: rgba(248, 152, 32, 0.15); border: 1px solid rgba(248, 152, 32, 0.4); color: #F89820;">II</div>
         <i class="fa-solid fa-magnifying-glass" style="color: #F89820; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Interpretación</div>
-          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Lee cada incidente de software. Clasifícalo de acuerdo con la prioridad.</div>
+          <div style="font-weight: 700; font-size: 16px; color: #FFFFFF;">Interpretación</div>
+          <div style="font-size: 14px; color: #8B949E; margin-top: 2px;">Lee cada incidente de software. Clasifícalo de acuerdo con la prioridad.</div>
         </div>
       </div>
 
@@ -86,8 +86,8 @@
         <div class="pipeline-step-num" style="background-color: rgba(124, 92, 191, 0.15); border: 1px solid rgba(124, 92, 191, 0.4); color: #7C5CBF;">III</div>
         <i class="fa-solid fa-bullseye" style="color: #7C5CBF; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Selección</div>
-          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Elige el incidente más relevante. Justifica técnicamente la selección.</div>
+          <div style="font-weight: 700; font-size: 16px; color: #FFFFFF;">Selección</div>
+          <div style="font-size: 14px; color: #8B949E; margin-top: 2px;">Elige el incidente más relevante. Justifica técnicamente la selección.</div>
         </div>
       </div>
 
@@ -96,8 +96,8 @@
         <div class="pipeline-step-num" style="background-color: rgba(46, 164, 79, 0.15); border: 1px solid rgba(46, 164, 79, 0.4); color: #2EA44F;">IV</div>
         <i class="fa-solid fa-wrench" style="color: #2EA44F; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Solución</div>
-          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Aplica la corrección en el código Java y documenta el razonamiento.</div>
+          <div style="font-weight: 700; font-size: 16px; color: #FFFFFF;">Solución</div>
+          <div style="font-size: 14px; color: #8B949E; margin-top: 2px;">Aplica la corrección en el código Java y documenta el razonamiento.</div>
         </div>
       </div>
 
@@ -106,8 +106,18 @@
         <div class="pipeline-step-num" style="background-color: rgba(218, 54, 51, 0.15); border: 1px solid rgba(218, 54, 51, 0.4); color: #DA3633;">V</div>
         <i class="fa-solid fa-chart-line" style="color: #DA3633; font-size: 18px; margin-right: 15px; width: 20px; text-align: center;"></i>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: #FFFFFF;">Análisis Final</div>
-          <div style="font-size: 12px; color: #8B949E; margin-top: 2px;">Vuelve a ejecutar la herramienta y compara: Estado Inicial vs Final.</div>
+          <div style="font-weight: 700; font-size: 16px; color: #FFFFFF;">Análisis Final</div>
+          <div style="font-size: 14px; color: #8B949E; margin-top: 2px;">Vuelve a ejecutar la herramienta y compara: Estado Inicial vs Final.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sequence note below pipeline (Left) -->
+    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 522px; width: 680px; z-index: 10;">
+      <div style="background-color: rgba(88,166,255,0.05); border: 1px solid rgba(88,166,255,0.2); border-left: 4px solid #58A6FF; border-radius: 0 8px 8px 0; padding: 14px 20px; box-sizing: border-box; display:flex; align-items:flex-start; gap:12px;">
+        <i class="fa-solid fa-layer-group" style="color:#58A6FF; font-size:18px; flex-shrink:0; margin-top:2px;"></i>
+        <div style="font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+          <strong style="color:#FFFFFF;">Orden de ejecución:</strong> aplica este ciclo de cinco etapas secuencialmente para <strong style="color:#58A6FF;">SonarLint → PMD → JaCoCo → Pitclipse</strong>. Cada herramienta produce su propio reporte independiente.
         </div>
       </div>
     </div>
@@ -118,14 +128,14 @@
       <div>
         <div style="text-align: center; margin-bottom: 20px;">
           <i class="fa-solid fa-file-alt" style="font-size: 48px; color: #58A6FF; margin-bottom: 10px;"></i>
-          <h3 style="margin: 0; font-size: 18px; color: #FFFFFF; font-weight: 700;">Entregable Esperado</h3>
+          <h3 style="margin: 0; font-size: 20px; color: #FFFFFF; font-weight: 700;">Entregable Esperado</h3>
         </div>
-        
-        <p style="margin: 0 0 15px 0; font-size: 14px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
+
+        <p style="margin: 0 0 15px 0; font-size: 15px; color: #C9D1D9; line-height: 1.5; font-weight: 300;">
           Para cada una de las cuatro herramientas de análisis deberás consolidar e incluir en tu reporte final:
         </p>
 
-        <ul style="margin: 0; padding-left: 20px; color: #8B949E; font-size: 13px; line-height: 1.7; font-weight: 300;">
+        <ul style="margin: 0; padding-left: 20px; color: #8B949E; font-size: 14px; line-height: 1.8; font-weight: 300;">
           <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Tabla Inicial:</strong> Listado y conteo de todos los incidentes detectados antes de realizar cambios.</li>
           <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Justificación de Selección:</strong> ¿Por qué seleccionaste ese incidente específico para resolver?</li>
           <li style="margin-bottom: 8px;"><strong style="color: #C9D1D9;">Código Antes/Después:</strong> Evidencia del código fuente previo y el corregido.</li>
@@ -133,7 +143,7 @@
         </ul>
       </div>
 
-      <div style="border-top: 1px solid rgba(88, 166, 255, 0.2); padding-top: 15px; font-size: 12px; color: #8B949E; text-align: center; line-height: 1.4;">
+      <div style="border-top: 1px solid rgba(88, 166, 255, 0.2); padding-top: 15px; font-size: 13px; color: #8B949E; text-align: center; line-height: 1.4;">
         📋 Repite este ciclo de forma rigurosa para las cuatro herramientas antes de la fecha de entrega.
       </div>
 
