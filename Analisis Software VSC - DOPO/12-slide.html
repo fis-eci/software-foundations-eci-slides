@@ -13,7 +13,7 @@
   .h-title{font-size:22px;font-weight:700;color:#fff}
 
   /* ── Left card: question ── */
-  .verif{position:absolute;top:108px;left:50px;width:580px;height:480px;background:rgba(210,153,34,0.06);border-left:5px solid #D29922;border-radius:14px;padding:24px 26px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+  .verif{position:absolute;top:108px;left:50px;width:580px;height:480px;background:rgba(210,153,34,0.06);border-left:5px solid #D29922;border-radius:14px;padding:24px 26px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px}
   .verif .vh{display:flex;align-items:center;gap:10px;font-weight:700;color:#D29922;letter-spacing:1.4px;font-family:'Roboto Mono',monospace;font-size:13px;text-transform:uppercase}
   .verif .q-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;align-self:flex-start}
   .verif .q-text{font-size:15px;color:#fff;line-height:1.6;font-weight:400}
@@ -21,6 +21,9 @@
   .verif .divider{height:1px;background:#30363D}
   .verif .q-hint{display:flex;align-items:center;gap:10px;font-size:13px;color:#8B949E;font-style:italic}
   .verif .q-hint i{color:#D29922;flex-shrink:0}
+  .verif .q-mini-label{font-size:10px;color:#8B949E;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+  .verif .q-row{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#C9D1D9;line-height:1.45}
+  .verif .q-row i{color:#4FC3F7;margin-top:3px;flex-shrink:0;font-size:10px}
 
   /* ── Right card: resources ── */
   .res{position:absolute;top:108px;left:650px;width:580px;height:480px;background:rgba(0,122,204,0.04);border-left:5px solid #007ACC;border-radius:14px;padding:24px 26px;box-sizing:border-box;display:flex;flex-direction:column}
@@ -62,6 +65,11 @@
     <div class="q-text">Tienes la configuración Vainilla activa pero VS Code sigue mostrando <b>sugerencias de métodos Java</b>. ¿Qué ajuste en <b>settings.json</b> es específico para Java?</div>
     <div class="divider"></div>
     <div class="q-hint"><i class="fas fa-key"></i>Pista: busca claves que empiecen por <b style="color:#4FC3F7">"java."</b> relacionadas con completion/suggestions.</div>
+    <div class="divider"></div>
+    <div class="q-mini-label">También debes poder responder:</div>
+    <div class="q-row"><i class="fas fa-angle-right"></i>¿Cómo confirmas que SonarLint está activo en VS Code sin ejecutar ningún comando?</div>
+    <div class="q-row"><i class="fas fa-angle-right"></i>Si PIT reporta un mutante <b style="color:#DA3633">Survived</b> en <code style="color:#4FC3F7;font-family:'Roboto Mono';font-size:12px">monto&gt;0 → monto≥0</code>, ¿qué valor de prueba agregas?</div>
+    <div class="q-row"><i class="fas fa-angle-right"></i>¿Qué diferencia hay entre <b style="color:#4FC3F7">Coverage Gutters: Watch</b> y <b style="color:#4FC3F7">Display Coverage</b>?</div>
   </div>
 
   <!-- Right card: resources + contact -->
@@ -91,7 +99,7 @@
     </div>
 
     <div class="contact-sect">
-      <div class="contact-title">Contacto del Monitor</div>
+      <div class="contact-title">Contacto</div>
       <a href="https://github.com/fis-eci/software-foundations-eci/issues" class="citem c-gh">
         <i class="fab fa-github"></i>
         <span>github.com/fis-eci/software-foundations-eci · Issues</span>
@@ -105,7 +113,7 @@
 
   <!-- Closing phrase -->
   <div class="closing">
-    Aplica el ciclo completo — <strong style="color:#fff;font-style:normal;">SonarLint → PMD → JaCoCo → PIT</strong> — sobre tu proyecto <strong style="color:#fff;font-style:normal;">CuentaBancaria</strong> antes de la fecha de entrega.
+    Aplica el ciclo completo — <strong style="color:#fff;font-style:normal;">SonarLint → PMD → JaCoCo → PIT</strong> — sobre tu proyecto <strong style="color:#fff;font-style:normal;">CuentaBancaria</strong>
   </div>
 
   <div class="footer">DOPO • Análisis de Software • VS Code</div>
