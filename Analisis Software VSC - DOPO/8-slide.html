@@ -14,26 +14,31 @@
   .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(124,92,191,0.05);z-index:1}
   .col-left{position:absolute;top:108px;left:60px;width:540px;z-index:10}
   .col-right{position:absolute;top:108px;left:640px;width:580px;z-index:10}
-  .mini-title{font-size:11px;font-weight:700;color:#7C5CBF;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
-  .step{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;background:#161B22;border:1px solid #30363D;border-radius:6px;padding:16px 14px}
+  .mini-title{font-size:12px;font-weight:700;color:#7C5CBF;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+  .step{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;background:#161B22;border:1px solid #30363D;border-radius:6px;padding:18px 14px}
   .step-num{flex-shrink:0;width:30px;height:30px;background:#7C5CBF;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-family:'Roboto Mono',monospace}
-  .step-txt{font-size:14px;color:#C9D1D9;line-height:1.45;padding-top:5px}
+  .step-txt{font-size:15px;color:#C9D1D9;line-height:1.45;padding-top:5px}
+  .check-list{margin-top:18px;background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .check-row{display:flex;align-items:center;gap:10px;padding:11px 14px;font-size:13.5px;color:#C9D1D9;border-bottom:1px solid #30363D}
+  .check-row:last-child{border-bottom:none}
+  .check-row:nth-child(even){background:#21262D}
+  .check-row i{color:#2EA44F;flex-shrink:0;font-size:12px}
   .step-txt b{color:#fff}
   .step-txt code{background:#0D1117;color:#4FC3F7;padding:1px 6px;border-radius:3px;font-family:'Roboto Mono',monospace;font-size:12px}
-  .note{margin-top:14px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:15px 14px;font-size:13px;color:#C9D1D9;border-radius:4px;line-height:1.5}
+  .note{margin-top:14px;background:rgba(218,54,51,0.08);border-left:3px solid #DA3633;padding:15px 14px;font-size:14px;color:#C9D1D9;border-radius:4px;line-height:1.5}
   .note b{color:#DA3633}
   .table{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden;margin-bottom:14px}
   .row{display:flex;border-bottom:1px solid #30363D}
   .row:last-child{border-bottom:none}
   .row.head{background:#21262D;font-weight:700;color:#fff;font-size:11px;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase}
   .row.alt{background:#21262D}
-  .cell{padding:15px 16px;font-size:14px;color:#C9D1D9}
+  .cell{padding:15px 16px;font-size:15px;color:#C9D1D9}
   .cell.c1{flex:0 0 130px;color:#4FC3F7;font-weight:700;border-right:1px solid #30363D}
   .row.head .cell.c1{color:#fff}
   .cell.c2{flex:1;font-family:'Roboto Mono',monospace;font-size:13px}
   .code-block{background:#1E1E1E;border:1px solid #30363D;border-radius:6px;overflow:hidden}
   .cb-tab{background:#252526;padding:6px 14px;font-size:10.5px;color:#969696;font-family:'Roboto Mono',monospace;border-bottom:1px solid #30363D}
-  .cb-body{padding:11px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:#D4D4D4;line-height:1.6}
+  .cb-body{padding:13px 14px;font-family:'Roboto Mono',monospace;font-size:13.5px;color:#D4D4D4;line-height:1.7}
   .cb-body .key{color:#569CD6}
   .cb-body .cls{color:#4EC9B0}
   .cb-body .com{color:#6A9955}
@@ -55,6 +60,14 @@
     <div class="step"><div class="step-num">3</div><div class="step-txt"><code>Ctrl+Shift+M</code> — verifica que la vista <b>Problems</b> no tenga errores rojos</div></div>
 
     <div class="note"><b><i class="fas fa-exclamation-triangle"></i> Importante:</b> Si VS Code no detecta el proyecto, asegúrate de que la carpeta contenga los <code style="color:#4FC3F7;font-family:'Roboto Mono'">.java</code> o la estructura <code style="color:#4FC3F7;font-family:'Roboto Mono'">src/com/tupackage/</code></div>
+
+    <div class="mini-title" style="margin-top:22px">Verificación Previa al Análisis</div>
+    <div class="check-list">
+      <div class="check-row"><i class="fas fa-check-circle"></i>VS Code Vainilla configurado — <code style="color:#4FC3F7;font-family:'Roboto Mono';font-size:12px">settings.json</code> aplicado</div>
+      <div class="check-row"><i class="fas fa-check-circle"></i>Extension Pack for Java activo (ícono ☕ en barra lateral)</div>
+      <div class="check-row"><i class="fas fa-check-circle"></i>Vista Problems sin errores rojos (<code style="color:#4FC3F7;font-family:'Roboto Mono';font-size:12px">Ctrl+Shift+M</code>)</div>
+      <div class="check-row"><i class="fas fa-check-circle"></i>Dependencia JaCoCo y plugin PIT presentes en <code style="color:#4FC3F7;font-family:'Roboto Mono';font-size:12px">pom.xml</code></div>
+    </div>
   </div>
 
   <div class="col-right">

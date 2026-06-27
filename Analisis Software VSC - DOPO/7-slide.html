@@ -14,8 +14,14 @@
   .deco{position:absolute;top:130px;right:60px;font-size:120px;color:rgba(218,54,51,0.05);z-index:1}
   .col-left{position:absolute;top:96px;left:60px;width:560px;z-index:10}
   .col-right{position:absolute;top:96px;left:660px;width:560px;z-index:10}
-  .mini-title{font-size:11px;font-weight:700;color:#DA3633;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+  .mini-title{font-size:11px;font-weight:700;color:#DA3633;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;margin-top:20px}
+  .mini-title:first-child{margin-top:0}
   .code-block{background:#0D1117;border:1px solid #30363D;border-radius:6px;padding:16px 14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#D4D4D4;line-height:1.55}
+  .flow-table{background:#161B22;border:1px solid #30363D;border-radius:6px;overflow:hidden}
+  .flow-row{display:flex;padding:11px 12px;font-size:13px;color:#C9D1D9;border-bottom:1px solid #30363D;align-items:center}
+  .flow-row:last-child{border-bottom:none}
+  .flow-row:nth-child(even){background:#21262D}
+  .flow-num{flex-shrink:0;width:22px;color:#DA3633;font-weight:700;font-family:'Roboto Mono',monospace}
   .code-block .tag{color:#569CD6}
   .code-block .attr{color:#9CDCFE}
   .code-block .val{color:#CE9178}
@@ -75,6 +81,15 @@
 <span class="tag">&lt;/plugin&gt;</span>
     </div>
     <div class="note-sm"><i class="fas fa-info-circle"></i> Este bloque va dentro de <code style="color:#4FC3F7">&lt;build&gt;&lt;plugins&gt;...&lt;/plugins&gt;&lt;/build&gt;</code></div>
+
+    <div class="mini-title">Flujo de Resolución — PIT</div>
+    <div class="flow-table">
+      <div class="flow-row"><div class="flow-num">1</div>Ejecuta <code style="color:#DA3633;font-family:'Roboto Mono'">mvn pitest:mutationCoverage</code> desde la terminal</div>
+      <div class="flow-row"><div class="flow-num">2</div>Abre <code style="color:#4FC3F7;font-family:'Roboto Mono'">target/pit-reports/index.html</code> en el navegador</div>
+      <div class="flow-row"><div class="flow-num">3</div>Identifica el mutante <b style="color:#DA3633">Survived</b> más relevante</div>
+      <div class="flow-row"><div class="flow-num">4</div>Escribe un <code style="color:#4FC3F7;font-family:'Roboto Mono'">@Test</code> que falle cuando se aplica esa mutación</div>
+      <div class="flow-row"><div class="flow-num">5</div>Re-ejecuta PIT → confirma que el mutante aparece como <b style="color:#2EA44F">Killed</b></div>
+    </div>
   </div>
 
   <div class="col-right">
