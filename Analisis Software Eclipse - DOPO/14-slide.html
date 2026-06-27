@@ -6,9 +6,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body {
-      margin: 0;
-      padding: 0;
       background-color: #0D1117;
       color: #FFFFFF;
       font-family: 'Roboto', sans-serif;
@@ -20,21 +19,76 @@
       height: 720px;
       overflow: hidden;
       background-color: #0D1117;
-      background-image: 
+      background-image:
         linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
         linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
       background-size: 40px 40px;
     }
-    .video-card {
-      background-color: #161B22;
-      border: 1px solid #30363D;
-      border-radius: 12px;
-      padding: 24px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      height: 200px;
+
+    /* Video thumbnail cards */
+    .vcard {
+      position: absolute;
+      border-radius: 14px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      border: 2px solid;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .vcard:hover { transform: translateY(-4px); }
+    .vcard.v1 { border-color: rgba(248,152,32,0.5); box-shadow: 0 8px 40px rgba(248,152,32,0.15); }
+    .vcard.v1:hover { box-shadow: 0 16px 56px rgba(248,152,32,0.3); }
+    .vcard.v2 { border-color: rgba(218,54,51,0.5); box-shadow: 0 8px 40px rgba(218,54,51,0.15); }
+    .vcard.v2:hover { box-shadow: 0 16px 56px rgba(218,54,51,0.3); }
+
+    .thumb { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,17,23,0.25) 0%, rgba(13,17,23,0.82) 100%); }
+
+    .play-btn {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -58%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .play-icon {
+      width: 76px; height: 76px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,0,0,0.88); box-shadow: 0 0 44px rgba(255,0,0,0.55);
+      transition: transform 0.2s ease;
+    }
+    .vcard:hover .play-icon { transform: scale(1.1); }
+    .play-icon i { font-size: 34px; color: #fff; margin-left: 5px; }
+    .play-label {
+      font-family: 'Roboto Mono', monospace; font-size: 13px; font-weight: 700;
+      color: #fff; letter-spacing: 1.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+    }
+
+    .vinfo {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 22px;
+      background: linear-gradient(to top, rgba(13,17,23,0.98) 0%, rgba(13,17,23,0.65) 100%);
+    }
+    .vi-tag {
+      font-family: 'Roboto Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 3px; display: inline-block; margin-bottom: 7px;
+      font-weight: 700;
+    }
+    .v1 .vi-tag { color: #F89820; background: rgba(248,152,32,0.12); border: 1px solid rgba(248,152,32,0.35); }
+    .v2 .vi-tag { color: #DA3633; background: rgba(218,54,51,0.12); border: 1px solid rgba(218,54,51,0.35); }
+    .vi-title { font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 700; color: #F0F4F8; line-height: 1.3; margin-bottom: 10px; }
+    .vi-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+    .vi-tools span {
+      font-family: 'Roboto Mono', monospace; font-size: 10px; color: #8B949E;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      padding: 3px 9px; border-radius: 3px;
+    }
+
+    .vi-num {
+      position: absolute; top: 16px; right: 16px;
+      font-family: 'Roboto Mono', monospace; font-size: 11px; font-weight: 700;
+      padding: 5px 12px; border-radius: 4px;
+    }
+    .v1 .vi-num { color: #F89820; background: rgba(13,17,23,0.72); border: 1px solid rgba(248,152,32,0.4); }
+    .v2 .vi-num { color: #DA3633; background: rgba(13,17,23,0.72); border: 1px solid rgba(218,54,51,0.4); }
   </style>
 </head>
 <body>
@@ -46,71 +100,45 @@
     </div>
 
     <!-- Video 1 -->
-    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 120px; width: 1160px; z-index: 10;">
-      <div class="video-card" style="border-left: 5px solid #F89820;">
-        <div style="flex-shrink: 0; margin-right: 30px; color: #F89820; text-align: center; width: 80px;">
-          <i class="fa-regular fa-play-circle" style="font-size: 58px; text-shadow: 0 0 15px rgba(248,152,32,0.2);"></i>
-          <span style="display: block; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #F89820; margin-top: 8px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">VIDEO 1</span>
-        </div>
-        <div style="flex-grow: 1;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <h3 style="margin: 0; font-size: 20px; color: #FFFFFF; font-weight: 700;">Instalación de Eclipse + 4 Plugins</h3>
-            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; background-color: rgba(248, 152, 32, 0.1); border: 1px solid rgba(248, 152, 32, 0.25); color: #F89820; padding: 2px 8px; border-radius: 4px; font-weight: 700;">VIDEO 1 • DOPO</span>
-          </div>
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
-            Instala Eclipse IDE for Java Developers y configura SonarLint, PMD, EclEmma y Pitclipse desde cero de manera clara y guiada.
-          </p>
-          <a href="https://youtu.be/Gq7Tz84vEDk" target="_blank" style="display:block; text-decoration:none; border-radius:6px; overflow:hidden; margin-top:8px; height:52px; position:relative; background:url('https://img.youtube.com/vi/Gq7Tz84vEDk/maxresdefault.jpg') center/cover no-repeat;">
-            <div style="position:absolute; inset:0; background:rgba(0,0,0,0.55);"></div>
-            <div style="position:absolute; inset:0; display:flex; align-items:center; padding:0 16px; gap:12px;">
-              <i class="fa-brands fa-youtube" style="font-size:26px; color:#FF0000; flex-shrink:0;"></i>
-              <span style="font-family:'Roboto Mono',monospace; font-size:12px; color:#FFFFFF;">youtu.be/Gq7Tz84vEDk</span>
-              <span style="margin-left:auto; font-family:'Roboto Mono',monospace; font-size:11px; color:#C9D1D9; background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">▶ Ver video</span>
-            </div>
-          </a>
+    <a class="vcard v1" href="https://youtu.be/Gq7Tz84vEDk" target="_blank" rel="noopener"
+       style="top: 100px; left: 50px; width: 575px; height: 570px;">
+      <div class="thumb" style="background-image: url('https://img.youtube.com/vi/Gq7Tz84vEDk/maxresdefault.jpg');"></div>
+      <div class="thumb-overlay"></div>
+      <span class="vi-num">VIDEO 1</span>
+      <div class="play-btn">
+        <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+        <div class="play-label">Ver Video</div>
+      </div>
+      <div class="vinfo">
+        <div class="vi-tag">VIDEO 1 · DOPO</div>
+        <div class="vi-title">Instalación de Eclipse IDE + 4 Plugins de Análisis</div>
+        <div class="vi-tools">
+          <span>Eclipse IDE</span><span>SonarLint</span><span>PMD</span><span>EclEmma</span><span>Pitclipse</span>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Video 2 -->
-    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 340px; width: 1160px; z-index: 10;">
-      <div class="video-card" style="border-left: 5px solid #DA3633;">
-        <div style="flex-shrink: 0; margin-right: 30px; color: #DA3633; text-align: center; width: 80px;">
-          <i class="fa-regular fa-play-circle" style="font-size: 58px; text-shadow: 0 0 15px rgba(218,54,51,0.2);"></i>
-          <span style="display: block; font-family: 'Roboto Mono', monospace; font-size: 10px; color: #DA3633; margin-top: 8px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">VIDEO 2</span>
-        </div>
-        <div style="flex-grow: 1;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <h3 style="margin: 0; font-size: 20px; color: #FFFFFF; font-weight: 700;">Los 4 Análisis en Acción: CuentaBancaria</h3>
-            <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; background-color: rgba(218, 54, 51, 0.1); border: 1px solid rgba(218, 54, 51, 0.25); color: #DA3633; padding: 2px 8px; border-radius: 4px; font-weight: 700;">VIDEO 2 • DOPO</span>
-          </div>
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #C9D1D9; line-height: 1.4; font-weight: 300;">
-            Importa el proyecto de BlueJ, ejecuta los cuatro análisis de software y resuelve cada uno de los incidentes presentados paso a paso.
-          </p>
-          <a href="https://youtu.be/t2J1zNvKKKU" target="_blank" style="display:block; text-decoration:none; border-radius:6px; overflow:hidden; margin-top:8px; height:52px; position:relative; background:url('https://img.youtube.com/vi/t2J1zNvKKKU/maxresdefault.jpg') center/cover no-repeat;">
-            <div style="position:absolute; inset:0; background:rgba(0,0,0,0.55);"></div>
-            <div style="position:absolute; inset:0; display:flex; align-items:center; padding:0 16px; gap:12px;">
-              <i class="fa-brands fa-youtube" style="font-size:26px; color:#FF0000; flex-shrink:0;"></i>
-              <span style="font-family:'Roboto Mono',monospace; font-size:12px; color:#FFFFFF;">youtu.be/t2J1zNvKKKU</span>
-              <span style="margin-left:auto; font-family:'Roboto Mono',monospace; font-size:11px; color:#C9D1D9; background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">▶ Ver video</span>
-            </div>
-          </a>
+    <a class="vcard v2" href="https://youtu.be/t2J1zNvKKKU" target="_blank" rel="noopener"
+       style="top: 100px; left: 655px; width: 575px; height: 570px;">
+      <div class="thumb" style="background-image: url('https://img.youtube.com/vi/t2J1zNvKKKU/maxresdefault.jpg');"></div>
+      <div class="thumb-overlay"></div>
+      <span class="vi-num">VIDEO 2</span>
+      <div class="play-btn">
+        <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+        <div class="play-label">Ver Video</div>
+      </div>
+      <div class="vinfo">
+        <div class="vi-tag">VIDEO 2 · DOPO</div>
+        <div class="vi-title">Los 4 Análisis en Acción: Proyecto CuentaBancaria</div>
+        <div class="vi-tools">
+          <span>BlueJ → Eclipse</span><span>SonarLint</span><span>PMD</span><span>JaCoCo</span><span>PIT</span><span>JUnit</span>
         </div>
       </div>
-    </div>
-
-    <!-- Lightbulb Bottom Box -->
-    <div data-object="true" data-object-type="textbox" style="position: absolute; left: 60px; top: 560px; width: 1160px; z-index: 10;">
-      <div style="background-color: #161B22; border: 1px dashed #30363D; border-radius: 8px; padding: 16px 24px; box-sizing: border-box; display: flex; align-items: center;">
-        <i class="fa-solid fa-lightbulb" style="color: #D29922; font-size: 22px; margin-right: 20px; flex-shrink: 0;"></i>
-        <div style="font-size: 14px; color: #C9D1D9; font-weight: 300; line-height: 1.4;">
-          <strong style="color: #D29922;">Consejo de aprendizaje:</strong> Usa las actividades de pausa (<span style="font-size: 14px; vertical-align: middle;">⏸️</span>) de cada diapositiva para detener la explicación e intentar resolver los problemas antes de ver la solución en pantalla.
-        </div>
-      </div>
-    </div>
+    </a>
 
     <!-- Footer -->
-    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 25px; width: 350px; text-align: right; z-index: 10;">
+    <div data-object="true" data-object-type="textbox" style="position: absolute; right: 40px; bottom: 12px; width: 350px; text-align: right; z-index: 10;">
       <span style="font-family: 'Roboto Mono', monospace; font-size: 11px; color: #484F58;">
         DOPO • Análisis de Software • Eclipse IDE
       </span>
