@@ -2,78 +2,96 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Video de Práctica Guiada</title>
+<title>Videos de Práctica Guiada</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
 <style>
-  body{margin:0;padding:0;overflow:hidden;font-family:'Roboto',sans-serif;background:#0D1117;color:#fff}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0D1117;color:#fff;font-family:'Roboto',sans-serif;overflow:hidden}
   .slide-container{position:relative;width:1280px;height:720px;overflow:hidden;background:#0D1117;background-image:linear-gradient(rgba(48,54,61,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(48,54,61,0.3) 1px,transparent 1px);background-size:40px 40px}
   .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
   .h-badge{background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
   .h-title{font-size:22px;font-weight:700;color:#fff}
-  .deco{position:absolute;top:140px;right:90px;font-size:160px;color:rgba(0,122,204,0.05);z-index:1}
-  .deco2{position:absolute;bottom:120px;left:60px;font-size:140px;color:rgba(46,164,79,0.04);z-index:1}
-  .video-card{position:absolute;top:120px;left:130px;width:1020px;background:rgba(0,122,204,0.08);border:1px solid #007ACC;border-radius:14px;padding:32px 50px;box-sizing:border-box;z-index:10;box-shadow:0 0 80px rgba(0,122,204,0.15)}
-  .vc-row{display:flex;gap:32px;align-items:center}
-  .vc-play{flex:0 0 130px;text-align:center}
-  .vc-play i{font-size:100px;color:#007ACC;filter:drop-shadow(0 0 18px rgba(0,122,204,0.4))}
-  .vc-body{flex:1}
-  .vc-tag{display:inline-block;background:#2EA44F;color:#fff;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:10px}
-  .vc-title{font-size:24px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
-  .vc-title .accent{color:#4FC3F7}
-  .vc-desc{font-size:13.5px;color:#C9D1D9;line-height:1.5;margin-bottom:14px}
-  .vc-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-  .vc-tool{font-family:'Roboto Mono',monospace;font-size:11px;padding:5px 10px;border-radius:4px;background:#161B22;border:1px solid #30363D;color:#C9D1D9}
-  .vc-tool .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .vc-tool.t1 .dot{background:#4A90D9}
-  .vc-tool.t2 .dot{background:#F89820}
-  .vc-tool.t3 .dot{background:#2EA44F}
-  .vc-tool.t4 .dot{background:#DA3633}
-  .vc-link{background:#0D1117;border:1px solid #007ACC;border-radius:6px;padding:9px 14px;font-family:'Roboto Mono',monospace;font-size:13px;color:#4FC3F7;display:inline-flex;align-items:center;gap:10px}
-  .vc-link i{color:#007ACC}
-  .cross-ref{position:absolute;left:130px;bottom:80px;width:1020px;background:#161B22;border:1px solid #30363D;border-left:3px solid #F89820;border-radius:6px;padding:13px 18px;display:flex;align-items:center;gap:14px;z-index:10;box-sizing:border-box}
-  .cr-ico{font-size:22px;color:#F89820;flex-shrink:0}
-  .cr-text{flex:1;font-size:13px;color:#C9D1D9}
-  .cr-text b{color:#fff}
-  .cr-link{font-family:'Roboto Mono',monospace;color:#4FC3F7;margin-left:6px}
-  .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
+
+  /* ── Video thumbnail cards ── */
+  .vcard{position:absolute;border-radius:14px;overflow:hidden;text-decoration:none;display:block;border:2px solid;cursor:pointer;transition:transform 0.2s ease,box-shadow 0.2s ease}
+  .vcard:hover{transform:translateY(-4px)}
+  .vcard.v1{border-color:rgba(0,122,204,0.5);box-shadow:0 8px 40px rgba(0,122,204,0.15)}
+  .vcard.v1:hover{box-shadow:0 16px 56px rgba(0,122,204,0.3)}
+  .vcard.v2{border-color:rgba(248,152,32,0.5);box-shadow:0 8px 40px rgba(248,152,32,0.15)}
+  .vcard.v2:hover{box-shadow:0 16px 56px rgba(248,152,32,0.3)}
+
+  .thumb{position:absolute;inset:0;background-size:cover;background-position:center}
+  .thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,17,23,0.25) 0%,rgba(13,17,23,0.82) 100%)}
+
+  .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);display:flex;flex-direction:column;align-items:center;gap:10px}
+  .play-icon{width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,0,0,0.88);box-shadow:0 0 44px rgba(255,0,0,0.55);transition:transform 0.2s ease}
+  .vcard:hover .play-icon{transform:scale(1.1)}
+  .play-icon i{font-size:34px;color:#fff;margin-left:5px}
+  .play-label{font-family:'Roboto Mono',monospace;font-size:13px;font-weight:700;color:#fff;letter-spacing:1.5px;text-shadow:0 2px 8px rgba(0,0,0,0.8);text-transform:uppercase}
+
+  .vinfo{position:absolute;bottom:0;left:0;right:0;padding:18px 22px;background:linear-gradient(to top,rgba(13,17,23,0.98) 0%,rgba(13,17,23,0.65) 100%)}
+  .vi-tag{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;display:inline-block;margin-bottom:7px;font-weight:700}
+  .v1 .vi-tag{color:#4FC3F7;background:rgba(0,122,204,0.12);border:1px solid rgba(0,122,204,0.35)}
+  .v2 .vi-tag{color:#F89820;background:rgba(248,152,32,0.12);border:1px solid rgba(248,152,32,0.35)}
+  .vi-title{font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;color:#F0F4F8;line-height:1.3;margin-bottom:10px}
+  .vi-tools{display:flex;flex-wrap:wrap;gap:6px}
+  .vi-tools span{font-family:'Roboto Mono',monospace;font-size:10px;color:#8B949E;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);padding:3px 9px;border-radius:3px}
+
+  .vi-num{position:absolute;top:16px;right:16px;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;padding:5px 12px;border-radius:4px}
+  .v1 .vi-num{color:#4FC3F7;background:rgba(13,17,23,0.72);border:1px solid rgba(0,122,204,0.4)}
+  .v2 .vi-num{color:#F89820;background:rgba(13,17,23,0.72);border:1px solid rgba(248,152,32,0.4)}
+
+  .footer{position:absolute;right:60px;bottom:14px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
   .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
   .bottom-bar div{flex:1}
   .bottom-bar .b1{background:#007ACC}.bottom-bar .b2{background:#4FC3F7}.bottom-bar .b3{background:#2EA44F}
 </style>
 </head>
 <body>
-<div class="slide-container" data-screen-label="11 Video">
-  <div class="header"><span class="h-badge">PRÁCTICA</span><span class="h-title">🎥 Video de Práctica Guiada</span></div>
-  <i class="fas fa-circle-play deco"></i>
-  <i class="fas fa-code deco2"></i>
+<div class="slide-container" data-screen-label="11 Práctica">
+  <div class="header"><span class="h-badge">PRÁCTICA</span><span class="h-title">🎥 Videos de Práctica Guiada</span></div>
 
-  <div class="video-card">
-    <div class="vc-row">
-      <div class="vc-play"><i class="fas fa-circle-play"></i></div>
-      <div class="vc-body">
-        <span class="vc-tag">VIDEO 3 • DOPO</span>
-        <div class="vc-title">Los 4 Análisis en Acción en <span class="accent">VS Code</span>: SonarLint, PMD, JaCoCo y PIT</div>
-        <div class="vc-desc">Abrimos el proyecto <b>CuentaBancaria</b>, ejecutamos los cuatro análisis y resolvemos los incidentes encontrados, siguiendo el protocolo de 5 etapas en cada herramienta.</div>
-        <div class="vc-tools">
-          <span class="vc-tool t1"><span class="dot"></span>SonarLint</span>
-          <span class="vc-tool t2"><span class="dot"></span>PMD: Run</span>
-          <span class="vc-tool t3"><span class="dot"></span>Coverage Gutters</span>
-          <span class="vc-tool t4"><span class="dot"></span>mvn pitest:mutationCoverage</span>
-        </div>
-        <div class="vc-link"><i class="fab fa-youtube"></i>https://youtu.be/N29OODjHMUE</div>
+  <!-- Video 1 — VSC -->
+  <a class="vcard v1" href="https://youtu.be/N29OODjHMUE" target="_blank" rel="noopener"
+     style="top:100px;left:50px;width:575px;height:570px;">
+    <div class="thumb" style="background-image:url('https://img.youtube.com/vi/N29OODjHMUE/maxresdefault.jpg');"></div>
+    <div class="thumb-overlay"></div>
+    <span class="vi-num">VIDEO 3</span>
+    <div class="play-btn">
+      <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+      <div class="play-label">Ver Video</div>
+    </div>
+    <div class="vinfo">
+      <div class="vi-tag">VIDEO 3 · DOPO</div>
+      <div class="vi-title">Los 4 Análisis en Acción en VS Code: SonarLint, PMD, JaCoCo y PIT</div>
+      <div class="vi-tools">
+        <span>VS Code</span><span>SonarLint</span><span>PMD: Run</span><span>Coverage Gutters</span><span>mvn pitest</span>
       </div>
     </div>
-  </div>
+  </a>
 
-  <div class="cross-ref">
-    <div class="cr-ico"><i class="fas fa-exchange-alt"></i></div>
-    <div class="cr-text"><b>¿Prefieres Eclipse?</b> Ver el <b>Video 2</b> (Análisis en Eclipse):<span class="cr-link">https://youtu.be/t2J1zNvKKKU</span></div>
-  </div>
+  <!-- Video 2 — Eclipse (referencia cruzada) -->
+  <a class="vcard v2" href="https://youtu.be/t2J1zNvKKKU" target="_blank" rel="noopener"
+     style="top:100px;left:655px;width:575px;height:570px;">
+    <div class="thumb" style="background-image:url('https://img.youtube.com/vi/t2J1zNvKKKU/maxresdefault.jpg');"></div>
+    <div class="thumb-overlay"></div>
+    <span class="vi-num">VIDEO 2</span>
+    <div class="play-btn">
+      <div class="play-icon"><i class="fa-brands fa-youtube"></i></div>
+      <div class="play-label">Ver Video</div>
+    </div>
+    <div class="vinfo">
+      <div class="vi-tag">VIDEO 2 · DOPO</div>
+      <div class="vi-title">Los 4 Análisis en Acción en Eclipse IDE: Proyecto CuentaBancaria</div>
+      <div class="vi-tools">
+        <span>Eclipse IDE</span><span>SonarLint</span><span>PMD</span><span>JaCoCo</span><span>Pitclipse</span><span>JUnit</span>
+      </div>
+    </div>
+  </a>
 
   <div class="footer">DOPO • Análisis de Software • VS Code</div>
   <div class="bottom-bar"><div class="b1"></div><div class="b2"></div><div class="b3"></div></div>
 </div>
 </body>
 </html>
-

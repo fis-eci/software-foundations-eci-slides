@@ -50,7 +50,7 @@ DECKS = [
     },
     {
         "folder": "Analisis Software VSC - DOPO",
-        "count":  13,
+        "count":  12,
         "output": "Analisis-VSC-presentation.html",
         "title":  "Análisis de Software VSC — DOPO",
     },

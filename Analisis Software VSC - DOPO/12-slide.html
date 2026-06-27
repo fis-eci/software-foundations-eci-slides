@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Verificación y Recursos</title>
+<title>Verificación Final y Recursos</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
 <style>
@@ -11,31 +11,40 @@
   .header{position:absolute;top:0;left:0;width:1280px;height:80px;background:#161B22;border-bottom:1px solid #30363D;display:flex;align-items:center;padding:0 60px;box-sizing:border-box;z-index:5}
   .h-badge{background:#007ACC;color:#fff;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:4px;margin-right:22px}
   .h-title{font-size:22px;font-weight:700;color:#fff}
-  .deco{position:absolute;top:130px;right:60px;font-size:130px;color:rgba(0,122,204,0.05);z-index:1}
-  .col-left{position:absolute;top:108px;left:60px;width:580px;z-index:10}
-  .col-right{position:absolute;top:108px;left:680px;width:540px;z-index:10}
-  .mini-title{font-size:11px;font-weight:700;font-family:'Roboto Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .mt-q{color:#D29922}
-  .mt-r{color:#007ACC}
-  .question-card{background:linear-gradient(135deg,rgba(210,153,34,0.1),rgba(0,122,204,0.05));border:1px solid #D29922;border-left:4px solid #D29922;border-radius:10px;padding:22px 24px}
-  .q-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;margin-bottom:14px}
-  .q-icon{font-size:32px;color:#D29922;margin-bottom:8px}
-  .q-text{font-size:16px;color:#fff;line-height:1.55;font-weight:400}
-  .q-text b{color:#4FC3F7}
-  .q-divider{height:1px;background:#30363D;margin:18px 0}
-  .q-hint{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#8B949E;font-style:italic}
-  .q-hint i{color:#D29922}
-  .resources{background:#161B22;border:1px solid #30363D;border-radius:8px;overflow:hidden}
-  .res-row{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid #30363D;gap:14px}
-  .res-row:last-child{border-bottom:none}
-  .res-row:nth-child(even){background:#21262D}
-  .res-ico{flex-shrink:0;width:28px;text-align:center;font-size:16px}
-  .res-ico.guide{color:#007ACC}
-  .res-ico.doc{color:#4FC3F7}
-  .res-ico.wiki{color:#2EA44F}
-  .res-body{flex:1;min-width:0}
-  .res-name{font-size:13px;color:#fff;font-weight:700}
-  .res-url{font-size:11px;color:#8B949E;font-family:'Roboto Mono',monospace;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ── Left card: question ── */
+  .verif{position:absolute;top:108px;left:50px;width:580px;height:480px;background:rgba(210,153,34,0.06);border-left:5px solid #D29922;border-radius:14px;padding:24px 26px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+  .verif .vh{display:flex;align-items:center;gap:10px;font-weight:700;color:#D29922;letter-spacing:1.4px;font-family:'Roboto Mono',monospace;font-size:13px;text-transform:uppercase}
+  .verif .q-tag{display:inline-block;background:#D29922;color:#0D1117;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;align-self:flex-start}
+  .verif .q-text{font-size:15px;color:#fff;line-height:1.6;font-weight:400}
+  .verif .q-text b{color:#4FC3F7}
+  .verif .divider{height:1px;background:#30363D}
+  .verif .q-hint{display:flex;align-items:center;gap:10px;font-size:13px;color:#8B949E;font-style:italic}
+  .verif .q-hint i{color:#D29922;flex-shrink:0}
+
+  /* ── Right card: resources ── */
+  .res{position:absolute;top:108px;left:650px;width:580px;height:480px;background:rgba(0,122,204,0.04);border-left:5px solid #007ACC;border-radius:14px;padding:24px 26px;box-sizing:border-box;display:flex;flex-direction:column}
+  .res-title{font-family:'Roboto Mono',monospace;font-size:13px;font-weight:700;color:#007ACC;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .ritem{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .ritem:last-of-type{border-bottom:none}
+  .ritem > i{color:#4FC3F7;font-size:20px;flex-shrink:0;width:24px;text-align:center}
+  .rname{font-weight:700;color:#F0F4F8;font-size:15px}
+  .rurl{font-family:'Roboto Mono',monospace;font-size:12px;color:#4FC3F7;display:block;margin-top:3px}
+
+  /* ── Contact section ── */
+  .contact-sect{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08)}
+  .contact-title{font-family:'Roboto Mono',monospace;font-size:12px;color:#8B949E;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px}
+  .citem{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:7px;background:rgba(255,255,255,0.04);margin-bottom:8px;text-decoration:none}
+  .citem:last-child{margin-bottom:0}
+  .citem.c-gh{border-left:3px solid #2EA44F}
+  .citem.c-email{border-left:3px solid #4FC3F7}
+  .citem.c-gh > i{color:#2EA44F;font-size:16px;flex-shrink:0}
+  .citem.c-email > i{color:#4FC3F7;font-size:16px;flex-shrink:0}
+  .citem span{font-family:'Roboto Mono',monospace;font-size:13px;color:#C9D1D9}
+
+  /* ── Closing phrase ── */
+  .closing{position:absolute;bottom:50px;left:50px;right:50px;text-align:center;font-size:14px;color:#8B949E;font-style:italic;z-index:10}
+
   .footer{position:absolute;right:60px;bottom:22px;font-family:'Roboto Mono',monospace;font-size:11px;color:#484F58;z-index:10}
   .bottom-bar{position:absolute;left:0;bottom:0;width:100%;height:6px;display:flex;z-index:20}
   .bottom-bar div{flex:1}
@@ -43,74 +52,60 @@
 </style>
 </head>
 <body>
-<div class="slide-container" data-screen-label="12 Verificación">
+<div class="slide-container" data-screen-label="12 Cierre">
   <div class="header"><span class="h-badge">CIERRE</span><span class="h-title">Verificación Final y Recursos</span></div>
-  <i class="fas fa-clipboard-check deco"></i>
 
-  <div class="col-left">
-    <div class="mini-title mt-q"><i class="fas fa-circle-question"></i> PREGUNTA DE VERIFICACIÓN</div>
-    <div class="question-card">
-      <span class="q-tag">RETO FINAL</span>
-      <div class="q-icon"><i class="fas fa-lightbulb"></i></div>
-      <div class="q-text">Tienes la configuración Vainilla activa pero VS Code sigue mostrando <b>sugerencias de métodos Java</b>. ¿Qué ajuste en <b>settings.json</b> es específico para Java?</div>
-      <div class="q-divider"></div>
-      <div class="q-hint"><i class="fas fa-key"></i>Pista: busca claves que empiecen por <b style="color:#4FC3F7">"java."</b> relacionadas con completion/suggestions.</div>
+  <!-- Left card: question -->
+  <div class="verif">
+    <div class="vh"><i class="fas fa-circle-question"></i>Desafío de Verificación</div>
+    <span class="q-tag">RETO FINAL</span>
+    <div class="q-text">Tienes la configuración Vainilla activa pero VS Code sigue mostrando <b>sugerencias de métodos Java</b>. ¿Qué ajuste en <b>settings.json</b> es específico para Java?</div>
+    <div class="divider"></div>
+    <div class="q-hint"><i class="fas fa-key"></i>Pista: busca claves que empiecen por <b style="color:#4FC3F7">"java."</b> relacionadas con completion/suggestions.</div>
+  </div>
+
+  <!-- Right card: resources + contact -->
+  <div class="res">
+    <div class="res-title"><i class="fas fa-link"></i>Enlaces y Referencias</div>
+
+    <div class="ritem">
+      <i class="fas fa-laptop-code"></i>
+      <div>
+        <div class="rname">Guía VS Code Vainilla</div>
+        <span class="rurl">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</span>
+      </div>
+    </div>
+    <div class="ritem">
+      <i class="fas fa-book-open"></i>
+      <div>
+        <div class="rname">Wiki IS-FUNDAMENTOS</div>
+        <span class="rurl">fis-eci.github.io/software-foundations-eci/<wbr>Unidad-Analisis-VSC/</span>
+      </div>
+    </div>
+    <div class="ritem">
+      <i class="fas fa-store"></i>
+      <div>
+        <div class="rname">VS Code Marketplace <span style="font-size:12px;color:#8B949E;font-weight:300;">(extensiones del curso)</span></div>
+        <span class="rurl">marketplace.visualstudio.com</span>
+      </div>
+    </div>
+
+    <div class="contact-sect">
+      <div class="contact-title">Contacto del Monitor</div>
+      <a href="https://github.com/fis-eci/software-foundations-eci/issues" class="citem c-gh">
+        <i class="fab fa-github"></i>
+        <span>github.com/fis-eci/software-foundations-eci · Issues</span>
+      </a>
+      <a href="mailto:fis@escuelaing.edu.co" class="citem c-email">
+        <i class="fas fa-envelope"></i>
+        <span>fis@escuelaing.edu.co</span>
+      </a>
     </div>
   </div>
 
-  <div class="col-right">
-    <div class="mini-title mt-r"><i class="fas fa-book-bookmark"></i> RECURSOS</div>
-    <div class="resources">
-      <div class="res-row">
-        <div class="res-ico guide"><i class="fas fa-laptop-code"></i></div>
-        <div class="res-body">
-          <div class="res-name">Guía VS Code Vainilla</div>
-          <div class="res-url">fis-eci.github.io/software-foundations-eci/VSCode-Vanila/</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico doc"><i class="fas fa-book"></i></div>
-        <div class="res-body">
-          <div class="res-name">Extension Pack for Java</div>
-          <div class="res-url">marketplace.visualstudio.com — vscjava.vscode-java-pack</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico doc"><i class="fas fa-book"></i></div>
-        <div class="res-body">
-          <div class="res-name">Coverage Gutters</div>
-          <div class="res-url">marketplace.visualstudio.com — ryanluker.vscode-coverage-gutters</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico doc"><i class="fas fa-book"></i></div>
-        <div class="res-body">
-          <div class="res-name">PMD para VS Code</div>
-          <div class="res-url">marketplace.visualstudio.com — pmd</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico doc"><i class="fas fa-book"></i></div>
-        <div class="res-body">
-          <div class="res-name">PIT Mutation Testing</div>
-          <div class="res-url">pitest.org</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico doc"><i class="fas fa-book"></i></div>
-        <div class="res-body">
-          <div class="res-name">JaCoCo</div>
-          <div class="res-url">jacoco.org</div>
-        </div>
-      </div>
-      <div class="res-row">
-        <div class="res-ico wiki"><i class="fas fa-book-open"></i></div>
-        <div class="res-body">
-          <div class="res-name">Wiki del curso</div>
-          <div class="res-url">fis-eci.github.io/software-foundations-eci/Unidad-Analisis-VSC/</div>
-        </div>
-      </div>
-    </div>
+  <!-- Closing phrase -->
+  <div class="closing">
+    Aplica el ciclo completo — <strong style="color:#fff;font-style:normal;">SonarLint → PMD → JaCoCo → PIT</strong> — sobre tu proyecto <strong style="color:#fff;font-style:normal;">CuentaBancaria</strong> antes de la fecha de entrega.
   </div>
 
   <div class="footer">DOPO • Análisis de Software • VS Code</div>
@@ -118,4 +113,3 @@
 </div>
 </body>
 </html>
-
