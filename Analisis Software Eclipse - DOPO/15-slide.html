@@ -24,19 +24,19 @@
     .verif .vh {
       display:flex; align-items:center; gap:10px; font-weight:700;
       color:#D29922; letter-spacing:1.4px; font-family:'Roboto Mono',monospace;
-      font-size:12px; text-transform:uppercase;
+      font-size:13px; text-transform:uppercase;
     }
     .verif .scenario {
       background:rgba(13,17,23,0.8); border:1px solid rgba(210,153,34,0.25);
       border-radius:8px; padding:12px 16px; font-family:'Roboto Mono',monospace;
-      font-size:12px; color:#C9D1D9; line-height:1.6;
+      font-size:13px; color:#C9D1D9; line-height:1.6;
     }
     .verif .q {
-      font-family:'Roboto',sans-serif; font-size:13px;
+      font-family:'Roboto',sans-serif; font-size:14px;
       display:flex; align-items:flex-start; gap:10px;
       color:#C9D1D9; line-height:1.55; font-weight:300;
     }
-    .verif .q i { color:#D29922; font-size:14px; flex-shrink:0; margin-top:2px; }
+    .verif .q i { color:#D29922; font-size:15px; flex-shrink:0; margin-top:2px; }
 
     /* ── Right card: resources ── */
     .res {
@@ -46,7 +46,7 @@
       display:flex; flex-direction:column;
     }
     .res-title {
-      font-family:'Roboto Mono',monospace; font-size:12px; font-weight:700;
+      font-family:'Roboto Mono',monospace; font-size:13px; font-weight:700;
       color:#58A6FF; letter-spacing:1.4px; text-transform:uppercase;
       margin-bottom:16px; display:flex; align-items:center; gap:10px;
     }
@@ -56,9 +56,9 @@
     }
     .ritem:last-of-type { border-bottom:none; }
     .ritem > i { color:#58A6FF; font-size:18px; flex-shrink:0; width:22px; text-align:center; }
-    .rname { font-weight:700; color:#F0F4F8; font-size:14px; }
+    .rname { font-weight:700; color:#F0F4F8; font-size:15px; }
     .rurl {
-      font-family:'Roboto Mono',monospace; font-size:11px; color:#58A6FF;
+      font-family:'Roboto Mono',monospace; font-size:12px; color:#58A6FF;
       display:block; margin-top:3px;
     }
     .contact-sect {
@@ -66,7 +66,7 @@
       border-top:1px solid rgba(255,255,255,0.08);
     }
     .contact-title {
-      font-family:'Roboto Mono',monospace; font-size:11px; color:#8B949E;
+      font-family:'Roboto Mono',monospace; font-size:12px; color:#8B949E;
       letter-spacing:0.05em; text-transform:uppercase; margin-bottom:10px;
     }
     .citem {
@@ -79,12 +79,12 @@
     .citem.c-gh    { border-left:3px solid #2EA44F; }
     .citem.c-email > i { color:#58A6FF; font-size:15px; flex-shrink:0; }
     .citem.c-gh    > i { color:#2EA44F; font-size:15px; flex-shrink:0; }
-    .citem span { font-family:'Roboto Mono',monospace; font-size:12px; color:#C9D1D9; }
+    .citem span { font-family:'Roboto Mono',monospace; font-size:13px; color:#C9D1D9; }
 
     /* ── Closing phrase ── */
     .closing {
       position:absolute; bottom:50px; left:50px; right:50px;
-      text-align:center; font-size:13px; color:#8B949E; font-style:italic;
+      text-align:center; font-size:14px; color:#8B949E; font-style:italic;
       z-index:10;
     }
   </style>
@@ -109,11 +109,11 @@
 
       <div class="q">
         <i class="fa-solid fa-angle-right"></i>
-        <span>¿Qué prueba unitaria exacta codificarías para capturar este mutante? Escríbela completa con estructura <strong style="color:#FFFFFF;">BDD (Given / When / Then)</strong> y nomenclatura <strong style="color:#FFFFFF; font-family:'Roboto Mono',monospace;font-size:11px;">shouldXWhenY</strong>.</span>
+        <span>¿Qué prueba unitaria exacta codificarías para capturar este mutante? Escríbela completa con estructura <strong style="color:#FFFFFF;">BDD (Given / When / Then)</strong> y nomenclatura <strong style="color:#FFFFFF; font-family:'Roboto Mono',monospace;font-size:12px;">shouldXWhenY</strong>.</span>
       </div>
       <div class="q">
         <i class="fa-solid fa-angle-right"></i>
-        <span>¿Qué cambio mínimo harías al método <strong style="color:#F89820;font-family:'Roboto Mono',monospace;font-size:11px;">retirar()</strong> para que la condición de frontera <strong style="color:#F89820;font-family:'Roboto Mono',monospace;font-size:11px;">saldo == 0</strong> quede cubierta por un assert explícito?</span>
+        <span>¿Qué cambio mínimo harías al método <strong style="color:#F89820;font-family:'Roboto Mono',monospace;font-size:12px;">retirar()</strong> para que la condición de frontera <strong style="color:#F89820;font-family:'Roboto Mono',monospace;font-size:12px;">saldo == 0</strong> quede cubierta por un assert explícito?</span>
       </div>
       <div class="q">
         <i class="fa-solid fa-angle-right"></i>
@@ -121,7 +121,7 @@
       </div>
       <div class="q">
         <i class="fa-solid fa-angle-right"></i>
-        <span>¿Qué diferencia hay entre un mutante <strong style="color:#DA3633;font-family:'Roboto Mono',monospace;font-size:11px;">Survived</strong> y uno <strong style="color:#8B949E;font-family:'Roboto Mono',monospace;font-size:11px;">No Coverage</strong>? ¿Cuál representa el problema más grave en tu suite de pruebas y por qué?</span>
+        <span>¿Qué diferencia hay entre un mutante <strong style="color:#DA3633;font-family:'Roboto Mono',monospace;font-size:12px;">Survived</strong> y uno <strong style="color:#8B949E;font-family:'Roboto Mono',monospace;font-size:12px;">No Coverage</strong>? ¿Cuál representa el problema más grave en tu suite de pruebas y por qué?</span>
       </div>
     </div>
 
