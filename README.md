@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/Licencia-Apache%202.0-blue.svg)](./LICENSE)
 [![HTML](https://img.shields.io/badge/Tecnología-HTML%20%2B%20CSS-orange.svg)](.)
-[![Slides](https://img.shields.io/badge/Diapositivas-60%20slides-blue.svg)](.)
+[![Slides](https://img.shields.io/badge/Diapositivas-75%20slides-blue.svg)](.)
 [![Institución](https://img.shields.io/badge/ECI-Julio%20Garavito-red.svg)](https://www.escuelaing.edu.co)
 
 <br/>
@@ -39,15 +39,18 @@ Este repositorio genera **6 presentaciones de una sola página** (archivos `.htm
 | 3 | [`OracleSQL-presentation.html`](./OracleSQL-presentation.html) | Entornos Oracle SQL Developer | 11 | MYSD |
 | 4 | [`SQL-PostgreVSC-presentation.html`](./SQL-PostgreVSC-presentation.html) | PostgreSQL en VS Code | 12 | MYSD |
 | 5 | [`Analisis-Eclipse-presentation.html`](./Analisis-Eclipse-presentation.html) | Análisis de Software en Eclipse IDE | 15 | DOPO |
-| 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 13 | DOPO |
+| 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 12 | DOPO |
 
 ### 🎨 Temas visuales por mazo
 
-| Mazo | Fondo | Acento principal | Acento secundario |
-|------|-------|-----------------|-------------------|
-| CVS | `#0d1117` (GitHub Dark) | `#58a6ff` azul | `#3fb950` verde |
-| Oracle SQL | `#0a0e27` (Navy oscuro) | `#00ffff` cian | `#ff6b35` naranja |
-| Pruebas Unitarias | `#003366` (Java Blue) | `#f89820` naranja | `#4caf50` verde |
+| Mazo | Fondo | Acento principal | Acento secundario | Terciario |
+|------|-------|-----------------|-------------------|-----------|
+| CVS | `#0d1117` (GitHub Dark) | `#58a6ff` azul | `#3fb950` verde | — |
+| Oracle SQL | `#0a0e27` (Navy oscuro) | `#00ffff` cian | `#ff6b35` naranja | — |
+| PostgreSQL VSC | `#0a0e1a` (Deep navy) | `#4fc3f7` cian | `#00ff88` verde | `#ff6b35` naranja |
+| Pruebas Unitarias | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#4caf50` verde | `#7c5cbf` morado |
+| Análisis Eclipse | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#4a90d9` azul | `#2ea44f` verde |
+| Análisis VS Code | `#0d1117` (GitHub Dark) | `#007acc` azul VS Code | `#4fc3f7` cian | `#2ea44f` verde |
 
 ---
 
@@ -101,26 +104,41 @@ Esto lee todas las diapositivas de las carpetas fuente y produce los tres archiv
 ```
 software-foundations-eci-slides/
 │
-├── 📁 CVS - MYSD & DOPO/          # Fuentes: 16 diapositivas de Control de Versiones
+├── 📁 CVS - MYSD & DOPO/                    # Fuentes: 16 diapositivas de Control de Versiones
 │   ├── 1-slide.html  →  16-slide.html
 │   └── ...
 │
-├── 📁 Oracle SQL Developer - MYSD/ # Fuentes: 11 diapositivas de Oracle SQL
+├── 📁 Oracle SQL Developer - MYSD/          # Fuentes: 11 diapositivas de Oracle SQL
 │   ├── 1-slide.html  →  11-slide.html
 │   └── ...
 │
-├── 📁 Pruebas Unitarias - DOPO/    # Fuentes: 9 diapositivas de Pruebas Unitarias
+├── 📁 PostgreSQL VSC - MYSD/                # Fuentes: 12 diapositivas de PostgreSQL en VS Code
+│   ├── 1-slide.html  →  12-slide.html
+│   └── ...
+│
+├── 📁 Pruebas Unitarias - DOPO/             # Fuentes: 9 diapositivas de Pruebas Unitarias
 │   ├── 1-slide.html  →  9-slide.html
 │   └── ...
 │
-├── 📄 CVS-presentation.html        # ✅ Presentación auto-contenida (generada)
-├── 📄 OracleSQL-presentation.html  # ✅ Presentación auto-contenida (generada)
-├── 📄 PruebasUnitarias-presentation.html # ✅ Presentación auto-contenida (generada)
+├── 📁 Analisis Software Eclipse - DOPO/     # Fuentes: 15 diapositivas de Análisis en Eclipse
+│   ├── 1-slide.html  →  15-slide.html
+│   └── ...
 │
-├── 🌐 index.html                   # Página de inicio (GitHub Pages)
-├── 🐍 build_presentations.py       # Script que fusiona las diapositivas
-├── 📄 CLAUDE.md                    # Guía para Claude Code
-└── 📄 README.md                    # Este archivo
+├── 📁 Analisis Software VSC - DOPO/         # Fuentes: 12 diapositivas de Análisis en VS Code
+│   ├── 1-slide.html  →  12-slide.html
+│   └── ...
+│
+├── 📄 CVS-presentation.html                 # ✅ Presentación auto-contenida (generada)
+├── 📄 OracleSQL-presentation.html           # ✅ Presentación auto-contenida (generada)
+├── 📄 SQL-PostgreVSC-presentation.html      # ✅ Presentación auto-contenida (generada)
+├── 📄 PruebasUnitarias-presentation.html    # ✅ Presentación auto-contenida (generada)
+├── 📄 Analisis-Eclipse-presentation.html    # ✅ Presentación auto-contenida (generada)
+├── 📄 Analisis-VSC-presentation.html        # ✅ Presentación auto-contenida (generada)
+│
+├── 🌐 index.html                            # Página de inicio (GitHub Pages)
+├── 🐍 build_presentations.py                # Script que fusiona las diapositivas
+├── 📄 CLAUDE.md                             # Guía para Claude Code
+└── 📄 README.md                             # Este archivo
 ```
 
 > Cada diapositiva fuente (`N-slide.html`) es un archivo HTML **auto-contenido de 1280×720 px** con todo el CSS embebido. El script de construcción las combina dentro de un `<iframe srcdoc>` que garantiza aislamiento total de estilos entre diapositivas.
