@@ -6,10 +6,13 @@ Merges individual HTML slide files into single-file HTML presentations.
 Run from the repository root:
     python build_presentations.py
 
-Output files are written to the repository root:
+Output files are written to the repository root (one per entry in DECKS):
     CVS-presentation.html
     OracleSQL-presentation.html
+    SQL-PostgreVSC-presentation.html
     PruebasUnitarias-presentation.html
+    Analisis-Eclipse-presentation.html
+    Analisis-VSC-presentation.html
 """
 
 import os

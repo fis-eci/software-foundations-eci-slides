@@ -45,11 +45,11 @@ Este repositorio genera **6 presentaciones de una sola página** (archivos `.htm
 
 | Mazo | Fondo | Acento principal | Acento secundario | Terciario |
 |------|-------|-----------------|-------------------|-----------|
-| CVS | `#0d1117` (GitHub Dark) | `#58a6ff` azul | `#3fb950` verde | — |
-| Oracle SQL | `#0a0e27` (Navy oscuro) | `#00ffff` cian | `#ff6b35` naranja | — |
+| CVS | `#0d1117` (GitHub Dark) | `#58a6ff` azul | `#2ea44f` verde | — |
+| Oracle SQL | `#0a0e27` (Navy oscuro) | `#00d4ff` cian | `#ff6b35` naranja | `#00ff88` verde |
 | PostgreSQL VSC | `#0a0e1a` (Deep navy) | `#4fc3f7` cian | `#00ff88` verde | `#ff6b35` naranja |
-| Pruebas Unitarias | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#4caf50` verde | `#7c5cbf` morado |
-| Análisis Eclipse | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#4a90d9` azul | `#2ea44f` verde |
+| Pruebas Unitarias | `#003366` (Azul Java) | `#f89820` naranja | `#2e7d32` verde | `#1565c0` azul |
+| Análisis Eclipse | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#58a6ff` azul | `#2ea44f` verde |
 | Análisis VS Code | `#0d1117` (GitHub Dark) | `#007acc` azul VS Code | `#4fc3f7` cian | `#2ea44f` verde |
 
 ---
@@ -85,7 +85,7 @@ Si modificas alguna diapositiva individual, ejecuta el script de construcción p
 python build_presentations.py
 ```
 
-Esto lee todas las diapositivas de las carpetas fuente y produce los tres archivos `.html` listos para presentar.
+Esto lee todas las diapositivas de las carpetas fuente y produce los seis archivos `*-presentation.html` listos para presentar.
 
 ### ⌨️ Atajos de teclado
 
