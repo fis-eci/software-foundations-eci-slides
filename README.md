@@ -41,16 +41,20 @@ Este repositorio genera **6 presentaciones de una sola página** (archivos `.htm
 | 5 | [`Analisis-Eclipse-presentation.html`](./Analisis-Eclipse-presentation.html) | Análisis de Software en Eclipse IDE | 15 | DOPO |
 | 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 12 | DOPO |
 
-### 🎨 Temas visuales por mazo
+### 🎨 Sistema de diseño
+
+Todas las diapositivas comparten un único sistema de diseño (`design-system/`) con identidad de la **Escuela Colombiana de Ingeniería Julio Garavito**: logo oficial en portada y emblema en cada diapositiva, tipografía unificada (**Inter** para texto y **JetBrains Mono** para código), tarjetas de vidrio, animaciones de entrada coreografiadas, una esfera 3D en las portadas y una barra de progreso en el pie de página. Cada mazo conserva su paleta:
 
 | Mazo | Fondo | Acento principal | Acento secundario | Terciario |
 |------|-------|-----------------|-------------------|-----------|
-| CVS | `#0d1117` (GitHub Dark) | `#58a6ff` azul | `#2ea44f` verde | — |
-| Oracle SQL | `#0a0e27` (Navy oscuro) | `#00d4ff` cian | `#ff6b35` naranja | `#00ff88` verde |
-| PostgreSQL VSC | `#0a0e1a` (Deep navy) | `#4fc3f7` cian | `#00ff88` verde | `#ff6b35` naranja |
-| Pruebas Unitarias | `#003366` (Azul Java) | `#f89820` naranja | `#2e7d32` verde | `#1565c0` azul |
-| Análisis Eclipse | `#0d1117` (GitHub Dark) | `#f89820` naranja | `#58a6ff` azul | `#2ea44f` verde |
-| Análisis VS Code | `#0d1117` (GitHub Dark) | `#007acc` azul VS Code | `#4fc3f7` cian | `#2ea44f` verde |
+| CVS | `#05070d` | `#58a6ff` azul | `#2ea44f` verde | `#a371f7` violeta |
+| Oracle SQL | `#050820` (Navy) | `#00d4ff` cian | `#ff6b35` naranja | `#00ff88` verde |
+| PostgreSQL VSC | `#040814` (Deep navy) | `#4fc3f7` cian | `#00e58a` verde | `#ff6b35` naranja |
+| Pruebas Unitarias | `#031128` (Azul Java) | `#f89820` naranja | `#4caf50` verde | `#4f8ff7` azul |
+| Análisis Eclipse | `#05070d` | `#f89820` naranja | `#58a6ff` azul | `#2ea44f` verde |
+| Análisis VS Code | `#05070d` | `#2f9bff` azul VS Code | `#4fc3f7` cian | `#2ea44f` verde |
+
+En los mazos de análisis, cada herramienta tiene un color fijo: SonarLint `#4f9dff`, PMD `#ff9f43`, JaCoCo `#34d399` y PIT `#f87171`.
 
 ---
 
@@ -78,24 +82,27 @@ Accede directamente desde el navegador mediante **GitHub Pages**:
 
 ### Opción C — Reconstruir desde las fuentes
 
-Si modificas alguna diapositiva individual, ejecuta el script de construcción para regenerar las presentaciones:
+Si modificas alguna diapositiva o el sistema de diseño, ejecuta el script de construcción para sincronizar el diseño y regenerar las presentaciones:
 
 ```bash
 # Requiere Python 3.x (sin dependencias externas)
 python build_presentations.py
 ```
 
-Esto lee todas las diapositivas de las carpetas fuente y produce los seis archivos `*-presentation.html` listos para presentar.
+Esto incrusta el sistema de diseño en cada diapositiva y produce los seis archivos `*-presentation.html` listos para presentar. Con `python build_presentations.py --sync` solo se actualizan las diapositivas.
 
 ### ⌨️ Atajos de teclado
 
 | Tecla | Acción |
 |-------|--------|
-| `→` / `Espacio` | Diapositiva siguiente |
-| `←` | Diapositiva anterior |
-| `Inicio` | Primera diapositiva |
-| `Fin` | Última diapositiva |
-| `F` | Pantalla completa |
+| `→` / `Espacio` / `Av Pág` | Diapositiva siguiente |
+| `←` / `Re Pág` | Diapositiva anterior |
+| `Inicio` / `Fin` | Primera / última diapositiva |
+| `G` | Vista general con miniaturas de todas las diapositivas |
+| `F` | Pantalla completa (modo inmersivo: la barra aparece al acercar el mouse) |
+| Deslizar | Navegación táctil en celulares y tabletas |
+
+Puedes enlazar una diapositiva concreta agregando `#n` a la URL (por ejemplo, `CVS-presentation.html#5`).
 
 ---
 
@@ -135,13 +142,19 @@ software-foundations-eci-slides/
 ├── 📄 Analisis-Eclipse-presentation.html    # ✅ Presentación auto-contenida (generada)
 ├── 📄 Analisis-VSC-presentation.html        # ✅ Presentación auto-contenida (generada)
 │
+├── 🎨 design-system/                        # Fuente única del diseño
+│   ├── eci-slides.css                       # Tokens, componentes, temas por mazo y animaciones
+│   ├── eci-slides.js                        # Coreografía de entrada, esfera 3D, tilt y auditoría (#qa)
+│   ├── eci-logo.svg                         # Logo oficial ECI (Wikimedia Commons, CC BY-SA 4.0)
+│   └── eci-emblem.svg                       # Emblema ECI para la barra superior
+│
 ├── 🌐 index.html                            # Página de inicio (GitHub Pages)
-├── 🐍 build_presentations.py                # Script que fusiona las diapositivas
+├── 🐍 build_presentations.py                # Sincroniza el diseño y fusiona las diapositivas
 ├── 📄 CLAUDE.md                             # Guía para Claude Code
 └── 📄 README.md                             # Este archivo
 ```
 
-> Cada diapositiva fuente (`N-slide.html`) es un archivo HTML **auto-contenido de 1280×720 px** con todo el CSS embebido. El script de construcción las combina dentro de un `<iframe srcdoc>` que garantiza aislamiento total de estilos entre diapositivas.
+> Cada diapositiva fuente (`N-slide.html`) es un archivo HTML **auto-contenido de 1280×720 px**: el script de construcción incrusta el sistema de diseño entre marcadores (`<!--eci:head-->`, `<!--eci:frame-->`, `<!--eci:logo-->`), así cada archivo funciona por sí solo y todos comparten la misma fuente de estilos. Luego las combina dentro de un `<iframe srcdoc>` que garantiza aislamiento total de estilos entre diapositivas.
 
 ---
 
@@ -149,12 +162,15 @@ software-foundations-eci-slides/
 
 El script `build_presentations.py` implementa las siguientes etapas:
 
-1. **Lee** las diapositivas en orden numérico (`1-slide.html`, `2-slide.html`, …).
-2. **Escapa** el HTML para incrustarlo en template literals de JavaScript (manejo especial de backticks, `</script>` y `${`).
-3. **Genera** una cáscara HTML con barra de navegación, barra de progreso, escalado responsivo y soporte de pantalla completa.
-4. **Verifica** que el número de diapositivas incrustadas coincida con el esperado.
+1. **Sincroniza** el sistema de diseño (`design-system/`) dentro de cada diapositiva y de `index.html`: CSS, JS, logo, marco institucional y número de página.
+2. **Lee** las diapositivas en orden numérico (`1-slide.html`, `2-slide.html`, …).
+3. **Escapa** el HTML para incrustarlo en template literals de JavaScript (manejo especial de backticks, `</script>` y `${`).
+4. **Genera** una cáscara HTML con transiciones entre diapositivas, vista general con miniaturas, escalado responsivo, gestos táctiles y modo inmersivo de pantalla completa.
+5. **Verifica** que el número de diapositivas incrustadas coincida con el esperado.
 
-Las presentaciones resultantes son archivos únicos, sin dependencias externas en tiempo de ejecución, que funcionan offline.
+Las presentaciones resultantes son archivos únicos; solo las fuentes (Google Fonts), los íconos (Font Awesome) y las miniaturas de video se cargan desde CDN.
+
+Para revisar el diseño de una diapositiva abre `N-slide.html#static` (sin animaciones) o `N-slide.html#static-qa`, que añade al DOM un reporte (`#qa-report`) con elementos desbordados o recortados.
 
 ---
 
