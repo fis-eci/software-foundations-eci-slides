@@ -84,6 +84,24 @@ DECKS = [
         "theme":   "vscode",
         "courses": ["DOPO"],
     },
+    {
+        "folder":  "Diseno Astah - MYSD",
+        "count":   17,
+        "output":  "DisenoMYSD-presentation.html",
+        "title":   "Diseño con Astah — MYSD",
+        "short":   "Diseño con Astah · MYSD",
+        "theme":   "dmysd",
+        "courses": ["MYSD"],
+    },
+    {
+        "folder":  "Diseno Astah - DOPO",
+        "count":   22,
+        "output":  "DisenoDOPO-presentation.html",
+        "title":   "Diseño con Astah — DOPO",
+        "short":   "Diseño con Astah · DOPO",
+        "theme":   "ddopo",
+        "courses": ["DOPO"],
+    },
 ]
 
 FONTS = ('https://fonts.googleapis.com/css2?family=Inter:wght@300..900'
@@ -134,6 +152,11 @@ def load_design_system() -> dict:
     }
 
 
+def diagram(name: str) -> str:
+    """Generated UML diagram markup (see diagrams/specs.py)."""
+    return read(os.path.join(REPO_ROOT, 'diagrams', 'out', name + '.frag.svg')).strip()
+
+
 def frame_html(ds: dict, deck: dict, n: int) -> str:
     total = deck['count']
     pct = round(n / total * 100, 2)
@@ -169,6 +192,9 @@ def sync_deck(ds: dict, deck: dict) -> int:
         out = fill_marker(out, 'frame', frame_html(ds, deck, n))
         out = fill_marker(out, 'logo', ds['logo'])
         out = re.sub(r'(<body\b[^>]*\bdata-deck=")[^"]*(")', r'\g<1>%s\2' % deck['theme'], out)
+        out = re.sub(r'<!--eci:svg:([\w.-]+)-->.*?<!--/eci:svg:\1-->',
+                     lambda m: '<!--eci:svg:%s-->%s<!--/eci:svg:%s-->' % (m.group(1), diagram(m.group(1)), m.group(1)),
+                     out, flags=re.S)
         if out != raw:
             with open(path, 'w', encoding='utf-8', newline='\n') as f:
                 f.write(out)
@@ -441,6 +467,7 @@ SHELL = '''<!DOCTYPE html>
 ACCENTS = {
     'cvs': '#58a6ff', 'oracle': '#00d4ff', 'postgres': '#4fc3f7',
     'junit': '#f89820', 'eclipse': '#f89820', 'vscode': '#2f9bff',
+    'dmysd': '#2dd4bf', 'ddopo': '#a78bfa',
 }
 
 
@@ -514,6 +541,8 @@ def verify(output: str, expected_count: int):
 
 
 if __name__ == '__main__':
+    import subprocess
+    subprocess.run([sys.executable, os.path.join(REPO_ROOT, 'diagrams', 'specs.py')], check=True)
     ds = load_design_system()
     for deck in DECKS:
         changed = sync_deck(ds, deck)

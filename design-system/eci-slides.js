@@ -135,6 +135,19 @@
     if (!isStatic) document.querySelectorAll('.card').forEach(tilt);
     document.querySelectorAll('[data-count]').forEach(countUp);
     var c = document.getElementById('orb'); if (c) orb(c);
+    /* Diagrams zoom to the full canvas on click */
+    document.querySelectorAll('.diagram').forEach(function (d) {
+      d.addEventListener('click', function () { d.classList.toggle('zoomed'); });
+    });
+    /* Active-learning pauses: solutions stay veiled until the student reveals them */
+    document.querySelectorAll('.solution').forEach(function (s) {
+      var v = document.createElement('div');
+      v.className = 'veil';
+      v.innerHTML = '<i class="fas fa-eye-slash"></i>' + (s.getAttribute('data-veil') || 'Resuélvelo primero') +
+        '<small>Clic para contrastar con la solución</small>';
+      v.addEventListener('click', function (e) { e.stopPropagation(); s.classList.add('shown'); });
+      s.appendChild(v);
+    });
     if (/qa/.test(location.hash)) (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(audit, 500); });
   });
 

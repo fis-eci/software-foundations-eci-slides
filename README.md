@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/Licencia-Apache%202.0-blue.svg)](./LICENSE)
 [![HTML](https://img.shields.io/badge/Tecnología-HTML%20%2B%20CSS-orange.svg)](.)
-[![Slides](https://img.shields.io/badge/Diapositivas-75%20slides-blue.svg)](.)
+[![Slides](https://img.shields.io/badge/Diapositivas-114%20slides-blue.svg)](.)
 [![Institución](https://img.shields.io/badge/ECI-Julio%20Garavito-red.svg)](https://www.escuelaing.edu.co)
 
 <br/>
@@ -30,7 +30,7 @@
 
 ## 🗂️ Presentaciones Disponibles
 
-Este repositorio genera **6 presentaciones de una sola página** (archivos `.html` auto-contenidos), una por cada tema:
+Este repositorio genera **8 presentaciones de una sola página** (archivos `.html` auto-contenidos), una por cada tema:
 
 | # | Archivo | Tema | Slides | Cursos |
 |---|---------|------|:------:|--------|
@@ -40,6 +40,8 @@ Este repositorio genera **6 presentaciones de una sola página** (archivos `.htm
 | 4 | [`SQL-PostgreVSC-presentation.html`](./SQL-PostgreVSC-presentation.html) | PostgreSQL en VS Code | 12 | MYSD |
 | 5 | [`Analisis-Eclipse-presentation.html`](./Analisis-Eclipse-presentation.html) | Análisis de Software en Eclipse IDE | 15 | DOPO |
 | 6 | [`Analisis-VSC-presentation.html`](./Analisis-VSC-presentation.html) | Análisis de Software en VS Code | 12 | DOPO |
+| 7 | [`DisenoMYSD-presentation.html`](./DisenoMYSD-presentation.html) | Diseño con Astah · Empresa comercializadora | 17 | MYSD |
+| 8 | [`DisenoDOPO-presentation.html`](./DisenoDOPO-presentation.html) | Diseño con Astah · Batalla N | 22 | DOPO |
 
 ### 🎨 Sistema de diseño
 
@@ -53,6 +55,8 @@ Todas las diapositivas comparten un único sistema de diseño (`design-system/`)
 | Pruebas Unitarias | `#031128` (Azul Java) | `#f89820` naranja | `#4caf50` verde | `#4f8ff7` azul |
 | Análisis Eclipse | `#05070d` | `#f89820` naranja | `#58a6ff` azul | `#2ea44f` verde |
 | Análisis VS Code | `#05070d` | `#2f9bff` azul VS Code | `#4fc3f7` cian | `#2ea44f` verde |
+| Diseño MYSD | `#04090f` | `#2dd4bf` turquesa | `#60a5fa` azul | `#f59e0b` ámbar |
+| Diseño DOPO | `#07060f` | `#a78bfa` violeta | `#f472b6` rosa | `#34d399` verde |
 
 En los mazos de análisis, cada herramienta tiene un color fijo: SonarLint `#4f9dff`, PMD `#ff9f43`, JaCoCo `#34d399` y PIT `#f87171`.
 
@@ -73,6 +77,8 @@ Accede directamente desde el navegador mediante **GitHub Pages**:
 | PostgreSQL en VS Code | 🔗 [SQL-PostgreVSC-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/SQL-PostgreVSC-presentation.html) |
 | Análisis Software Eclipse | 🔗 [Analisis-Eclipse-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/Analisis-Eclipse-presentation.html) |
 | Análisis Software VS Code | 🔗 [Analisis-VSC-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/Analisis-VSC-presentation.html) |
+| Diseño con Astah · MYSD | 🔗 [DisenoMYSD-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/DisenoMYSD-presentation.html) |
+| Diseño con Astah · DOPO | 🔗 [DisenoDOPO-presentation.html](https://fis-eci.github.io/software-foundations-eci-slides/DisenoDOPO-presentation.html) |
 
 ### Opción B — Abrir localmente
 
@@ -142,6 +148,10 @@ software-foundations-eci-slides/
 ├── 📄 Analisis-Eclipse-presentation.html    # ✅ Presentación auto-contenida (generada)
 ├── 📄 Analisis-VSC-presentation.html        # ✅ Presentación auto-contenida (generada)
 │
+├── 📁 Diseno Astah - MYSD/                 # Fuentes: 17 diapositivas de Diseño con Astah (MYSD)
+├── 📁 Diseno Astah - DOPO/                 # Fuentes: 22 diapositivas de Diseño con Astah (DOPO)
+├── 📐 diagrams/                            # Diagramas UML: specs.py (fuente) → out/*.svg
+│
 ├── 🎨 design-system/                        # Fuente única del diseño
 │   ├── eci-slides.css                       # Tokens, componentes, temas por mazo y animaciones
 │   ├── eci-slides.js                        # Coreografía de entrada, esfera 3D, tilt y auditoría (#qa)
@@ -162,6 +172,7 @@ software-foundations-eci-slides/
 
 El script `build_presentations.py` implementa las siguientes etapas:
 
+0. **Genera** los diagramas UML (`diagrams/specs.py` → `diagrams/out/`) y los incrusta donde haya marcadores `<!--eci:svg:nombre-->`.
 1. **Sincroniza** el sistema de diseño (`design-system/`) dentro de cada diapositiva y de `index.html`: CSS, JS, logo, marco institucional y número de página.
 2. **Lee** las diapositivas en orden numérico (`1-slide.html`, `2-slide.html`, …).
 3. **Escapa** el HTML para incrustarlo en template literals de JavaScript (manejo especial de backticks, `</script>` y `${`).

@@ -12,7 +12,7 @@ Companion repository: [fis-eci/software-foundations-eci](https://github.com/fis-
 
 ## Repository Structure
 
-Six slide decks, each in its own folder, with one built presentation per deck in the repo root:
+Eight slide decks, each in its own folder, with one built presentation per deck in the repo root:
 
 - `CVS - MYSD & DOPO/` — 16 slides on Version Control Systems (Git/GitHub) → `CVS-presentation.html`
 - `Pruebas Unitarias - DOPO/` — 9 slides on Unit Testing in Java (JUnit + BlueJ) → `PruebasUnitarias-presentation.html`
@@ -20,6 +20,10 @@ Six slide decks, each in its own folder, with one built presentation per deck in
 - `PostgreSQL VSC - MYSD/` — 12 slides on PostgreSQL in VS Code → `SQL-PostgreVSC-presentation.html`
 - `Analisis Software Eclipse - DOPO/` — 15 slides on software analysis in Eclipse → `Analisis-Eclipse-presentation.html`
 - `Analisis Software VSC - DOPO/` — 12 slides on software analysis in VS Code → `Analisis-VSC-presentation.html`
+- `Diseno Astah - MYSD/` — 17 slides, Unit 5 design with Astah (Empresa comercializadora) → `DisenoMYSD-presentation.html`
+- `Diseno Astah - DOPO/` — 22 slides, Unit 5 design with Astah (Batalla N) → `DisenoDOPO-presentation.html`
+
+`diagrams/` holds the UML diagrams of Unit 5: `specs.py` declares every diagram with explicit coordinates (the layout students reproduce in Astah), `uml.py` renders them. The build runs it first and inlines `diagrams/out/<name>.frag.svg` wherever a slide has `<!--eci:svg:<name>--><!--/eci:svg:<name>-->`. Light standalone copies (`out/<name>.svg`) go to the wiki with `python diagrams/specs.py --wiki ../software-foundations-eci/assets/diagramas`.
 
 `index.html` is the GitHub Pages landing page linking to every deck.
 
@@ -65,7 +69,7 @@ Every slide follows the same skeleton:
 
 - **Fixed canvas**: `1280×720px`; `.stage` sits between the 68px top bar and the 46px footer
 - **Typography**: Inter (text) + JetBrains Mono (code, ligatures disabled so `<=` stays `<=`)
-- **Components** (see the CSS for the full list): `.card` (+ `k1/k2/k3/kok/kwarn/kbad/kr`, `top-c`, `hl`, `tight`), `.ic`, `.list`, `.steps`/`.step`, `.flow`, `.code` + `.code-bar` + `pre` with `.k .t .s .f .n .c .a .g .p` highlight spans, `.note` (+ `tip/warn/bad/pause`), `.tag`, `.table`, `.link`, `.video`, `.dlg` (connection dialog mock), `.mini`, analysis tool colors `.t-sonar .t-pmd .t-jacoco .t-pit`
+- **Components** (see the CSS for the full list): `.card` (+ `k1/k2/k3/kok/kwarn/kbad/kr`, `top-c`, `hl`, `tight`), `.ic`, `.list`, `.steps`/`.step`, `.flow`, `.code` + `.code-bar` + `pre` with `.k .t .s .f .n .c .a .g .p` highlight spans, `.note` (+ `tip/warn/bad/pause`), `.tag`, `.table`, `.link`, `.video`, `.dlg` (connection dialog mock), `.mini`, analysis tool colors `.t-sonar .t-pmd .t-jacoco .t-pit`, `.diagram` (click-to-zoom UML), active-learning `.pause-chip` (`repro`/`contrast`) and `.solution` (veiled until clicked; `data-veil` sets the prompt)
 - **Motion**: `.rv`, `.rv-x`, `.rv-z` reveal in DOM order; `data-stagger` tags children; `data-split` animates headline words. `#static` in the URL (or `data-static` on the iframe) disables motion
 - **Slide-specific CSS** goes in a small `<style>` after the `eci:head` marker. Classes used on `<a>` elements need a `.slide` prefix for `color` (`.slide a { color: inherit }`)
 - **Language**: `lang="es"` (Spanish content throughout)
@@ -80,6 +84,8 @@ Every slide follows the same skeleton:
 | Pruebas Unitarias | `junit` | `#031128` (Java blue) | `#f89820` (orange) | `#4caf50` (green) | `#4f8ff7` (blue) |
 | Análisis Eclipse | `eclipse` | `#05070d` | `#f89820` (orange) | `#58a6ff` (blue) | `#2ea44f` (green) |
 | Análisis VS Code | `vscode` | `#05070d` | `#2f9bff` (VS Code blue) | `#4fc3f7` (cyan) | `#2ea44f` (green) |
+| Diseño MYSD | `dmysd` | `#04090f` | `#2dd4bf` (teal) | `#60a5fa` (blue) | `#f59e0b` (amber) |
+| Diseño DOPO | `ddopo` | `#07060f` | `#a78bfa` (violet) | `#f472b6` (pink) | `#34d399` (green) |
 
 ECI institutional red `#e63323` is used for the brand and the progress bar on every deck.
 
